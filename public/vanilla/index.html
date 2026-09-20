@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anti Modern Furniture | Pure HTML, CSS & JavaScript</title>
+  <meta name="description" content="Handcrafted modern furniture web app built with clean HTML5, CSS3, and Vanilla JavaScript. Features dynamic product details, filters, live price calculator, persistent cart, and direct Telegram bot integration.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..800;1,400..800&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  
+  <!-- Main Vanilla Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme">
+
+  <!-- Top Announcement Bar -->
+  <div class="announcement-bar">
+    <span>🌿 Handcrafted Solid White Oak & Bouclé • Free White-Glove Delivery over $500 • Direct Telegram Ordering</span>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="brand-logo">
+        <span>Anti</span>
+        <span class="logo-dot"></span>
+      </a>
+
+      <nav class="nav-links" id="nav-links">
+        <a href="#hero" class="nav-link active">Home</a>
+        <a href="#catalog" class="nav-link">Shop Catalog</a>
+        <a href="#signature" class="nav-link">Signature</a>
+        <a href="#about" class="nav-link">Craftsmanship</a>
+        <a href="#reviews" class="nav-link">Reviews</a>
+        <a href="#contact" class="nav-link">Contact & Showroom</a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Dark Mode Toggle Button -->
+        <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme" title="Toggle Light / Dark Mode">
+          <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </button>
+
+        <!-- Telegram Direct Bot Link -->
+        <a href="https://t.me/FurnitureOnlineSellingbot" target="_blank" rel="noopener noreferrer" class="telegram-pill-btn" title="Open Telegram Bot">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          <span>@FurnitureOnlineSellingbot</span>
+        </a>
+
+        <!-- Shopping Cart Trigger Button -->
+        <button id="cart-btn" class="icon-btn cart-btn" aria-label="Open Shopping Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span id="cart-badge" class="cart-badge">0</span>
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="mobile-toggle" class="icon-btn mobile-menu-btn" aria-label="Toggle Navigation">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="hero">
+    <div class="container hero-container">
+      <div class="hero-text">
+        <div class="badge-tag">HANDCRAFTED IN PHNOM PENH</div>
+        <h1 class="hero-title">
+          Crafted for <br>
+          <span class="text-contrast">Comfort.</span> <br>
+          <span class="hero-italic">Made for Life.</span>
+        </h1>
+        <p class="hero-desc">
+          Honest solid timber, tactile linen weaves, and architectural silhouettes built to last generations. Custom sizes and finishes finished to order.
+        </p>
+        <div class="hero-actions">
+          <a href="#catalog" class="btn btn-primary">Explore Catalog</a>
+          <a href="#signature" class="btn btn-secondary">Signature Collection →</a>
+        </div>
+        <div class="hero-badges">
+          <span>✓ FSC-Certified Hardwoods</span>
+          <span>✓ 10-Year Joinery Guarantee</span>
+          <span>✓ Direct Telegram Dispatch</span>
+        </div>
+      </div>
+
+      <div class="hero-image-box">
+        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=85" alt="Anti Living Room Setup" class="hero-img">
+        <div class="floating-chip">
+          <div class="chip-dot"></div>
+          <div>
+            <strong>Signature Living 2025</strong>
+            <small>Hand-rubbed organic hardwax oils</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Value Props Bar -->
+  <section class="value-bar">
+    <div class="container value-grid">
+      <div class="value-item">
+        <div class="value-icon">🚚</div>
+        <div>
+          <h4>White-Glove Delivery</h4>
+          <p>Free setup on orders over $500</p>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">🌳</div>
+        <div>
+          <h4>Solid Hardwood Timber</h4>
+          <p>Sustainably harvested white oak & walnut</p>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">🛡️</div>
+        <div>
+          <h4>10-Year Craft Warranty</h4>
+          <p>Built with mortise-and-tenon joints</p>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">💬</div>
+        <div>
+          <h4>Direct Craftsman Chat</h4>
+          <p>Real-time updates via Telegram Bot</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Browser -->
+  <section class="section categories-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2>Curated Living Spaces</h2>
+        <p>Explore pieces organized by functional home spaces</p>
+      </div>
+      <div class="category-pills" id="category-pills">
+        <button class="cat-pill active" data-cat="All">All Categories</button>
+        <button class="cat-pill" data-cat="Living Room">Living Room</button>
+        <button class="cat-pill" data-cat="Bedroom">Bedroom</button>
+        <button class="cat-pill" data-cat="Dining Room">Dining Room</button>
+        <button class="cat-pill" data-cat="Office">Office</button>
+        <button class="cat-pill" data-cat="Storage">Storage & Credenzas</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Product Catalog with Filters & Sorting -->
+  <section class="section catalog-section" id="catalog">
+    <div class="container">
+      <div class="section-header flex-header">
+        <div>
+          <h2>Furniture Catalog</h2>
+          <p>Filter by category, price bracket, and in-stock status</p>
+        </div>
+        <div class="catalog-controls">
+          <!-- Search Bar -->
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="search-input" placeholder="Search by name, wood, or style...">
+          </div>
+
+          <!-- Sort Selector -->
+          <div class="sort-box">
+            <label for="sort-select">Sort by:</label>
+            <select id="sort-select">
+              <option value="popularity">Most Popular</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Highest Rated</option>
+              <option value="name">Alphabetical</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Controls Bar -->
+      <div class="filters-bar">
+        <div class="filter-group">
+          <span class="filter-label">Price Bracket:</span>
+          <button class="filter-btn active" data-price="all">All Prices</button>
+          <button class="filter-btn" data-price="under-500">Under $500</button>
+          <button class="filter-btn" data-price="500-1000">$500 - $1,000</button>
+          <button class="filter-btn" data-price="1000-plus">$1,000+</button>
+        </div>
+
+        <div class="filter-group right">
+          <label class="stock-toggle">
+            <input type="checkbox" id="stock-only-checkbox">
+            <span>In-Stock Ready to Ship Only</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Results Count -->
+      <div class="results-info">
+        <span id="results-count">Showing 10 pieces</span>
+        <button id="reset-filters-btn" class="text-btn">Reset All Filters</button>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid" id="products-grid">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Signature Spotlight Section -->
+  <section class="section signature-section" id="signature">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="badge-tag">THE FOUNDER'S COLLECTION</div>
+        <h2>Signature Architectural Pieces</h2>
+        <p>Sculptural centerpieces engineered by master carpenter Theng Seyha</p>
+      </div>
+
+      <div class="signature-grid" id="signature-grid">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Craftsmanship & About Section -->
+  <section class="section about-section" id="about">
+    <div class="container about-grid">
+      <div class="about-image">
+        <img src="https://images.unsplash.com/photo-1540518614846-7ede433c4ef5?auto=format&fit=crop&w=1000&q=80" alt="Woodworking Craftsmanship" class="about-img">
+        <div class="experience-card">
+          <h3>15+</h3>
+          <p>Years of bespoke joinery craftsmanship</p>
+        </div>
+      </div>
+      <div class="about-text">
+        <div class="badge-tag">OUR PHILOSOPHY</div>
+        <h2>Honest Wood, Intentional Living</h2>
+        <p>
+          At Anti, we intentionally design against disposable fast-furniture trends. Every timber plank is selected by hand for its grain orientation, kiln-dried to balanced moisture content, and jointed using classic Japanese and Scandinavian mortise-and-tenon methods.
+        </p>
+        <ul class="check-list">
+          <li><strong>Zero Synthetic Foams:</strong> Natural latex cushions wrapped in virgin organic wool batting.</li>
+          <li><strong>Breathable Finishes:</strong> Hand-applied plant-based oils that highlight natural wood grain rather than plastic polyurethane coats.</li>
+          <li><strong>Custom Alterations:</strong> Request custom millimeters or bespoke wood stains directly via Telegram.</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary">Schedule a Showroom Tour</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Customer Reviews Section -->
+  <section class="section reviews-section" id="reviews">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2>Words from Living Rooms</h2>
+        <p>Real stories from homeowners, architects, and designers across Cambodia and Southeast Asia</p>
+      </div>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">“The Sorya Bouclé Lounge Chair transformed our living room corner. The oak frame has an organic silky feel and the bouclé upholstery feels heavenly after long studio hours.”</p>
+          <div class="review-author">
+            <strong>Kosal & Sophea V.</strong>
+            <small>BKK1, Phnom Penh</small>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">“Ordering through their Telegram bot was the smoothest furniture purchase I've ever made. Theng Seyha sent photos of the oak slabs before final assembly and delivery was right on time.”</p>
+          <div class="review-author">
+            <strong>Dara Seng</strong>
+            <small>Chroy Changvar Residence</small>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">“The Bassac Walnut Dining Table is solid, heavy, and undeniably magnificent. The butterfly joint details along the central grain show genuine artisan dedication.”</p>
+          <div class="review-author">
+            <strong>Camille Durand</strong>
+            <small>Interior Architect, Siem Reap</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact & Showroom Section -->
+  <section class="section contact-section" id="contact">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="badge-tag">VISIT OR CHAT</div>
+        <h2>Connect with Our Workshop</h2>
+        <p>Inquiries are routed directly to founder Theng Seyha via Telegram Bot</p>
+      </div>
+
+      <div class="contact-grid">
+        <!-- Left: Studio Details & Telegram Card -->
+        <div class="contact-info-panel">
+          <div class="telegram-feature-card">
+            <div class="tg-header">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+              <div>
+                <h3>@FurnitureOnlineSellingbot</h3>
+                <small>Official Telegram Concierge</small>
+              </div>
+            </div>
+            <p>Chat directly with owner <b>Theng Seyha (ថេង សីហា)</b> for custom dimensions, fabric swatches, or delivery scheduling.</p>
+            <a href="https://t.me/FurnitureOnlineSellingbot" target="_blank" rel="noopener noreferrer" class="btn btn-tg">Launch Telegram Chat</a>
+          </div>
+
+          <div class="info-card">
+            <h4>📍 Workshop & Showroom</h4>
+            <p>#48 Preah Norodom Blvd, Sangkat Tonle Bassac, Khan Chamkarmon, Phnom Penh</p>
+            <h4>⏰ Showroom Hours</h4>
+            <p>Monday – Saturday: 8:30 AM – 7:00 PM<br>Sunday: 9:00 AM – 5:00 PM</p>
+            <h4>📞 Phone & WhatsApp</h4>
+            <p>+855 12 345 678 (English / Khmer)</p>
+          </div>
+        </div>
+
+        <!-- Right: Inquiry Form -->
+        <div class="contact-form-panel">
+          <form id="contact-form" class="styled-form">
+            <h3>Send Workshop Inquiry</h3>
+            <p class="form-desc">Messages dispatch directly to our Telegram bot inbox.</p>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contact-name">Your Full Name *</label>
+                <input type="text" id="contact-name" required placeholder="e.g. Sreysros Keo">
+              </div>
+              <div class="form-group">
+                <label for="contact-phone">Phone or Telegram *</label>
+                <input type="text" id="contact-phone" required placeholder="e.g. +855 12 345 678">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-subject">Inquiry Subject</label>
+              <select id="contact-subject">
+                <option>Custom Timber Sizing & Fabric Swatches</option>
+                <option>Order Status & White-Glove Scheduling</option>
+                <option>Trade & Commercial Interior Inquiry</option>
+                <option>Direct Question for Theng Seyha</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-message">Message Details *</label>
+              <textarea id="contact-message" rows="4" required placeholder="Specify your desired dimensions, wood finish, or question..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" id="contact-submit-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+              <span>Transmit Inquiry to Telegram</span>
+            </button>
+            <div id="contact-feedback" class="form-feedback"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <div class="brand-logo footer-logo">
+          <span>Anti</span>
+          <span class="logo-dot"></span>
+        </div>
+        <p>Mindful modern furniture sculpted from sustainable timber and tactile bouclé. Made with honesty in Phnom Penh, Cambodia.</p>
+        <p class="copyright">© 2025 Anti Modern Furniture. Pure Vanilla HTML/CSS/JS Edition.</p>
+      </div>
+
+      <div class="footer-links-col">
+        <h4>Spaces</h4>
+        <a href="#catalog" class="footer-link">Living Room</a>
+        <a href="#catalog" class="footer-link">Dining Room</a>
+        <a href="#catalog" class="footer-link">Bedroom</a>
+        <a href="#catalog" class="footer-link">Storage</a>
+      </div>
+
+      <div class="footer-links-col">
+        <h4>Telegram Bot</h4>
+        <a href="https://t.me/FurnitureOnlineSellingbot" target="_blank" class="footer-link">@FurnitureOnlineSellingbot</a>
+        <span class="footer-text">Owner: Theng Seyha</span>
+        <span class="footer-text">Bot Token API Active</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= MODALS & SLIDE-OUTS ================= -->
+
+  <!-- 1. DYNAMIC PRODUCT DETAIL MODAL -->
+  <div id="product-modal" class="modal-backdrop">
+    <div class="modal-content product-modal-content">
+      <button class="modal-close" id="close-product-modal" aria-label="Close Product View">&times;</button>
+      
+      <div class="product-detail-layout" id="product-detail-container">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. SHOPPING CART DRAWER -->
+  <div id="cart-drawer-backdrop" class="drawer-backdrop">
+    <div class="cart-drawer" id="cart-drawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <h3>Your Furniture Cart</h3>
+          <span id="drawer-item-count" class="badge">0</span>
+        </div>
+        <button id="close-cart-drawer" class="icon-btn">&times;</button>
+      </div>
+
+      <!-- Free Shipping Calculator Progress Bar -->
+      <div class="shipping-calculator-bar">
+        <div class="shipping-info">
+          <span id="shipping-progress-text">Add $500 more for Free White-Glove Delivery</span>
+          <strong id="shipping-percent-text">0%</strong>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="shipping-progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Telegram Dispatch Banner -->
+      <div class="tg-banner">
+        <span>⚡ Orders dispatch straight to <b>@FurnitureOnlineSellingbot</b></span>
+      </div>
+
+      <!-- Cart Items List -->
+      <div class="drawer-body" id="cart-items-list">
+        <!-- Cart items injected dynamically -->
+      </div>
+
+      <!-- Live Cart Price Calculator & Footer -->
+      <div class="drawer-footer" id="cart-footer">
+        <!-- Promo code input -->
+        <div class="promo-box">
+          <input type="text" id="promo-input" placeholder="Promo code (Try: SUMMER25)">
+          <button id="apply-promo-btn" class="btn btn-sm">Apply</button>
+        </div>
+        <div id="promo-msg" class="promo-msg"></div>
+
+        <!-- Calculator breakdown -->
+        <div class="calc-breakdown">
+          <div class="calc-row">
+            <span>Furniture Subtotal</span>
+            <span id="calc-subtotal">$0</span>
+          </div>
+          <div class="calc-row assembly-row" id="calc-assembly-row">
+            <span>White-Glove Assembly</span>
+            <span id="calc-assembly">+$0</span>
+          </div>
+          <div class="calc-row discount-row" id="calc-discount-row" style="display: none;">
+            <span>Discount (SUMMER25 - 25% Off)</span>
+            <span id="calc-discount">-$0</span>
+          </div>
+          <div class="calc-row">
+            <span>White-Glove Shipping</span>
+            <span id="calc-shipping">$45</span>
+          </div>
+          <div class="calc-row grand-total">
+            <span>Grand Total Due</span>
+            <span id="calc-total" class="total-amount">$0</span>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <button id="proceed-checkout-btn" class="btn btn-primary btn-block">
+          Proceed to Order Form →
+        </button>
+
+        <div class="cart-bottom-links">
+          <span>Saved to localStorage</span>
+          <button id="clear-cart-btn" class="text-danger-btn">Clear Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. CHECKOUT MODAL (DISPATCH TO TELEGRAM BOT) -->
+  <div id="checkout-modal" class="modal-backdrop">
+    <div class="modal-content checkout-modal-content">
+      <button class="modal-close" id="close-checkout-modal">&times;</button>
+      
+      <div id="checkout-form-view">
+        <div class="tg-badge">
+          <span>✈️ Telegram Instant Order Dispatch</span>
+        </div>
+        <h2>Complete Your Delivery Details</h2>
+        <p class="subtitle">Your order invoice will be transmitted directly to Theng Seyha's Telegram Bot.</p>
+
+        <form id="order-form" class="styled-form checkout-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="order-name">Full Customer Name *</label>
+              <input type="text" id="order-name" required placeholder="e.g. Theng Seyha">
+            </div>
+            <div class="form-group">
+              <label for="order-phone">Phone Number (Telegram / WhatsApp) *</label>
+              <input type="tel" id="order-phone" required placeholder="e.g. +855 12 345 678">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="order-tg">Telegram Username (Optional)</label>
+              <input type="text" id="order-tg" placeholder="@username">
+            </div>
+            <div class="form-group">
+              <label for="order-city">City / Province *</label>
+              <input type="text" id="order-city" required value="Phnom Penh">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="order-address">Street Address, Building & Unit *</label>
+            <textarea id="order-address" rows="2" required placeholder="Street number, building name, apartment / condo unit..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Payment Method</label>
+            <div class="payment-options">
+              <label class="payment-label active">
+                <input type="radio" name="payment-method" value="ABA KHQR / Telegram Pay" checked>
+                <span>ABA KHQR / Telegram Pay</span>
+              </label>
+              <label class="payment-label">
+                <input type="radio" name="payment-method" value="Cash on Delivery">
+                <span>Cash on Delivery</span>
+              </label>
+              <label class="payment-label">
+                <input type="radio" name="payment-method" value="Credit / Debit Card">
+                <span>Credit Card</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="order-notes">Special Delivery Notes (Optional)</label>
+            <input type="text" id="order-notes" placeholder="e.g. Call 20 mins before arrival, elevator available">
+          </div>
+
+          <!-- Invoice Summary Box -->
+          <div class="order-invoice-summary" id="order-invoice-summary">
+            <!-- Populated dynamically -->
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="submit-telegram-order-btn">
+            <span class="btn-text">Send Order to Telegram Bot (@FurnitureOnlineSellingbot)</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Success Screen -->
+      <div id="checkout-success-view" class="success-screen" style="display: none;">
+        <div class="success-icon">✓</div>
+        <h2>Order Transmitted Successfully!</h2>
+        <p>Your order specifications and invoice have been dispatched to <b>Theng Seyha</b> via Telegram bot (<code>@FurnitureOnlineSellingbot</code>).</p>
+        
+        <div class="order-receipt-box" id="order-receipt-details">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="success-actions">
+          <a href="https://t.me/FurnitureOnlineSellingbot" target="_blank" rel="noopener noreferrer" class="btn btn-tg">
+            Open in Telegram (@FurnitureOnlineSellingbot)
+          </a>
+          <button id="finish-order-btn" class="btn btn-secondary">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="toast-notification"></div>
+
+  <!-- Floating Telegram Quick Chat Button -->
+  <a href="https://t.me/FurnitureOnlineSellingbot" target="_blank" rel="noopener noreferrer" class="floating-tg-btn" title="Chat with Theng Seyha on Telegram">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+    <span>Chat on Telegram</span>
+  </a>
+
+  <!-- Pure Vanilla JavaScript Script -->
+  <script src="app.js"></script>
+</body>
+</html>
