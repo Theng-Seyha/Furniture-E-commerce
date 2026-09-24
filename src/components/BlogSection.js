@@ -2,17 +2,24 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, Calendar, Clock, X } from "lucide-react";
 import { BLOG_POSTS } from "../data/furnitureData";
+import { ScrollReveal } from "./ScrollReveal";
+
+const BLOG_FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?auto=format&fit=crop&w=800&q=80";
+
 export const BlogSection = () => {
   const [activePost, setActivePost] = useState(null);
-  return <section id="blog" className="py-14 sm:py-24 bg-stone-100/40 dark:bg-stone-900/20">
+  return (
+    <section id="blog" className="py-14 sm:py-24 bg-stone-100/40 dark:bg-stone-900/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {
-    /* Header */
-  }
-        <div className="flex items-center justify-between mb-10 sm:mb-12">
+        {/* Header with scroll reveal */}
+        <ScrollReveal
+          animation="fade-up"
+          duration={0.7}
+          className="flex items-center justify-between mb-10 sm:mb-12"
+        >
           <div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight">
               Studio Journal & Wood Notes
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 mt-1">
@@ -26,36 +33,34 @@ export const BlogSection = () => {
             <span>Read All Notes</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </button>
-        </div>
+        </ScrollReveal>
 
-        {
-    /* 3 Blog Cards Grid */
-  }
+        {/* 3 Blog Cards Grid with staggered scroll reveal */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-          {BLOG_POSTS.map((post, index) => <motion.article
-    key={post.id}
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5, delay: index * 0.1 }}
-    onClick={() => setActivePost(post)}
-    className="group flex flex-col bg-white dark:bg-stone-900 rounded-2xl overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 border border-stone-200/70 dark:border-stone-800 cursor-pointer"
-  >
-              {
-    /* Cover Image */
-  }
+          {BLOG_POSTS.map((post, index) => (
+            <ScrollReveal
+              key={post.id}
+              animation="fade-up"
+              delay={index * 100}
+              duration={0.65}
+              as="article"
+              onClick={() => setActivePost(post)}
+              className="group flex flex-col bg-white dark:bg-stone-900 rounded-2xl overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 border border-stone-200/70 dark:border-stone-800 cursor-pointer"
+            >
+              {/* Cover Image */}
               <div className="relative aspect-16/10 w-full bg-stone-100 dark:bg-stone-800 overflow-hidden">
                 <img
-    src={post.image}
-    alt={post.title}
-    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-    loading="lazy"
-  />
+                  src={post.image}
+                  alt={post.title}
+                  onError={(e) => {
+                    e.currentTarget.src = BLOG_FALLBACK_IMAGE;
+                  }}
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
               </div>
 
-              {
-    /* Text Info */
-  }
+              {/* Text Info */}
               <div className="p-6 flex flex-col grow justify-between">
                 <div>
                   <div className="flex items-center gap-4 text-[11px] font-medium text-stone-400 dark:text-stone-500 mb-2">
@@ -69,7 +74,7 @@ export const BlogSection = () => {
                     </span>
                   </div>
 
-                  <h3 className="text-base sm:text-lg font-semibold text-stone-900 dark:text-stone-100 group-hover:text-amber-800 dark:group-hover:text-amber-400 transition-colors line-clamp-2">
+                  <h3 className="text-base sm:text-lg font-serif font-bold text-stone-900 dark:text-stone-100 group-hover:text-amber-800 dark:group-hover:text-amber-400 transition-colors line-clamp-2">
                     {post.title}
                   </h3>
 
@@ -85,36 +90,38 @@ export const BlogSection = () => {
                   </span>
                 </div>
               </div>
-            </motion.article>)}
+            </ScrollReveal>
+          ))}
         </div>
-
       </div>
 
-      {
-    /* Article Detail Reading Modal */
-  }
+      {/* Article Detail Reading Modal */}
       <AnimatePresence>
-        {activePost && <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/60 backdrop-blur-xs">
+        {activePost && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/60 backdrop-blur-xs">
             <motion.div
-    initial={{ opacity: 0, scale: 0.95 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.95 }}
-    className="bg-white dark:bg-stone-900 max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 dark:border-stone-800 relative"
-  >
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white dark:bg-stone-900 max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 dark:border-stone-800 relative"
+            >
               <button
-    onClick={() => setActivePost(null)}
-    className="absolute top-5 right-5 p-2 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 transition-colors cursor-pointer"
-    aria-label="Close article"
-  >
+                onClick={() => setActivePost(null)}
+                className="absolute top-5 right-5 p-2 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 transition-colors cursor-pointer"
+                aria-label="Close article"
+              >
                 <X className="w-5 h-5" />
               </button>
 
               <div className="aspect-16/9 rounded-2xl overflow-hidden mb-6">
                 <img
-    src={activePost.image}
-    alt={activePost.title}
-    className="w-full h-full object-cover"
-  />
+                  src={activePost.image}
+                  alt={activePost.title}
+                  onError={(e) => {
+                    e.currentTarget.src = BLOG_FALLBACK_IMAGE;
+                  }}
+                  className="w-full h-full object-cover"
+                />
               </div>
 
               <div className="flex items-center gap-3 text-xs text-stone-400 mb-2">
@@ -142,7 +149,8 @@ export const BlogSection = () => {
                 </button>
               </div>
             </motion.div>
-          </div>}
+          </div>)}
       </AnimatePresence>
-    </section>;
+    </section>
+  );
 };

@@ -1,5 +1,6 @@
-import { motion } from "motion/react";
 import { Award, Truck, RotateCcw, ShieldCheck } from "lucide-react";
+import { ScrollReveal } from "./ScrollReveal";
+
 export const ValueProps = () => {
   const values = [
     {
@@ -23,19 +24,20 @@ export const ValueProps = () => {
       description: "Crafted locally in Phnom Penh. You pay for honest timber, not luxury showroom rent."
     }
   ];
-  return <section className="py-6 sm:py-8 border-y border-stone-200/80 dark:border-stone-800/80 bg-stone-50/50 dark:bg-stone-900/30">
+  return (
+    <section className="py-6 sm:py-8 border-y border-stone-200/80 dark:border-stone-800/80 bg-stone-50/50 dark:bg-stone-900/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {values.map((item, index) => {
-    const Icon = item.icon;
-    return <motion.div
-      key={item.title}
-      initial={{ opacity: 0, y: 15 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="flex items-center gap-4 py-2"
-    >
+            const Icon = item.icon;
+            return (
+              <ScrollReveal
+                key={item.title}
+                animation="fade-up"
+                delay={index * 80}
+                duration={0.6}
+                className="flex items-center gap-4 py-2"
+              >
                 <div className="w-12 h-12 shrink-0 rounded-xl bg-white dark:bg-stone-800 shadow-xs border border-stone-200/80 dark:border-stone-700/80 flex items-center justify-center text-amber-800 dark:text-amber-400">
                   <Icon className="w-5 h-5" />
                 </div>
@@ -47,9 +49,11 @@ export const ValueProps = () => {
                     {item.description}
                   </p>
                 </div>
-              </motion.div>;
-  })}
+              </ScrollReveal>
+            );
+          })}
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };

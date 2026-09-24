@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, CheckCircle2, X } from "lucide-react";
+import { ScrollReveal } from "./ScrollReveal";
+
+const CRAFT_FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80";
+
 export const WhyChooseAnti = () => {
   const [showStoryModal, setShowStoryModal] = useState(false);
   const points = [
@@ -21,23 +26,29 @@ export const WhyChooseAnti = () => {
       desc: "Proportions tested in typical urban apartments: deep enough for a long study session, compact enough to walk around comfortably."
     }
   ];
-  return <section id="why-anti" className="py-14 sm:py-24 overflow-hidden">
+  return (
+    <section id="why-anti" className="py-14 sm:py-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* Left Text & Features */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          {/* Left Text & Features with scroll reveal */}
+          <ScrollReveal
+            animation="fade-up"
+            duration={0.75}
             className="lg:col-span-6 flex flex-col"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-stone-900 dark:text-stone-100 leading-tight">
-              Why I build furniture this way
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-8 h-px bg-amber-700/60 dark:bg-amber-400/60" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-800 dark:text-amber-400">
+                Philosophy
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-serif font-bold text-stone-900 dark:text-stone-100 leading-tight">
+              Quiet intention, <br />
+              built to last.
             </h2>
-            <p className="mt-4 text-base sm:text-lg text-stone-600 dark:text-stone-300 font-normal leading-relaxed">
-              As an architecture student, I got tired of furniture that looks good in catalogs but falls apart the second you try to move it. Here is what we do differently.
+            <p className="mt-5 text-base sm:text-lg text-stone-500 dark:text-stone-400 font-normal leading-relaxed">
+              As an architecture student in Phnom Penh, I got tired of furniture that falls apart the second you move it. Here is what we do differently.
             </p>
 
             <div className="mt-6 mb-8">
@@ -50,18 +61,16 @@ export const WhyChooseAnti = () => {
               </button>
             </div>
 
-            {
-    /* Checklist */
-  }
+            {/* Checklist */}
             <div className="space-y-4">
-              {points.map((pt, i) => <motion.div
-    key={pt.title}
-    initial={{ opacity: 0, y: 12 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.4, delay: i * 0.1 }}
-    className="flex items-start gap-3.5"
-  >
+              {points.map((pt, i) => (
+                <ScrollReveal
+                  key={pt.title}
+                  animation="fade-up"
+                  delay={i * 80}
+                  duration={0.5}
+                  className="flex items-start gap-3.5"
+                >
                   <div className="mt-0.5 w-5 h-5 shrink-0 rounded-full bg-amber-100 dark:bg-amber-950/60 flex items-center justify-center text-amber-800 dark:text-amber-400">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                   </div>
@@ -73,33 +82,34 @@ export const WhyChooseAnti = () => {
                       {pt.desc}
                     </p>
                   </div>
-                </motion.div>)}
+                </ScrollReveal>
+              ))}
             </div>
-          </motion.div>
+          </ScrollReveal>
 
-          {
-    /* Right Styled Composition Image */
-  }
-          <motion.div
-    initial={{ opacity: 0, x: 20 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.6 }}
-    className="lg:col-span-6"
-  >
+          {/* Right Styled Composition Image with scroll reveal */}
+          <ScrollReveal
+            animation="fade-left"
+            delay={100}
+            duration={0.8}
+            className="lg:col-span-6"
+          >
             <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-xl bg-stone-200 dark:bg-stone-800 aspect-4/3 sm:aspect-5/4">
               <img
-    src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80"
-    alt="Anti furniture craftsmanship and design detail"
-    className="w-full h-full object-cover object-center transform hover:scale-103 transition-transform duration-700"
-    loading="lazy"
-  />
+                src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80"
+                alt="Anti furniture craftsmanship and design detail"
+                onError={(e) => {
+                  e.currentTarget.src = CRAFT_FALLBACK_IMAGE;
+                }}
+                className="w-full h-full object-cover object-center transform hover:scale-103 transition-transform duration-700"
+                loading="lazy"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-stone-950/40 via-transparent to-transparent pointer-events-none" />
               <div className="absolute bottom-6 left-6 right-6 text-white text-xs sm:text-sm font-light italic">
-                "Honest timber. Balanced form. Built with quiet intention."
+                &ldquo;Honest timber. Balanced form. Built with quiet intention.&rdquo;
               </div>
             </div>
-          </motion.div>
+          </ScrollReveal>
 
         </div>
       </div>
@@ -122,7 +132,7 @@ export const WhyChooseAnti = () => {
                 <X className="w-5 h-5" />
               </button>
 
-              <h3 className="text-xl sm:text-2xl font-bold text-stone-900 dark:text-stone-100">
+              <h3 className="text-xl sm:text-2xl font-serif font-bold text-stone-900 dark:text-stone-100">
                 Notes from the Workshop Desk
               </h3>
               <p className="text-sm text-stone-600 dark:text-stone-300 mt-4 leading-relaxed">
@@ -143,5 +153,6 @@ export const WhyChooseAnti = () => {
             </motion.div>
           </div>}
       </AnimatePresence>
-    </section>;
+    </section>
+  );
 };

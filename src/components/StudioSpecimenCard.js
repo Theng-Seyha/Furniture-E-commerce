@@ -2,14 +2,16 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Layers, ShieldCheck, Ruler, Sparkles, Check, Sun, Moon } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { ScrollReveal } from './ScrollReveal';
+
+const SPECIMEN_FALLBACK_IMAGE =
+  'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1000&q=80';
 
 /**
  * StudioSpecimenCard
- * A modern, professional, and visually clean web component built with HTML and CSS.
- * Adheres strictly to typography requirements:
- * - Font: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif
- * - Optimized antialiasing: -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
- * - Light & dark mode theme adaptive with honest student-written notes.
+ * Architectural Timber & Joinery Laboratory
+ * Allows clients to inspect raw timber grains, dry density, kiln-dry moisture metrics,
+ * and calculate apartment doorway clearances before placing bespoke orders.
  */
 export const StudioSpecimenCard = () => {
   const { isDarkMode, toggleDarkMode, showToast } = useCart();
@@ -26,8 +28,8 @@ export const StudioSpecimenCard = () => {
       finish: 'Cold-Pressed Plant Wax',
       joint: 'Double-Pinned Mortise & Tenon',
       colorBadge: 'bg-[#D9C4A5]',
-      studentNote:
-        'White oak has closed cellular pores, so if you spill a cup of iced coffee or tea during a study session, the liquid stays on top instead of soaking in and leaving a black stain.',
+      artisanNote:
+        'White oak has closed cellular tyloses, so if you spill a beverage during daily use, the liquid beads on the surface instead of soaking in and leaving dark water marks.',
       durability: 'Heirloom Grade (25+ yrs)',
       recommendedCare: 'Buff with a pea-sized dab of natural wax once a year.',
       image:
@@ -41,10 +43,10 @@ export const StudioSpecimenCard = () => {
       finish: 'Boiled Linseed & Carnauba',
       joint: 'Interlocking Finger Joints & Brass Bolts',
       colorBadge: 'bg-[#6B4E3D]',
-      studentNote:
-        'Walnut has a naturally dark heartwood that lightens slightly over decades with sun exposure, giving it that soft vintage patina you see in mid-century architect studios.',
+      artisanNote:
+        'Walnut has a naturally dark heartwood that lightens gracefully over decades with indirect natural light, developing that soft vintage patina admired in mid-century architectural studios.',
       durability: 'High Stability (20+ yrs)',
-      recommendedCare: 'Wipe with a clean dry microfiber cloth. Avoid ammonia sprays.',
+      recommendedCare: 'Wipe with a clean dry microfiber cloth. Avoid harsh ammonia cleaners.',
       image:
         'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=600&q=80',
     },
@@ -56,10 +58,10 @@ export const StudioSpecimenCard = () => {
       finish: 'Matte Breathable Hardwax',
       joint: 'Reinforced Corner Blocks & Tenons',
       colorBadge: 'bg-[#E5D7BF]',
-      studentNote:
-        'Ash is super shock-resistant—it is the same timber used for baseball bats and tool handles. It flexes slightly under heavy load without snapping.',
+      artisanNote:
+        'Ash possesses extraordinary shock-absorption and tensile strength—the same timber favored for high-impact sporting gear. It accommodates everyday household life without risk of splitting.',
       durability: 'Heavy Daily Use (15+ yrs)',
-      recommendedCare: 'Soap flakes diluted in lukewarm water for stubborn marks.',
+      recommendedCare: 'Diluted natural castile soap in lukewarm water for stubborn marks.',
       image:
         'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=600&q=80',
     },
@@ -81,11 +83,6 @@ export const StudioSpecimenCard = () => {
     <section
       id="studio-specimen-component"
       className="py-12 sm:py-16 bg-[#FAF8F5] dark:bg-[#121110] transition-colors duration-300 border-t border-stone-200/80 dark:border-stone-800/80"
-      style={{
-        fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-        WebkitFontSmoothing: 'antialiased',
-        MozOsxFontSmoothing: 'grayscale',
-      }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Component Header with Quick Theme Swap Indicator */}
@@ -178,14 +175,14 @@ export const StudioSpecimenCard = () => {
                       </span>
                     </div>
 
-                    {/* Student Build Note */}
+                    {/* Artisan Workshop Note */}
                     <div className="mt-3 p-4 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-900/40">
                       <div className="flex items-start gap-2.5">
                         <span className="text-amber-800 dark:text-amber-400 font-bold text-xs uppercase tracking-wider shrink-0 mt-0.5">
-                          Studio Note:
+                          Artisan Note:
                         </span>
                         <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
-                          "{current.studentNote}"
+                          "{current.artisanNote}"
                         </p>
                       </div>
                     </div>
@@ -298,6 +295,9 @@ export const StudioSpecimenCard = () => {
                 <img
                   src={current.image}
                   alt={current.name}
+                  onError={(e) => {
+                    e.currentTarget.src = SPECIMEN_FALLBACK_IMAGE;
+                  }}
                   className="w-full h-full object-cover object-center transition-all duration-700 hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-950/60 via-transparent to-transparent pointer-events-none" />

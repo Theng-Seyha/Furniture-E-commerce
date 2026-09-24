@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight, Tag, Send, Truck, Wrench } from "lucide-react";
+import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight, Tag, Send, Truck, Wrench, PackageCheck } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { TELEGRAM_CONFIG } from "../services/telegramService";
 export const CartDrawer = () => {
@@ -22,7 +22,9 @@ export const CartDrawer = () => {
     amountNeededForFreeShipping,
     total,
     setIsCheckoutOpen,
-    navigateToProduct
+    navigateToProduct,
+    savedOrdersCount,
+    setIsOrdersModalOpen
   } = useCart();
   const [inputCode, setInputCode] = useState("");
   const [promoFeedback, setPromoFeedback] = useState(null);
@@ -125,12 +127,24 @@ export const CartDrawer = () => {
                     <p className="text-xs text-stone-500 dark:text-stone-400 mt-1 max-w-xs">
                       Explore our handcrafted solid timber and bouclé pieces.
                     </p>
-                    <button
-    onClick={() => setIsCartOpen(false)}
-    className="mt-6 px-6 py-2.5 rounded-full bg-stone-900 dark:bg-stone-100 text-stone-50 dark:text-stone-900 text-xs font-semibold hover:opacity-90 cursor-pointer"
-  >
-                      Browse Catalog
-                    </button>
+                    <div className="flex flex-col sm:flex-row gap-2 mt-6">
+                      <button
+                        onClick={() => setIsCartOpen(false)}
+                        className="px-6 py-2.5 rounded-full bg-stone-900 dark:bg-stone-100 text-stone-50 dark:text-stone-900 text-xs font-semibold hover:opacity-90 cursor-pointer"
+                      >
+                        Browse Catalog
+                      </button>
+                      <button
+                        onClick={() => {
+                          setIsCartOpen(false);
+                          setIsOrdersModalOpen(true);
+                        }}
+                        className="px-5 py-2.5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-800 dark:bg-stone-800 dark:text-stone-200 dark:hover:bg-stone-700 text-xs font-semibold cursor-pointer border border-stone-200 dark:border-stone-700 flex items-center justify-center gap-1.5"
+                      >
+                        <PackageCheck className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" />
+                        <span>View My Orders ({savedOrdersCount})</span>
+                      </button>
+                    </div>
                   </div> : cart.map((item) => <motion.div
     key={`${item.product.id}-${item.selectedColor}`}
     layout
@@ -311,11 +325,20 @@ export const CartDrawer = () => {
                   </button>
 
                   <div className="flex items-center justify-between text-[11px] text-stone-400 pt-0.5">
-                    <span>Persistent state saved locally</span>
                     <button
-    onClick={clearCart}
-    className="text-stone-400 hover:text-rose-500 underline cursor-pointer"
-  >
+                      onClick={() => {
+                        setIsCartOpen(false);
+                        setIsOrdersModalOpen(true);
+                      }}
+                      className="text-stone-500 dark:text-stone-400 hover:text-amber-800 dark:hover:text-amber-400 underline cursor-pointer flex items-center gap-1"
+                    >
+                      <PackageCheck className="w-3 h-3" />
+                      <span>My Orders ({savedOrdersCount})</span>
+                    </button>
+                    <button
+                      onClick={clearCart}
+                      className="text-stone-400 hover:text-rose-500 underline cursor-pointer"
+                    >
                       Clear cart
                     </button>
                   </div>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { X, Send, CheckCircle2, Loader2, ExternalLink, Wrench, Printer, FileText } from "lucide-react";
+import { X, Send, CheckCircle2, Loader2, ExternalLink, Wrench, Printer, FileText, Clock, AlertCircle, PackageCheck } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { sendOrderToTelegram, TELEGRAM_CONFIG } from "../services/telegramService";
 export const CheckoutModal = () => {
@@ -14,7 +14,11 @@ export const CheckoutModal = () => {
     total,
     isCheckoutOpen,
     setIsCheckoutOpen,
-    clearCart
+    clearCart,
+    navigateTo,
+    showToast,
+    recordNewOrder,
+    setIsOrdersModalOpen
   } = useCart();
   const [customerName, setCustomerName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -22,6 +26,7 @@ export const CheckoutModal = () => {
   const [address, setAddress] = useState("");
   const [deliveryCity, setDeliveryCity] = useState("Phnom Penh");
   const [notes, setNotes] = useState("");
+  const [validationError, setValidationError] = useState("");
   const [paymentMethod, setPaymentMethod] = useState(
     "Telegram Pay / ABA"
   );
@@ -29,10 +34,12 @@ export const CheckoutModal = () => {
   const [orderResult, setOrderResult] = useState(null);
   const handleSubmitOrder = async (e) => {
     e.preventDefault();
-    if (!customerName || !phoneNumber || !address) {
-      alert("Please fill in your name, phone number, and delivery address.");
+    if (!customerName.trim() || !phoneNumber.trim() || !address.trim()) {
+      setValidationError("Please enter your name, phone number, and delivery address.");
+      if (showToast) showToast("Please fill in required delivery details");
       return;
     }
+    setValidationError("");
     setIsSubmitting(true);
     const orderData = {
       customerName,
@@ -49,20 +56,42 @@ export const CheckoutModal = () => {
       shipping,
       total,
       promoCode,
-      orderDate: new Date().toLocaleString()
+      orderDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
     };
     const result = await sendOrderToTelegram(orderData);
     setIsSubmitting(false);
-    setOrderResult({
+    const assignedOrderId = result.orderId || `ANTI-${Math.floor(1e5 + Math.random() * 9e5)}`;
+    const completedResult = {
       success: true,
-      orderId: `ANTI-${Math.floor(1e5 + Math.random() * 9e5)}`,
+      orderId: assignedOrderId,
       telegramUrl: result.telegramUrl,
-      orderDate: new Date().toLocaleString()
-    });
+      orderDate: orderData.orderDate,
+      ...orderData
+    };
+    
+    // Save to localStorage for the Order Status Tracking section and My Orders history
+    try {
+      localStorage.setItem('anti_recent_order', JSON.stringify(completedResult));
+    } catch (err) {
+      console.warn("Storage warning:", err);
+    }
+
+    if (recordNewOrder) {
+      recordNewOrder(completedResult);
+    }
+
+    setOrderResult(completedResult);
+    if (showToast) showToast(`Order ${assignedOrderId} transmitted to workshop!`);
     clearCart();
   };
   const handlePrintTicket = () => {
     window.print();
+  };
+
+  const handleClose = () => {
+    setIsCheckoutOpen(false);
+    setOrderResult(null);
+    setValidationError("");
   };
 
   if (!isCheckoutOpen) return null;
@@ -180,13 +209,24 @@ export const CheckoutModal = () => {
               </div>
             </div>
 
-            {/* Telegram Bot Action Button */}
-            <div className="flex flex-col sm:flex-row gap-3 justify-center print:hidden">
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row flex-wrap gap-2.5 justify-center print:hidden">
+              <button
+                onClick={() => {
+                  handleClose();
+                  navigateTo('home', 'order-tracking');
+                }}
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-amber-800 hover:bg-amber-900 text-white font-semibold text-xs transition-all shadow-md cursor-pointer"
+              >
+                <Clock className="w-4 h-4" />
+                <span>Track Handcrafted Progress</span>
+              </button>
+
               <a
                 href={orderResult.telegramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs transition-all shadow-md cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs transition-all shadow-md cursor-pointer"
               >
                 <Send className="w-4 h-4" />
                 <span>Open Telegram Chat</span>
@@ -194,8 +234,19 @@ export const CheckoutModal = () => {
               </a>
 
               <button
+                onClick={() => {
+                  handleClose();
+                  setIsOrdersModalOpen(true);
+                }}
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-900 dark:bg-stone-800 dark:text-stone-100 text-xs font-semibold transition-all border border-stone-200 dark:border-stone-700 cursor-pointer"
+              >
+                <PackageCheck className="w-4 h-4 text-amber-700 dark:text-amber-400" />
+                <span>View My Orders</span>
+              </button>
+
+              <button
                 onClick={handlePrintTicket}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-900 dark:bg-stone-800 dark:text-stone-100 text-xs font-semibold transition-all border border-stone-200 dark:border-stone-700 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-900 dark:bg-stone-800 dark:text-stone-100 text-xs font-semibold transition-all border border-stone-200 dark:border-stone-700 cursor-pointer"
               >
                 <Printer className="w-4 h-4" />
                 <span>Print Ticket</span>
@@ -203,7 +254,7 @@ export const CheckoutModal = () => {
 
               <button
                 onClick={handleClose}
-                className="px-6 py-3 rounded-full bg-stone-900 hover:bg-stone-800 text-stone-50 dark:bg-stone-100 dark:text-stone-900 text-xs font-semibold cursor-pointer"
+                className="px-5 py-2.5 rounded-full bg-stone-900 hover:bg-stone-800 text-stone-50 dark:bg-stone-100 dark:text-stone-900 text-xs font-semibold cursor-pointer"
               >
                 Done
               </button>
@@ -223,6 +274,13 @@ export const CheckoutModal = () => {
             <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
               Please enter your delivery information. Your invoice and order specs will be sent directly to our workshop Telegram bot.
             </p>
+
+            {validationError && (
+              <div className="mt-3 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900 text-rose-800 dark:text-rose-300 text-xs flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{validationError}</span>
+              </div>
+            )}
 
             <form onSubmit={handleSubmitOrder} className="mt-6 space-y-4">
               

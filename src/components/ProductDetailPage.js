@@ -29,6 +29,10 @@ import { useCart } from "../context/CartContext";
 import { ALL_PRODUCTS } from "../data/furnitureData";
 import { TELEGRAM_CONFIG } from "../services/telegramService";
 import { ProductCard } from "./ProductCard";
+import { RecentlyViewed } from "./RecentlyViewed";
+
+const PRODUCT_DETAIL_FALLBACK =
+  "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80";
 
 export const ProductDetailPage = ({ product }) => {
   const {
@@ -235,6 +239,9 @@ export const ProductDetailPage = ({ product }) => {
     transition={{ duration: 0.3 }}
     src={activeImage}
     alt={product.name}
+    onError={(e) => {
+      e.currentTarget.src = PRODUCT_DETAIL_FALLBACK;
+    }}
     className="w-full h-full object-cover object-center cursor-zoom-in"
     onClick={() => setIsLightboxOpen(true)}
   />
@@ -299,7 +306,14 @@ export const ProductDetailPage = ({ product }) => {
     onClick={() => setActiveImageIndex(idx)}
     className={`relative aspect-4/3 rounded-2xl overflow-hidden border-2 transition-all cursor-pointer bg-stone-100 dark:bg-stone-800 ${activeImageIndex === idx ? "border-amber-700 dark:border-amber-500 shadow-md ring-2 ring-amber-300 dark:ring-amber-900" : "border-transparent opacity-75 hover:opacity-100"}`}
   >
-                  <img src={img} alt={`${product.name} view ${idx + 1}`} className="w-full h-full object-cover" />
+                  <img
+                  src={img}
+                  alt={`${product.name} view ${idx + 1}`}
+                  onError={(e) => {
+                    e.currentTarget.src = PRODUCT_DETAIL_FALLBACK;
+                  }}
+                  className="w-full h-full object-cover"
+                />
                   {activeImageIndex === idx && <span className="absolute inset-0 bg-amber-900/10 pointer-events-none" />}
                 </button>)}
             </div>
@@ -634,6 +648,9 @@ export const ProductDetailPage = ({ product }) => {
                   <img
                     src={bundleCompanion.image}
                     alt={bundleCompanion.name}
+                    onError={(e) => {
+                      e.currentTarget.src = PRODUCT_DETAIL_FALLBACK;
+                    }}
                     className="w-14 h-14 rounded-xl object-cover bg-stone-800 shrink-0"
                   />
                   <div className="min-w-0 flex-1">
@@ -952,6 +969,11 @@ export const ProductDetailPage = ({ product }) => {
           </div>
         </div>
 
+        {/* Recently Viewed Shelf */}
+        <div className="mt-12">
+          <RecentlyViewed />
+        </div>
+
       </div>
 
       {/* Sticky Mobile Purchase Bar */}
@@ -960,6 +982,9 @@ export const ProductDetailPage = ({ product }) => {
           <img
             src={product.image}
             alt={product.name}
+            onError={(e) => {
+              e.currentTarget.src = PRODUCT_DETAIL_FALLBACK;
+            }}
             className="w-10 h-10 rounded-lg object-cover bg-stone-100 dark:bg-stone-800 shrink-0"
           />
           <div className="truncate">
@@ -1015,10 +1040,13 @@ export const ProductDetailPage = ({ product }) => {
     className="max-w-5xl max-h-[85vh] w-full h-full flex flex-col items-center justify-center"
   >
               <img
-    src={activeImage}
-    alt={product.name}
-    className="max-h-[80vh] max-w-full object-contain rounded-2xl shadow-2xl"
-  />
+                src={activeImage}
+                alt={product.name}
+                onError={(e) => {
+                  e.currentTarget.src = PRODUCT_DETAIL_FALLBACK;
+                }}
+                className="max-h-[80vh] max-w-full object-contain rounded-2xl shadow-2xl"
+              />
               <p className="text-white/70 text-xs mt-3 text-center">
                 {product.name} • {selectedColor} (Viewing angle {activeImageIndex + 1} of {galleryImages.length})
               </p>

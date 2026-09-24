@@ -6,6 +6,9 @@ const CartContext = createContext(undefined);
 const CART_STORAGE_KEY = 'anti_furniture_cart_v2';
 const WISHLIST_STORAGE_KEY = 'anti_furniture_wishlist_v1';
 const THEME_STORAGE_KEY = 'anti_furniture_theme';
+const ORDERS_STORAGE_KEY = 'anti_furniture_orders_v1';
+const RECENT_ORDER_KEY = 'anti_recent_order';
+const RECENTLY_VIEWED_KEY = 'anti_recently_viewed_v1';
 const ASSEMBLY_FEE_PER_ITEM = 40;
 const FREE_SHIPPING_THRESHOLD = 500;
 
@@ -47,6 +50,102 @@ export const CartProvider = ({ children }) => {
       console.error('Failed to save wishlist to localStorage:', e);
     }
   }, [wishlist]);
+
+  // 2b. Persistent My Orders (Archived from checkout completions)
+  const [savedOrders, setSavedOrders] = useState(() => {
+    try {
+      const saved = localStorage.getItem(ORDERS_STORAGE_KEY);
+      if (saved) {
+        return JSON.parse(saved);
+      }
+      // Check if there was an order saved in single recent key
+      const singleRecent = localStorage.getItem(RECENT_ORDER_KEY);
+      if (singleRecent) {
+        return [JSON.parse(singleRecent)];
+      }
+    } catch (e) {
+      console.error('Failed to load orders from localStorage:', e);
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(savedOrders));
+    } catch (e) {
+      console.error('Failed to save orders to localStorage:', e);
+    }
+  }, [savedOrders]);
+
+  const recordNewOrder = (orderData) => {
+    setSavedOrders((prev) => {
+      const existing = prev.filter((o) => o.orderId !== orderData.orderId);
+      const updated = [orderData, ...existing];
+      try {
+        localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(updated));
+        localStorage.setItem(RECENT_ORDER_KEY, JSON.stringify(orderData));
+      } catch (err) {
+        console.warn('Storage error:', err);
+      }
+      return updated;
+    });
+  };
+
+  const deleteOrder = (orderId) => {
+    setSavedOrders((prev) => prev.filter((o) => o.orderId !== orderId));
+    showToast(`Order ${orderId} removed from history`);
+  };
+
+  const clearAllOrders = () => {
+    setSavedOrders([]);
+    try {
+      localStorage.removeItem(ORDERS_STORAGE_KEY);
+      localStorage.removeItem(RECENT_ORDER_KEY);
+    } catch (err) {
+      console.warn('Storage clear error:', err);
+    }
+    showToast('Order history cleared');
+  };
+
+  // 2c. Persistent Recently Viewed Pieces (last 8 viewed)
+  const [recentlyViewedIds, setRecentlyViewedIds] = useState(() => {
+    try {
+      const saved = localStorage.getItem(RECENTLY_VIEWED_KEY);
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.error('Failed to load recently viewed from localStorage:', e);
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(recentlyViewedIds));
+    } catch (e) {
+      console.error('Failed to save recently viewed:', e);
+    }
+  }, [recentlyViewedIds]);
+
+  const recordRecentlyViewed = (productId) => {
+    if (!productId) return;
+    setRecentlyViewedIds((prev) => {
+      const filtered = prev.filter((id) => id !== productId);
+      return [productId, ...filtered].slice(0, 8);
+    });
+  };
+
+  const clearRecentlyViewed = () => {
+    setRecentlyViewedIds([]);
+    try {
+      localStorage.removeItem(RECENTLY_VIEWED_KEY);
+    } catch (err) {
+      console.warn('Storage clear error:', err);
+    }
+  };
+
+  const recentlyViewedProducts = recentlyViewedIds
+    .map((id) => ALL_PRODUCTS.find((p) => p.id === id))
+    .filter(Boolean);
 
   // 3. Dark / Light Mode with system preference detection
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -108,6 +207,7 @@ export const CartProvider = ({ children }) => {
 
   const navigateToProduct = (productId) => {
     setSelectedProductId(productId);
+    recordRecentlyViewed(productId);
     setCurrentView('product-detail');
     window.location.hash = `product/${productId}`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -142,9 +242,17 @@ export const CartProvider = ({ children }) => {
   // 5. Drawer and Modal Visibility States
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+  const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
+
+  // Automatically record when product is opened in quick view
+  useEffect(() => {
+    if (quickViewProduct && quickViewProduct.id) {
+      recordRecentlyViewed(quickViewProduct.id);
+    }
+  }, [quickViewProduct]);
   const [isTelegramModalOpen, setIsTelegramModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [promoCode, setPromoCode] = useState('');
@@ -311,12 +419,23 @@ export const CartProvider = ({ children }) => {
         isWishlisted,
         toggleWishlist,
         removeFromWishlist,
+        // Saved Orders & History
+        savedOrders,
+        savedOrdersCount: savedOrders.length,
+        isOrdersModalOpen,
+        setIsOrdersModalOpen,
+        recordNewOrder,
+        deleteOrder,
+        clearAllOrders,
         isSearchOpen,
         setIsSearchOpen,
         isCheckoutOpen,
         setIsCheckoutOpen,
         quickViewProduct,
         setQuickViewProduct,
+        recentlyViewedProducts,
+        clearRecentlyViewed,
+        recordRecentlyViewed,
         isTelegramModalOpen,
         setIsTelegramModalOpen,
         selectedCategory,

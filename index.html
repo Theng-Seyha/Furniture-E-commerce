@@ -3,15 +3,75 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Anti - Modern Furniture | Crafted for Comfort. Made for Life.</title>
-    <meta name="description" content="Crafted for Comfort. Made for Life. Modern luxury furniture with persistent cart, dark mode, and direct Telegram bot integration." />
-    <meta property="og:title" content="Anti - Modern Furniture | Crafted for Comfort. Made for Life." />
-    <meta property="og:description" content="Crafted for Comfort. Made for Life. Modern luxury furniture with persistent cart, dark mode, and direct Telegram bot integration." />
+    <title>Anti – Handcrafted Furniture Studio | Honest Materials. Modern Living.</title>
+    <meta name="description" content="Discover Anti, a boutique furniture studio specializing in solid hardwood seating, tables, and bedroom essentials. Handcrafted in Phnom Penh with traditional joinery." />
+    
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://anti.furniture/" />
+    <meta property="og:title" content="Anti – Handcrafted Furniture Studio | Honest Materials. Modern Living." />
+    <meta property="og:description" content="Handcrafted furniture built for daily living. Solid kiln-dried timber, natural finishes, and architectural proportions." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80" />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Anti – Handcrafted Furniture Studio" />
+    <meta name="twitter:description" content="Furniture made to be lived with, not just looked at. Solid hardwoods and traditional joinery." />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80" />
+
+    <!-- PWA Meta & Manifest -->
+    <meta name="theme-color" content="#292524" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Anti" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/pwa-512x512.png" />
+
+    <!-- Capture PWA install prompt early before React mount & register Service Worker -->
+    <script>
+      window.__pwaDeferredPrompt = null;
+      window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        window.__pwaDeferredPrompt = e;
+        window.dispatchEvent(new CustomEvent('pwa-prompt-ready'));
+      });
+      window.addEventListener('appinstalled', function() {
+        window.__pwaDeferredPrompt = null;
+        window.dispatchEvent(new CustomEvent('pwa-installed'));
+      });
+
+      // Register service worker immediately
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js').catch(function(err) {
+            console.log('SW registration error:', err);
+          });
+        });
+      }
+    </script>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FurnitureStore",
+      "name": "Anti Furniture Studio",
+      "description": "Boutique furniture studio specializing in handcrafted solid hardwood pieces.",
+      "url": "https://anti.furniture",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Phnom Penh",
+        "addressCountry": "KH"
+      },
+      "priceRange": "$$$"
+    }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   </head>
   <body class="bg-[#FAF8F5] text-[#292524] transition-colors duration-300 dark:bg-[#121110] dark:text-[#F5F2EB] antialiased">
     <div id="root"></div>

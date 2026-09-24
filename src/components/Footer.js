@@ -2,7 +2,7 @@ import { Send, Instagram, Facebook, Twitter, Sun, Moon } from "lucide-react";
 import { TELEGRAM_CONFIG } from "../services/telegramService";
 import { useCart } from "../context/CartContext";
 export const Footer = ({ onNavigate, onOpenVanillaModal }) => {
-  const { setSelectedCategory, setIsTelegramModalOpen, isDarkMode, toggleDarkMode } = useCart();
+  const { setSelectedCategory, setIsTelegramModalOpen, setIsOrdersModalOpen, isDarkMode, toggleDarkMode } = useCart();
   const handleShopCategory = (cat) => {
     setSelectedCategory(cat);
     onNavigate("featured-products");
@@ -39,22 +39,23 @@ export const Footer = ({ onNavigate, onOpenVanillaModal }) => {
               <p className="text-xs text-stone-400 mb-3">
                 Speak directly with store owner <b>{TELEGRAM_CONFIG.OWNER_NAME}</b> or order via Telegram:
               </p>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  onClick={() => setIsTelegramModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-700/90 hover:bg-amber-700 text-white text-xs font-semibold transition-colors cursor-pointer"
+                  id="footer-get-order-status-btn"
+                >
+                  <span>Get Order Status</span>
+                </button>
                 <a
-    href={TELEGRAM_CONFIG.BOT_URL}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium transition-colors"
-  >
+                  href={TELEGRAM_CONFIG.BOT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium transition-colors"
+                >
                   <Send className="w-3 h-3" />
                   <span>@{TELEGRAM_CONFIG.BOT_USERNAME}</span>
                 </a>
-                <button
-    onClick={() => setIsTelegramModalOpen(true)}
-    className="px-3 py-1.5 rounded-full bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs transition-colors cursor-pointer"
-  >
-                  Send Inquiry
-                </button>
               </div>
             </div>
 
@@ -221,9 +222,25 @@ export const Footer = ({ onNavigate, onOpenVanillaModal }) => {
             <ul className="space-y-2.5 text-xs text-stone-400">
               <li>
                 <button
-    onClick={() => setIsTelegramModalOpen(true)}
-    className="hover:text-white transition-colors cursor-pointer"
-  >
+                  onClick={() => setIsOrdersModalOpen(true)}
+                  className="text-amber-400 hover:text-amber-300 transition-colors cursor-pointer font-medium"
+                >
+                  View My Orders
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavigate("order-tracking")}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Track Handcrafted Order
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => setIsTelegramModalOpen(true)}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
                   Help Center
                 </button>
               </li>
@@ -262,7 +279,7 @@ export const Footer = ({ onNavigate, onOpenVanillaModal }) => {
   }
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-stone-500">
           <div className="flex items-center gap-4">
-            <p>© 2025 Anti Furniture Studio. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} Anti Furniture Studio. All rights reserved.</p>
             <button
               onClick={toggleDarkMode}
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-800/80 hover:bg-stone-700 text-stone-300 text-[11px] transition-colors cursor-pointer border border-stone-700/50"

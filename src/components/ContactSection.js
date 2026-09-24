@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { MapPin, Phone, Clock, Send, CheckCircle2, MessageCircle, ExternalLink, Loader2 } from "lucide-react";
+import { motion } from "motion/react";
+import { MapPin, Phone, Clock, Send, CheckCircle2, MessageCircle, ExternalLink, Loader2, Search } from "lucide-react";
 import { sendInquiryToTelegram, TELEGRAM_CONFIG } from "../services/telegramService";
 import { useCart } from "../context/CartContext";
 export const ContactSection = () => {
-  const { showToast } = useCart();
+  const { showToast, setIsTelegramModalOpen } = useCart();
   const [name, setName] = useState("");
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [subject, setSubject] = useState("Custom Timber Sizing & Swatches");
@@ -13,7 +14,7 @@ export const ContactSection = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !emailOrPhone || !message) {
-      alert("Please fill in your name, contact information, and inquiry message.");
+      showToast("Please provide your name, contact info, and inquiry message.");
       return;
     }
     setIsSubmitting(true);
@@ -33,7 +34,13 @@ export const ContactSection = () => {
         {
     /* Header */
   }
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center max-w-2xl mx-auto mb-12 sm:mb-16"
+        >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 text-xs font-semibold mb-3">
             <MessageCircle className="w-3.5 h-3.5" />
             <span>Showroom & Workshop Inquiries</span>
@@ -44,7 +51,7 @@ export const ContactSection = () => {
           <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-2">
             Speak directly with our founder and lead craftsman, Theng Seyha. We offer custom timber dimension adjustments, fabric swatch samples, and white-glove delivery across Cambodia and the region.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
@@ -75,16 +82,28 @@ export const ContactSection = () => {
                 Our fastest channel for order questions, real-time photo verification of timber grain, and delivery coordination with <b>{TELEGRAM_CONFIG.OWNER_NAME}</b>.
               </p>
 
-              <a
-    href={TELEGRAM_CONFIG.BOT_URL}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex items-center justify-center gap-2 w-full py-3 px-5 rounded-full bg-white text-sky-700 hover:bg-sky-50 font-semibold text-xs transition-all shadow-md cursor-pointer"
-    id="contact-open-telegram-btn"
-  >
-                <span>Launch Telegram Bot Chat</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
+              <div className="flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsTelegramModalOpen(true)}
+                  className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-full bg-white text-sky-800 hover:bg-sky-50 font-semibold text-xs transition-all shadow-md cursor-pointer"
+                  id="contact-get-status-btn"
+                >
+                  <Search className="w-3.5 h-3.5 text-amber-700" />
+                  <span>Get Real-Time Order Status</span>
+                </button>
+
+                <a
+                  href={TELEGRAM_CONFIG.BOT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 w-full py-2 px-4 rounded-full bg-sky-700/80 hover:bg-sky-700 text-white font-medium text-xs transition-all cursor-pointer"
+                  id="contact-open-telegram-btn"
+                >
+                  <span>Open Bot Direct Chat</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
             </div>
 
             {

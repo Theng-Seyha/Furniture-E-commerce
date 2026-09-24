@@ -15,13 +15,13 @@ export const Hero = ({ onShopNow, onViewCollections }) => {
     className="lg:col-span-5 flex flex-col justify-center text-left"
   >
             {/* Editorial Headline */}
-            <h1 className="text-4xl sm:text-5xl xl:text-6xl font-bold text-stone-900 dark:text-stone-50 leading-[1.12] tracking-tight">
+            <h1 className="text-4xl sm:text-5xl xl:text-7xl font-serif font-bold text-stone-900 dark:text-stone-50 leading-[1.05] tracking-tight">
               Furniture made to be lived with, <br />
-              <span className="text-amber-800 dark:text-amber-500 font-normal">not just looked at.</span>
+              <span className="text-amber-800 dark:text-amber-500 italic font-medium">not just looked at.</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="mt-5 text-base sm:text-lg text-stone-600 dark:text-stone-300 max-w-lg font-normal leading-relaxed">
+            <p className="mt-6 text-base sm:text-lg text-stone-600 dark:text-stone-400 max-w-lg font-normal leading-relaxed">
               I started building these pieces because most modern furniture feels disposable. Every table, chair, and bed frame here uses kiln-dried solid timber, clean interlocking joinery, and durable fabrics that survive real apartment life.
             </p>
 

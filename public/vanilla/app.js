@@ -40,7 +40,7 @@ const PRODUCTS = [
     image: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=900&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1580481077195-c3a82105e3b5?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1577140917170-285929fb55b7?auto=format&fit=crop&w=900&q=80',
       'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=900&q=80'
     ],
     colors: ['Oatmeal Bouclé', 'Charcoal Wool', 'Terracotta Chenille'],
@@ -110,7 +110,7 @@ const PRODUCTS = [
     image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1540518614846-7ede433c4ef5?auto=format&fit=crop&w=900&q=80'
+      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80'
     ],
     colors: ['Warm Natural Oak', 'Walnut Stain'],
     description: 'Low-slung architectural platform bed featuring an angled slatted headboard for comfortable late-night reading and zero-creak solid timber slats.',
@@ -174,9 +174,9 @@ const PRODUCTS = [
     inStock: true,
     isSignature: false,
     badge: 'Hand-Woven',
-    image: 'https://images.unsplash.com/photo-1580481077195-c3a82105e3b5?auto=format&fit=crop&w=900&q=80',
+    image: 'https://images.unsplash.com/photo-1577140917170-285929fb55b7?auto=format&fit=crop&w=900&q=80',
     gallery: [
-      'https://images.unsplash.com/photo-1580481077195-c3a82105e3b5?auto=format&fit=crop&w=900&q=80'
+      'https://images.unsplash.com/photo-1577140917170-285929fb55b7?auto=format&fit=crop&w=900&q=80'
     ],
     colors: ['Natural Rattan Cane', 'Black Stained Cane'],
     description: 'Hand-woven octagonal rattan cane backrest with steam-bent solid oak frame and ergonomic curved saddle seat.',

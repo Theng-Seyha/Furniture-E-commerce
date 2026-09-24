@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { CartProvider, useCart } from './context/CartContext';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -25,11 +26,13 @@ import { ToastNotification } from './components/ToastNotification';
 import { ProductDetailPage } from './components/ProductDetailPage';
 import { ContactSection } from './components/ContactSection';
 import { VanillaCodeModal } from './components/VanillaCodeModal';
+import { OrderStatusTracking } from './components/OrderStatusTracking';
+import { MyOrdersModal } from './components/MyOrdersModal';
 import { Send, ArrowLeft } from 'lucide-react';
+import { OfflineIndicator } from './components/PWAControls';
 
 /**
  * Main Layout Shell
- * Organizes view routing, header, footer, and overlay drawers without clutter.
  */
 const MainLayout = () => {
   const {
@@ -51,6 +54,11 @@ const MainLayout = () => {
       navigateTo('contact');
       return;
     }
+    if (sectionId === 'order-tracking') {
+      navigateTo('tracking');
+      return;
+    }
+    
     if (currentView !== 'home') {
       navigateTo('home', sectionId);
     } else {
@@ -72,125 +80,172 @@ const MainLayout = () => {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-stone-900 dark:bg-[#121110] dark:text-[#F5F2EB] flex flex-col font-sans transition-colors duration-300">
+      {/* 1. Global Status Indicators */}
+      <OfflineIndicator />
+      
       {/* Top Navigation Bar */}
       <Navbar onNavigate={handleNavigate} />
 
-      {/* Main View Router */}
-      <main className="grow">
-        {currentView === 'product-detail' && currentProduct ? (
-          /* Dynamic Product Detail Page */
-          <ProductDetailPage product={currentProduct} />
-        ) : currentView === 'contact' ? (
-          /* Dedicated Contact Page */
-          <div>
-            <div className="bg-stone-100/70 dark:bg-stone-900/60 py-8 border-b border-stone-200/80 dark:border-stone-800">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-stone-100">
-                    Contact Our Studio & Workshop
-                  </h1>
-                  <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1">
-                    Direct communication with Theng Seyha and our master artisans
-                  </p>
+      {/* Main View Router with Kinetic Transitions */}
+      <main className="grow overflow-hidden">
+        <AnimatePresence mode="wait">
+          {currentView === 'product-detail' && currentProduct ? (
+            <motion.div
+              key="product-detail"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <ProductDetailPage product={currentProduct} />
+            </motion.div>
+          ) : currentView === 'contact' ? (
+            <motion.div
+              key="contact"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="bg-stone-100/70 dark:bg-stone-900/60 py-8 border-b border-stone-200/80 dark:border-stone-800">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-stone-100">
+                      Contact Our Studio & Workshop
+                    </h1>
+                    <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1">
+                      Direct communication with Theng Seyha and our master artisans
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => navigateTo('home')}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-xs font-semibold shadow-xs hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors cursor-pointer"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" />
+                    <span>Back to Home</span>
+                  </button>
                 </div>
-                <button
-                  onClick={() => navigateTo('home')}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-xs font-semibold shadow-xs hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors cursor-pointer"
-                >
-                  <ArrowLeft className="w-3.5 h-3.5" />
-                  <span>Back to Home</span>
-                </button>
               </div>
-            </div>
-            <ContactSection />
-          </div>
-        ) : currentView === 'shop' ? (
-          /* Dedicated Catalog / Shop Page */
-          <div>
-            <div className="bg-stone-100/70 dark:bg-stone-900/60 py-8 border-b border-stone-200/80 dark:border-stone-800">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-stone-100">
-                    Complete Furniture Catalog
-                  </h1>
-                  <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1">
-                    Explore all handcrafted seating, tables, storage, and bedroom furniture
-                  </p>
+              <ContactSection />
+            </motion.div>
+          ) : currentView === 'tracking' ? (
+            <motion.div
+              key="tracking"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="bg-stone-100/70 dark:bg-stone-900/60 py-8 border-b border-stone-200/80 dark:border-stone-800">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-stone-100">
+                      Order Progress & Workshop Logs
+                    </h1>
+                    <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1">
+                      Track your handcrafted furniture through the production pipeline
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => navigateTo('home')}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-xs font-semibold shadow-xs hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors cursor-pointer"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" />
+                    <span>Back to Home</span>
+                  </button>
                 </div>
-                <button
-                  onClick={() => navigateTo('home')}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-xs font-semibold shadow-xs hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors cursor-pointer"
-                >
-                  <ArrowLeft className="w-3.5 h-3.5" />
-                  <span>Back to Home</span>
-                </button>
               </div>
-            </div>
-            <FeaturedProducts />
-            <SummerDealBanner onGrabDeal={() => handleNavigate('featured-products')} />
-            <WhyShopPillars />
-          </div>
-        ) : (
-          /* Standard Home View with curated editorial sections */
-          <>
-            {/* 1. Hero */}
-            <Hero
-              onShopNow={() => navigateTo('shop')}
-              onViewCollections={() => handleNavigate('signature-collection')}
-            />
+              <div className="min-h-[60vh]">
+                <OrderStatusTracking />
+              </div>
+            </motion.div>
+          ) : currentView === 'shop' ? (
+            <motion.div
+              key="shop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="bg-stone-100/70 dark:bg-stone-900/60 py-8 border-b border-stone-200/80 dark:border-stone-800">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-stone-100">
+                      Complete Furniture Catalog
+                    </h1>
+                    <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1">
+                      Explore all handcrafted seating, tables, storage, and bedroom furniture
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => navigateTo('home')}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-xs font-semibold shadow-xs hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors cursor-pointer"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" />
+                    <span>Back to Home</span>
+                  </button>
+                </div>
+              </div>
+              <FeaturedProducts />
+              <SummerDealBanner onGrabDeal={() => handleNavigate('featured-products')} />
+              <div className="py-12">
+                <WhyShopPillars />
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="home"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <Hero
+                onShopNow={() => navigateTo('shop')}
+                onViewCollections={() => handleNavigate('signature-collection')}
+              />
 
-            {/* 2. Value Propositions */}
-            <ValueProps />
+              {/* Consolidated Value Props */}
+              <ValueProps />
 
-            {/* 3. Category Browser */}
-            <CategoryBrowser onSelectCategory={handleCategoryClick} />
+              <CategoryBrowser onSelectCategory={handleCategoryClick} />
 
-            {/* 4. Signature Collection */}
-            <SignatureCollection onViewAll={() => navigateTo('shop')} />
+              <SignatureCollection onViewAll={() => navigateTo('shop')} />
 
-            {/* 5. Why Choose Anti */}
-            <WhyChooseAnti />
+              {/* Merged Craftsmanship & Standards */}
+              <WhyChooseAnti />
+              <StudioSpecimenCard />
 
-            {/* 5b. Modern Specimen Web Component (Inter typography, light/dark responsive) */}
-            <StudioSpecimenCard />
+              <SocialProofBanner onReadStories={() => handleNavigate('customer-reviews')} />
 
-            {/* 6. Social Proof */}
-            <SocialProofBanner onReadStories={() => handleNavigate('customer-reviews')} />
+              <SummerDealBanner onGrabDeal={() => navigateTo('shop')} />
 
-            {/* 7. Summer Deal */}
-            <SummerDealBanner onGrabDeal={() => navigateTo('shop')} />
+              {/* Reduced redundant sections on home */}
+              <div className="bg-stone-100/30 dark:bg-stone-900/20 py-16">
+                <WhyShopPillars />
+              </div>
 
-            {/* 8. Four Quality Pillars */}
-            <WhyShopPillars />
+              <div id="customer-reviews">
+                <CustomerReviews />
+              </div>
 
-            {/* 9. Product Catalog & Filter Hub */}
-            <FeaturedProducts />
+              <BlogSection />
 
-            {/* 10. Reviews */}
-            <div id="customer-reviews">
-              <CustomerReviews />
-            </div>
-
-            {/* 11. Journal & Editorial Stories */}
-            <BlogSection />
-
-            {/* 12. Contact Showroom */}
-            <ContactSection />
-
-            {/* 13. Newsletter */}
-            <Newsletter />
-          </>
-        )}
+              <Newsletter />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       {/* Footer */}
       <Footer onNavigate={handleNavigate} onOpenVanillaModal={() => setIsVanillaModalOpen(true)} />
 
-      {/* Overlays & Drawers (Progressive Disclosure) */}
+      {/* Overlays & Drawers */}
       <CartDrawer />
       <WishlistDrawer />
       <SearchModal />
       <CheckoutModal />
+      <MyOrdersModal />
       <ProductDetailModal />
       <TelegramContactModal />
       <VanillaCodeModal
@@ -199,7 +254,7 @@ const MainLayout = () => {
       />
       <ToastNotification />
 
-      {/* Floating Telegram Support Quick Action (Unobtrusive) */}
+      {/* Floating Telegram Support Quick Action */}
       <button
         onClick={() => setIsTelegramModalOpen(true)}
         aria-label="Telegram Bot Support"
