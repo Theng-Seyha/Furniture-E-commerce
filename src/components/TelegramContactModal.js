@@ -187,7 +187,7 @@ export const TelegramContactModal = () => {
                       setStatusOrderId(e.target.value.toUpperCase());
                       setStatusError("");
                     }}
-                    placeholder="e.g. ANTI-849201"
+                    placeholder="eg. ANTI-849201"
                     className="w-full pl-9 pr-3.5 py-2.5 text-xs font-mono font-medium rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-1 focus:ring-amber-700 uppercase"
                   />
                 </div>
@@ -408,7 +408,7 @@ export const TelegramContactModal = () => {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. Sokha / Alex"
+                    placeholder="eg. Theng Seyha"
                     className="w-full px-3.5 py-2 text-xs rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 focus:outline-hidden focus:ring-1 focus:ring-amber-700 text-stone-900 dark:text-stone-100"
                   />
                 </div>
@@ -422,7 +422,7 @@ export const TelegramContactModal = () => {
                     required
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
-                    placeholder="+855 12 345 678 or @myusername"
+                    placeholder="eg. +855 714 607 603 or @username"
                     className="w-full px-3.5 py-2 text-xs rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 focus:outline-hidden focus:ring-1 focus:ring-amber-700 text-stone-900 dark:text-stone-100"
                   />
                 </div>

@@ -117,7 +117,7 @@ export const ContactSection = () => {
                 <div className="text-xs">
                   <h5 className="font-bold text-stone-900 dark:text-stone-100 mb-0.5">Showroom & Workshop</h5>
                   <p className="text-stone-500 dark:text-stone-400 leading-relaxed">
-                    #48 Preah Norodom Blvd, Sangkat Tonle Bassac, Khan Chamkarmon, Phnom Penh, Cambodia
+                    Sangkat Tuek Thla, Khan Sen Sok, Phnom Penh, Cambodia
                   </p>
                 </div>
               </div>
@@ -128,8 +128,8 @@ export const ContactSection = () => {
                 </div>
                 <div className="text-xs">
                   <h5 className="font-bold text-stone-900 dark:text-stone-100 mb-0.5">Showroom Hours</h5>
-                  <p className="text-stone-500 dark:text-stone-400">Monday – Saturday: 8:30 AM – 7:00 PM</p>
-                  <p className="text-stone-500 dark:text-stone-400">Sunday: 9:00 AM – 5:00 PM</p>
+                  <p className="text-stone-500 dark:text-stone-400">Monday – Saturday: 7:30 AM – 8:00 PM</p>
+                  <p className="text-stone-500 dark:text-stone-400">Sunday: 8:00 AM – 6:00 PM</p>
                 </div>
               </div>
 
@@ -139,7 +139,7 @@ export const ContactSection = () => {
                 </div>
                 <div className="text-xs">
                   <h5 className="font-bold text-stone-900 dark:text-stone-100 mb-0.5">Phone & WhatsApp</h5>
-                  <p className="text-stone-500 dark:text-stone-400">+855 12 345 678 (English / Khmer)</p>
+                  <p className="text-stone-500 dark:text-stone-400">+855 714 607 603 (English / Khmer)</p>
                 </div>
               </div>
             </div>
@@ -201,7 +201,7 @@ export const ContactSection = () => {
     required
     value={name}
     onChange={(e) => setName(e.target.value)}
-    placeholder="e.g. Sreysros Keo"
+    placeholder="eg. Theng Seyha"
     className="w-full px-3.5 py-2 text-xs rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-hidden focus:ring-1 focus:ring-amber-700"
   />
                   </div>
@@ -215,7 +215,7 @@ export const ContactSection = () => {
     required
     value={emailOrPhone}
     onChange={(e) => setEmailOrPhone(e.target.value)}
-    placeholder="e.g. +855 12 345 678 or @username"
+    placeholder="eg. +855 714 607 603 or @username"
     className="w-full px-3.5 py-2 text-xs rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-hidden focus:ring-1 focus:ring-amber-700"
   />
                   </div>

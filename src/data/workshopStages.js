@@ -176,7 +176,7 @@ export const SAMPLE_ORDERS = {
     estimatedDelivery: 'Today (Out for Delivery)',
     currentStage: 6,
     progressPercent: 100,
-    artisanLead: 'White-Glove Logistics Team (Seyha Direct)',
+    artisanLead: 'White-Glove Logistics Team',
     workshopBay: 'Transit / Dispatch Vehicle #02',
     logs: [
       { time: 'Today, 08:00 AM', note: 'Loaded in climate-sealed blanket wrap. Out for white-glove delivery in Siem Reap.' },

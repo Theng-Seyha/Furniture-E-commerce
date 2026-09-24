@@ -136,10 +136,10 @@ export const WhyChooseAnti = () => {
                 Notes from the Workshop Desk
               </h3>
               <p className="text-sm text-stone-600 dark:text-stone-300 mt-4 leading-relaxed">
-                Hi, I'm Theng Seyha. I study architecture in Phnom Penh and spend my weekends in our small woodshop. I started Anti because all the modern furniture I could afford as a student was made from glued sawdust with paper veneer that bubbled the first time I set down a cold drink.
+                Hi, I'm Theng Seyha. I study architecture in Phnom Penh and spend my weekends in our small woodshop. I started Anti because I wanted to create furniture that actually lasts—pieces made from real wood, not the cheap substitutes that fall apart after a few months.
               </p>
               <p className="text-sm text-stone-600 dark:text-stone-300 mt-3 leading-relaxed">
-                We do things the slow way: solid kiln-dried oak, traditional mortise joints, and non-toxic plant wax. You can assemble or disassemble each piece in under 10 minutes without stripping the screws. If you ever have a question about sizing or custom timber, reach out directly to me on Telegram.
+                Every piece is handcrafted with care using solid kiln-dried timber and traditional joinery. I personally oversee each commission to ensure it meets our quality standards. If you have any questions or want to discuss a custom project, feel free to reach out to me directly on Telegram.
               </p>
 
               <div className="mt-6 pt-4 border-t border-stone-200 dark:border-stone-800 flex justify-end">

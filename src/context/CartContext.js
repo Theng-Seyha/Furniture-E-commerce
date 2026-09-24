@@ -186,6 +186,7 @@ export const CartProvider = ({ children }) => {
     }
     if (hash === 'shop') return { view: 'shop', productId: null };
     if (hash === 'contact') return { view: 'contact', productId: null };
+    if (hash === 'tracking') return { view: 'tracking', productId: null };
     return { view: 'home', productId: null };
   };
 
@@ -196,9 +197,31 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     const handleHashChange = () => {
       const route = parseHash();
+      
+      // Update state
       setCurrentView(route.view);
       setSelectedProductId(route.productId);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      const hash = window.location.hash.replace('#', '');
+      
+      // Determine if we should scroll to top
+      // We only scroll to top if:
+      // 1. It's a non-home view (shop, contact, tracking, product-detail)
+      // 2. It's the home view AND the hash is empty (true home)
+      const isHomeSection = route.view === 'home' && hash !== '' && hash !== 'home';
+      
+      if (!isHomeSection) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        // For home sections, scroll to the ID with a delay to ensure mounting
+        // We wait 450ms to allow AnimatePresence exit transitions (300ms) to complete
+        setTimeout(() => {
+          const el = document.getElementById(hash);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 450);
+      }
     };
 
     window.addEventListener('hashchange', handleHashChange);
@@ -210,28 +233,16 @@ export const CartProvider = ({ children }) => {
     recordRecentlyViewed(productId);
     setCurrentView('product-detail');
     window.location.hash = `product/${productId}`;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // scrollTo(0) is handled by handleHashChange
   };
 
   const navigateTo = (view, sectionId) => {
-    setCurrentView(view);
-    setSelectedProductId(null);
     if (view === 'home') {
       window.location.hash = sectionId ? `${sectionId}` : '';
-      if (sectionId) {
-        setTimeout(() => {
-          const el = document.getElementById(sectionId);
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }, 50);
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    } else if (view === 'shop') {
-      window.location.hash = 'shop';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (view === 'contact') {
-      window.location.hash = 'contact';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // If we are already on home and just changing hash, handleHashChange will fire.
+      // If we are NOT on home, setting hash will trigger handleHashChange which switches view.
+    } else {
+      window.location.hash = view;
     }
   };
 

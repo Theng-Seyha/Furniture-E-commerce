@@ -70,7 +70,7 @@ export const VanillaCodeModal = ({ isOpen, onClose }) => {
         </h3>
 
         <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 mt-2 leading-relaxed">
-          Crafted by <b>Theng Seyha (ថេង សីហា)</b> without React, Vue, or any external front-end framework. Runs directly in any modern browser with lightning performance.
+          Crafted by <b>Theng Seyha</b> without React, Vue, or any external front-end framework. Runs directly in any modern browser with lightning performance.
         </p>
 
         {/* Feature Grid */}

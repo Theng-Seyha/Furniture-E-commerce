@@ -1,6 +1,6 @@
 /**
  * The Anti Studio - Curated Furniture & Workshop Data
- * Handcrafted by Theng Seyha (ថេង សីហា)
+ * Handcrafted by Theng Seyha
  */
 
 export const CATEGORIES = [

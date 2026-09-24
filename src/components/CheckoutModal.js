@@ -294,7 +294,7 @@ export const CheckoutModal = () => {
       required
       value={customerName}
       onChange={(e) => setCustomerName(e.target.value)}
-      placeholder="e.g. Theng Seyha"
+      placeholder="eg. Theng Seyha"
       className="w-full px-3.5 py-2 text-xs rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 focus:outline-hidden focus:ring-1 focus:ring-amber-700"
     />
                 </div>
@@ -308,7 +308,7 @@ export const CheckoutModal = () => {
       required
       value={phoneNumber}
       onChange={(e) => setPhoneNumber(e.target.value)}
-      placeholder="e.g. +855 12 345 678"
+      placeholder="eg. +855 714 607 603"
       className="w-full px-3.5 py-2 text-xs rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 focus:outline-hidden focus:ring-1 focus:ring-amber-700"
     />
                 </div>

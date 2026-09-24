@@ -43,7 +43,8 @@ export const Navbar = ({ onNavigate }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showTicker, setShowTicker] = useState(true);
-  const [activeNavId, setActiveNavId] = useState('signature-collection');
+  const [activeNavId, setActiveNavId] = useState('');
+  const [isManualNav, setIsManualNav] = useState(false);
 
   // Track window scroll for elevation styling
   useEffect(() => {
@@ -54,20 +55,34 @@ export const Navbar = ({ onNavigate }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Synchronize active nav item with route changes
+  // Synchronize active nav item with route changes and hash
   useEffect(() => {
-    if (currentView === 'shop') {
-      setActiveNavId('featured-products');
-    } else if (currentView === 'contact') {
-      setActiveNavId('contact');
-    } else if (currentView === 'home' && !activeNavId) {
-      setActiveNavId('signature-collection');
-    }
-  }, [currentView, activeNavId]);
+    const syncActiveNav = () => {
+      const hash = window.location.hash.replace('#', '');
+      
+      if (currentView === 'shop') {
+        setActiveNavId('featured-products');
+      } else if (currentView === 'contact') {
+        setActiveNavId('contact');
+      } else if (currentView === 'tracking') {
+        setActiveNavId('order-tracking');
+      } else if (currentView === 'home') {
+        if (hash && ['signature-collection', 'why-anti', 'order-tracking', 'customer-reviews', 'blog'].includes(hash)) {
+          setActiveNavId(hash);
+        } else if (!hash || hash === 'home') {
+          setActiveNavId('signature-collection');
+        }
+      }
+    };
+
+    syncActiveNav();
+    window.addEventListener('hashchange', syncActiveNav);
+    return () => window.removeEventListener('hashchange', syncActiveNav);
+  }, [currentView]);
 
   // Track active section on home page as user scrolls
   useEffect(() => {
-    if (currentView !== 'home') return;
+    if (currentView !== 'home' || isManualNav) return;
 
     const sectionIds = [
       'signature-collection',
@@ -104,21 +119,31 @@ export const Navbar = ({ onNavigate }) => {
     { id: 'featured-products', label: 'Shop All', view: 'shop' },
     { id: 'signature-collection', label: 'Signature', view: 'home' },
     { id: 'why-anti', label: 'Craftsmanship', view: 'home' },
-    { id: 'order-tracking', label: 'Tracking', view: 'home' },
+    { id: 'order-tracking', label: 'Tracking', view: 'tracking' },
     { id: 'customer-reviews', label: 'Reviews', view: 'home' },
     { id: 'blog', label: 'Journal', view: 'home' },
     { id: 'contact', label: 'Contact', view: 'contact' },
   ];
 
   const handleLinkClick = (id) => {
-    setActiveNavId(id);
-    onNavigate(id);
+    // 1. Close menu immediately to improve perceived speed
     setMobileMenuOpen(false);
+    
+    // 2. Set manual nav flag to prevent observer interference
+    setIsManualNav(true);
+    setActiveNavId(id);
+    
+    // 3. Perform navigation logic
+    onNavigate(id);
+    
+    // 4. Reset manual nav flag after scroll should have completed
+    setTimeout(() => setIsManualNav(false), 1200);
   };
 
   const getIsActive = (link) => {
     if (currentView === 'shop') return link.id === 'featured-products';
     if (currentView === 'contact') return link.id === 'contact';
+    if (currentView === 'tracking') return link.id === 'order-tracking';
     return activeNavId === link.id;
   };
 
@@ -338,20 +363,24 @@ export const Navbar = ({ onNavigate }) => {
                 {navLinks.map((link) => {
                   const isActive = getIsActive(link);
                   return (
-                    <button
+                    <a
                       key={link.id}
-                      onClick={() => handleLinkClick(link.id)}
-                      className={`text-left text-sm font-medium px-4 py-2.5 rounded-xl transition-all cursor-pointer flex items-center justify-between ${
+                      href={`#${link.id}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleLinkClick(link.id);
+                      }}
+                      className={`text-left text-sm font-medium px-4 py-3 rounded-xl transition-all cursor-pointer flex items-center justify-between ${
                         isActive
                           ? 'border-2 border-amber-800 dark:border-amber-400 bg-amber-50/80 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 font-bold shadow-xs'
-                          : 'border-2 border-transparent text-stone-700 dark:text-stone-200 hover:text-amber-800 dark:hover:text-amber-400 hover:bg-stone-100/80 dark:hover:bg-stone-800/60 hover:border-stone-200 dark:hover:border-stone-700'
-                      } active:scale-[0.98] active:border-amber-700`}
+                          : 'border-2 border-transparent text-stone-700 dark:text-stone-200 hover:text-amber-800 dark:hover:text-amber-400 hover:bg-stone-100/80 dark:hover:bg-stone-800/60'
+                      } active:scale-[0.98]`}
                     >
                       <span>{link.label}</span>
                       {isActive && (
                         <span className="w-2 h-2 rounded-full bg-amber-700 dark:bg-amber-400" />
                       )}
-                    </button>
+                    </a>
                   );
                 })}
 
@@ -417,8 +446,12 @@ export const Navbar = ({ onNavigate }) => {
 
       {/* 3. Ergonomic Mobile Bottom Thumb Dock (Sticky Mobile Navigation) */}
       <div className="md:hidden fixed bottom-3 left-3 right-3 z-40 bg-[#FAF8F5]/90 dark:bg-[#181614]/90 backdrop-blur-md rounded-2xl border border-stone-300/80 dark:border-stone-700/80 shadow-xl px-2 py-1.5 flex items-center justify-around">
-        <button
-          onClick={() => handleLinkClick('signature-collection')}
+        <a
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            handleLinkClick('signature-collection');
+          }}
           className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
             currentView === 'home'
               ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-bold shadow-2xs'
@@ -428,10 +461,14 @@ export const Navbar = ({ onNavigate }) => {
         >
           <Home className="w-4 h-4" />
           <span className="text-[10px]">Home</span>
-        </button>
+        </a>
 
-        <button
-          onClick={() => handleLinkClick('featured-products')}
+        <a
+          href="/shop"
+          onClick={(e) => {
+            e.preventDefault();
+            handleLinkClick('featured-products');
+          }}
           className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
             currentView === 'shop'
               ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-bold shadow-2xs'
@@ -441,20 +478,28 @@ export const Navbar = ({ onNavigate }) => {
         >
           <Grid className="w-4 h-4" />
           <span className="text-[10px]">Catalog</span>
-        </button>
+        </a>
 
-        <button
-          onClick={() => setIsSearchOpen(true)}
+        <a
+          href="/search"
+          onClick={(e) => {
+            e.preventDefault();
+            setIsSearchOpen(true);
+          }}
           className="flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 active:scale-95 transition-all cursor-pointer"
           aria-label="Search Products"
         >
           <Search className="w-4 h-4" />
           <span className="text-[10px]">Search</span>
-        </button>
+        </a>
 
-        <button
-          onClick={() => setIsWishlistOpen(true)}
-          className="relative flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 active:scale-95 transition-all cursor-pointer"
+        <a
+          href="/wishlist"
+          onClick={(e) => {
+            e.preventDefault();
+            setIsWishlistOpen(true);
+          }}
+          className="relative flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 active:scale-95 transition-all cursor-pointer"
           aria-label="View Saved Items"
         >
           <Heart className="w-4 h-4" />
@@ -464,10 +509,14 @@ export const Navbar = ({ onNavigate }) => {
               {wishlistCount}
             </span>
           )}
-        </button>
+        </a>
 
-        <button
-          onClick={() => setIsCartOpen(true)}
+        <a
+          href="/cart"
+          onClick={(e) => {
+            e.preventDefault();
+            setIsCartOpen(true);
+          }}
           className="relative flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-stone-900 dark:text-stone-100 active:scale-95 transition-all cursor-pointer font-semibold"
           aria-label="View Shopping Cart"
         >
@@ -478,7 +527,7 @@ export const Navbar = ({ onNavigate }) => {
               {totalItemsCount}
             </span>
           )}
-        </button>
+        </a>
       </div>
     </>
   );

@@ -1,6 +1,6 @@
 /**
  * Telegram Bot Integration Service
- * The Anti Studio - Handcrafted by Theng Seyha (ថេង សីហា)
+ * The Anti Studio - Handcrafted by Theng Seyha
  * Bot: @FurnitureOnlineSellingbot
  */
 
@@ -11,7 +11,8 @@ export const TELEGRAM_CONFIG = {
   CHAT_ID: '1662189487',
   BOT_USERNAME: 'FurnitureOnlineSellingbot',
   BOT_URL: 'https://t.me/FurnitureOnlineSellingbot',
-  OWNER_NAME: 'Theng Seyha (ថេង សីហា)'
+  OWNER_NAME: 'Theng Seyha',
+  OWNER_HANDLE: '@thengseyha'
 };
 
 /**

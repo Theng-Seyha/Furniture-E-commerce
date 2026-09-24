@@ -29,7 +29,7 @@ import { VanillaCodeModal } from './components/VanillaCodeModal';
 import { OrderStatusTracking } from './components/OrderStatusTracking';
 import { MyOrdersModal } from './components/MyOrdersModal';
 import { Send, ArrowLeft } from 'lucide-react';
-import { OfflineIndicator } from './components/PWAControls';
+import { OfflineIndicator, SmartInstallBanner } from './components/PWAControls';
 
 /**
  * Main Layout Shell
@@ -54,19 +54,14 @@ const MainLayout = () => {
       navigateTo('contact');
       return;
     }
-    if (sectionId === 'order-tracking') {
+    if (sectionId === 'order-tracking' || sectionId === 'tracking') {
       navigateTo('tracking');
       return;
     }
     
-    if (currentView !== 'home') {
-      navigateTo('home', sectionId);
-    } else {
-      const el = document.getElementById(sectionId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
+    // Centralize all home section navigation through navigateTo
+    // this ensures hash updates and robust scroll-into-view behavior
+    navigateTo('home', sectionId);
   };
 
   const handleCategoryClick = (categoryName) => {
@@ -82,6 +77,7 @@ const MainLayout = () => {
     <div className="min-h-screen bg-[#FAF8F5] text-stone-900 dark:bg-[#121110] dark:text-[#F5F2EB] flex flex-col font-sans transition-colors duration-300">
       {/* 1. Global Status Indicators */}
       <OfflineIndicator />
+      <SmartInstallBanner />
       
       {/* Top Navigation Bar */}
       <Navbar onNavigate={handleNavigate} />
@@ -114,7 +110,7 @@ const MainLayout = () => {
                       Contact Our Studio & Workshop
                     </h1>
                     <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1">
-                      Direct communication with Theng Seyha and our master artisans
+                      Connect directly with Theng Seyha and our team of master artisans
                     </p>
                   </div>
                   <button

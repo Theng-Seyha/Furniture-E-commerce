@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship Application | Software Engineering</title>
+    <meta name="description" content="Professional Software Engineering Internship Application Portal - Built with Pure HTML5, CSS3, and Vanilla JavaScript.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light">
+    <!-- Sophisticated Gradient Background -->
+    <div class="mesh-gradient"></div>
+
+    <main class="app-container">
+        <!-- Header -->
+        <header class="glass-header">
+            <div class="logo">
+                <span class="logo-text">Anti</span>
+                <span class="logo-badge">Engineering</span>
+            </div>
+            <nav>
+                <button id="theme-toggle" class="btn-icon">
+                    <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+            </nav>
+        </header>
+
+        <!-- Application Content -->
+        <div class="content-wrapper">
+            <section class="intro">
+                <div class="badge">Session 2025/2026</div>
+                <h1 class="title">Join the <span class="italic">Digital Workshop</span></h1>
+                <p class="subtitle">Applying for the **Software Engineering Internship** at Anti Studio. We bridge the gap between traditional craftsmanship and modern architecture through clean, performant code.</p>
+            </section>
+
+            <!-- Form Container -->
+            <div class="form-glass-card">
+                <div class="form-tabs">
+                    <button class="tab-btn active" data-tab="profile">1. Profile</button>
+                    <button class="tab-btn" data-tab="technical">2. Technical</button>
+                    <button class="tab-btn" data-tab="vision">3. Vision</button>
+                </div>
+
+                <form id="application-form">
+                    <!-- Tab 1: Profile -->
+                    <div class="tab-content active" id="profile">
+                        <div class="grid-2">
+                            <div class="input-group">
+                                <label for="fullname">Full Name</label>
+                                <input type="text" id="fullname" name="fullname" placeholder="eg. Theng Seyha" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" placeholder="eg. seyhatheng1@gmail.com" required>
+                            </div>
+                        </div>
+                        <div class="grid-2">
+                            <div class="input-group">
+                                <label for="phone">Phone / Telegram</label>
+                                <input type="text" id="phone" name="phone" placeholder="eg. +855 714 607 603" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="location">Current Location</label>
+                                <input type="text" id="location" name="location" placeholder="Phnom Penh, Cambodia" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="university">University / Educational Institution</label>
+                            <input type="text" id="university" name="university" placeholder="Institute of Technology of Cambodia" required>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Technical -->
+                    <div class="tab-content" id="technical">
+                        <div class="input-group">
+                            <label for="github">GitHub Profile URL</label>
+                            <input type="url" id="github" name="github" placeholder="https://github.com/yourusername" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="portfolio">Portfolio / LinkedIn</label>
+                            <input type="url" id="portfolio" name="portfolio" placeholder="https://yourportfolio.com">
+                        </div>
+                        <div class="input-group">
+                            <label>Primary Tech Stack</label>
+                            <div class="tag-cloud">
+                                <label class="tag-checkbox"><input type="checkbox" name="skills" value="HTML/CSS"> <span>HTML/CSS</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="skills" value="JavaScript"> <span>JavaScript</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="skills" value="React"> <span>React</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="skills" value="Node.js"> <span>Node.js</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="skills" value="PostgreSQL"> <span>PostgreSQL</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="skills" value="TypeScript"> <span>TypeScript</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Vision -->
+                    <div class="tab-content" id="vision">
+                        <div class="input-group">
+                            <label for="motivation">Why do you want to intern at Anti Engineering?</label>
+                            <textarea id="motivation" name="motivation" rows="5" placeholder="Tell us how you plan to merge your engineering skills with our philosophy of intentional design..." required></textarea>
+                        </div>
+                        <div class="file-upload" id="drop-zone">
+                            <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" hidden>
+                            <div class="upload-ui">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                <p>Click or drag your **Resume (PDF)** to upload</p>
+                                <span id="file-name" class="file-name-display">No file chosen</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer / Actions -->
+                    <div class="form-footer">
+                        <div class="progress-indicator">
+                            <span class="step-label">Step 1 of 3</span>
+                            <div class="bar-container"><div class="bar-fill" style="width: 33%"></div></div>
+                        </div>
+                        <div class="btns">
+                            <button type="button" id="prev-btn" class="btn btn-outline" style="display: none;">Back</button>
+                            <button type="button" id="next-btn" class="btn btn-primary">Continue</button>
+                            <button type="submit" id="submit-btn" class="btn btn-submit" style="display: none;">Submit Application</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="success-overlay" class="overlay">
+            <div class="success-card">
+                <div class="success-icon">✓</div>
+                <h2>Application Transmitted</h2>
+                <p>Your engineering profile has been sent to the workshop bot. We will review your GitHub and vision statement shortly.</p>
+                <button onclick="location.reload()" class="btn btn-primary">Done</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

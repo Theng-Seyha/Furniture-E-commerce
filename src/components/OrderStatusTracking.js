@@ -15,6 +15,7 @@ import {
   User,
   Package,
   PackageCheck,
+  Sparkles,
 } from 'lucide-react';
 import { TELEGRAM_CONFIG } from '../services/telegramService';
 import { useCart } from '../context/CartContext';
@@ -82,7 +83,7 @@ export const OrderStatusTracking = ({ initialOrderId }) => {
         estimatedDelivery: '5–7 Business Days',
         currentStage: 1, // Order Received
         progressPercent: 18,
-        artisanLead: 'Theng Seyha (Studio Intake)',
+        artisanLead: 'Theng Seyha',
         workshopBay: 'Intake Bay - Queue Scheduled',
         logs: [
           { time: 'Dispatched', note: 'Order dispatched to Telegram bot @FurnitureOnlineSellingbot. Workshop blueprinting queued.' }
@@ -196,7 +197,7 @@ export const OrderStatusTracking = ({ initialOrderId }) => {
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleLookup(searchInput)}
-                placeholder="Enter Order ID (e.g. ANTI-849201)"
+                placeholder="Enter Order ID (eg. ANTI-849201)"
                 className="w-full pl-10 pr-3 py-2.5 rounded-full text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-hidden focus:ring-2 focus:ring-amber-700 dark:focus:ring-amber-500 transition-all font-mono"
                 id="order-tracking-input"
               />

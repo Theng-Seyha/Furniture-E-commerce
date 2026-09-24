@@ -22,7 +22,7 @@ export const Hero = ({ onShopNow, onViewCollections }) => {
 
             {/* Subtitle */}
             <p className="mt-6 text-base sm:text-lg text-stone-600 dark:text-stone-400 max-w-lg font-normal leading-relaxed">
-              I started building these pieces because most modern furniture feels disposable. Every table, chair, and bed frame here uses kiln-dried solid timber, clean interlocking joinery, and durable fabrics that survive real apartment life.
+              I started building these pieces because most modern furniture feels disposable. We use solid kiln-dried timber and traditional joinery to create furniture that survives real life and ages beautifully in your home.
             </p>
 
             {/* CTA Buttons */}

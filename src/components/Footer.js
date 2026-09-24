@@ -64,16 +64,16 @@ export const Footer = ({ onNavigate, onOpenVanillaModal }) => {
   }
             <div className="flex items-center space-x-3 pt-2">
               <a
-    href={TELEGRAM_CONFIG.BOT_URL}
+    href={`https://t.me/${TELEGRAM_CONFIG.OWNER_HANDLE.replace('@', '')}`}
     target="_blank"
     rel="noopener noreferrer"
     className="w-9 h-9 rounded-full bg-stone-800/80 hover:bg-sky-600 text-stone-300 hover:text-white flex items-center justify-center transition-colors"
-    aria-label="Telegram Bot"
+    aria-label="Telegram"
   >
                 <Send className="w-4 h-4" />
               </a>
               <a
-    href="https://instagram.com"
+    href="https://www.instagram.com/theng_seyha_2007?stkn=NjUyeW0wMzljNG5v"
     target="_blank"
     rel="noopener noreferrer"
     className="w-9 h-9 rounded-full bg-stone-800/80 hover:bg-stone-700 text-stone-300 hover:text-white flex items-center justify-center transition-colors"
@@ -82,7 +82,7 @@ export const Footer = ({ onNavigate, onOpenVanillaModal }) => {
                 <Instagram className="w-4 h-4" />
               </a>
               <a
-    href="https://facebook.com"
+    href="https://www.facebook.com/share/1BzTq5vTB4/"
     target="_blank"
     rel="noopener noreferrer"
     className="w-9 h-9 rounded-full bg-stone-800/80 hover:bg-stone-700 text-stone-300 hover:text-white flex items-center justify-center transition-colors"
@@ -91,7 +91,7 @@ export const Footer = ({ onNavigate, onOpenVanillaModal }) => {
                 <Facebook className="w-4 h-4" />
               </a>
               <a
-    href="https://twitter.com"
+    href="https://x.com/Theng_Seyha"
     target="_blank"
     rel="noopener noreferrer"
     className="w-9 h-9 rounded-full bg-stone-800/80 hover:bg-stone-700 text-stone-300 hover:text-white flex items-center justify-center transition-colors"
