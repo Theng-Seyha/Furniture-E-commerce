@@ -67,7 +67,7 @@ export const Navbar = ({ onNavigate }) => {
       } else if (currentView === 'tracking') {
         setActiveNavId('order-tracking');
       } else if (currentView === 'home') {
-        if (hash && ['signature-collection', 'why-anti', 'order-tracking', 'customer-reviews', 'blog'].includes(hash)) {
+        if (hash && ['signature-collection', 'why-fur', 'order-tracking', 'customer-reviews', 'blog'].includes(hash)) {
           setActiveNavId(hash);
         } else if (!hash || hash === 'home') {
           setActiveNavId('signature-collection');
@@ -86,7 +86,7 @@ export const Navbar = ({ onNavigate }) => {
 
     const sectionIds = [
       'signature-collection',
-      'why-anti',
+      'why-fur',
       'order-tracking',
       'customer-reviews',
       'blog',
@@ -118,7 +118,7 @@ export const Navbar = ({ onNavigate }) => {
   const navLinks = [
     { id: 'featured-products', label: 'Shop All', view: 'shop' },
     { id: 'signature-collection', label: 'Signature', view: 'home' },
-    { id: 'why-anti', label: 'Craftsmanship', view: 'home' },
+    { id: 'why-fur', label: 'Craftsmanship', view: 'home' },
     { id: 'order-tracking', label: 'Tracking', view: 'tracking' },
     { id: 'customer-reviews', label: 'Reviews', view: 'home' },
     { id: 'blog', label: 'Journal', view: 'home' },
@@ -193,27 +193,36 @@ export const Navbar = ({ onNavigate }) => {
             onClick={() => handleLinkClick('signature-collection')}
             className="flex items-center gap-2 cursor-pointer group select-none shrink-0"
           >
-            <span className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-stone-900 dark:text-stone-100">
-              Anti
-            </span>
-            <span className="w-2 h-2 rounded-full bg-amber-700 dark:bg-amber-500 group-hover:scale-125 transition-transform" />
+            <div className="flex items-center shrink-0">
+              <span className="text-xl sm:text-2xl md:text-3xl font-serif font-bold tracking-tight text-stone-900 dark:text-stone-100">
+                Fur
+              </span>
+              <div className="flex items-center ml-1 md:ml-1.5 gap-1 md:gap-2">
+                <span className="block w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-amber-700 dark:bg-amber-500 group-hover:scale-125 transition-transform" />
+                <img 
+                  src="/cambodia.jpg" 
+                  alt="Cambodia" 
+                  className="w-4.5 h-3 md:w-5.5 md:h-4 rounded-sm object-cover select-none shadow-xs border border-stone-200/40 dark:border-stone-800/40"
+                />
+              </div>
+            </div>
             <span className="hidden xl:inline text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-stone-200/70 dark:bg-stone-800 text-stone-600 dark:text-stone-300 border border-stone-300/40 dark:border-stone-700">
               Studio
             </span>
           </div>
 
-          {/* Desktop & Tablet Navigation Capsule - All 7 Links visible without scrolling */}
-          <nav className="hidden md:flex items-center space-x-0.5 lg:space-x-1 bg-stone-100/90 dark:bg-stone-900/80 p-1 rounded-full border border-stone-200/80 dark:border-stone-800/80 shrink-0">
+          {/* Desktop & Tablet Navigation Capsule - Optimized for tablet width */}
+          <nav className="hidden lg:flex items-center space-x-0.5 lg:space-x-1 bg-stone-100/90 dark:bg-stone-900/80 p-1 rounded-full border border-stone-200/80 dark:border-stone-800/80 shrink-0">
             {navLinks.map((link) => {
               const isActive = getIsActive(link);
               return (
                 <button
                   key={link.id}
                   onClick={() => handleLinkClick(link.id)}
-                  className={`relative px-2.5 md:px-2 lg:px-3 py-1 md:py-1.5 rounded-full text-[11px] lg:text-xs font-semibold tracking-wide uppercase transition-all duration-200 cursor-pointer whitespace-nowrap select-none shrink-0 ${
+                  className={`relative px-2 xl:px-3 py-1 md:py-1.5 rounded-full text-[10px] xl:text-xs font-semibold tracking-wide uppercase transition-all duration-200 cursor-pointer whitespace-nowrap select-none shrink-0 ${
                     isActive
                       ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 shadow-xs font-bold'
-                      : 'text-stone-600 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/60 dark:hover:bg-stone-800/60'
+                      : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
                   } active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-700`}
                 >
                   <span>{link.label}</span>
@@ -229,14 +238,14 @@ export const Navbar = ({ onNavigate }) => {
               onClick={() => setIsSearchOpen(true)}
               aria-label="Search catalog (Cmd+K)"
               title="Search catalog (Cmd+K)"
-              className="flex items-center gap-1.5 p-2 xl:px-3 xl:py-1.5 rounded-full text-stone-600 dark:text-stone-300 bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all cursor-pointer border border-stone-200/80 dark:border-stone-700/80 hover:border-stone-300 dark:hover:border-stone-600 active:border-amber-700 active:ring-2 active:ring-amber-700/20 active:scale-95"
+              className="flex items-center gap-1.5 p-1.5 sm:p-2 xl:px-3 xl:py-1.5 rounded-full text-stone-600 dark:text-stone-300 bg-transparent hover:text-stone-900 dark:hover:text-stone-100 transition-all cursor-pointer border border-stone-200/60 dark:border-stone-800/60 hover:border-stone-400 dark:hover:border-stone-500 active:scale-95"
               id="search-spotlight-btn"
             >
-              <Search className="w-4 h-4 text-stone-500 dark:text-stone-400" />
-              <span className="hidden xl:inline text-xs text-stone-600 dark:text-stone-300 font-medium">
+              <Search className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400" />
+              <span className="hidden 2xl:inline text-xs text-stone-600 dark:text-stone-300 font-medium">
                 Search pieces...
               </span>
-              <kbd className="hidden xl:inline px-1.5 py-0.5 text-[9px] font-mono text-stone-500 bg-white dark:bg-stone-900 rounded border border-stone-200 dark:border-stone-700">
+              <kbd className="hidden 2xl:inline px-1.5 py-0.5 text-[9px] font-mono text-stone-500 bg-white dark:bg-stone-900 rounded border border-stone-200 dark:border-stone-700">
                 ⌘K
               </kbd>
             </button>
@@ -249,7 +258,7 @@ export const Navbar = ({ onNavigate }) => {
               className="relative p-2 rounded-full text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white bg-transparent hover:bg-stone-200/60 dark:hover:bg-stone-800/60 border border-stone-200/80 dark:border-stone-700/80 hover:border-stone-300 dark:hover:border-stone-600 active:border-amber-700 active:ring-2 active:ring-amber-700/20 active:scale-95 transition-all cursor-pointer"
               id="wishlist-toggle-btn"
             >
-              <Heart className="w-4 h-4" />
+              <Heart className="w-3.5 h-3.5" />
               {wishlistCount > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center bg-rose-600 text-white text-[10px] font-bold rounded-full shadow-2xs tabular-nums border border-white dark:border-stone-900">
                   {wishlistCount}
@@ -265,7 +274,7 @@ export const Navbar = ({ onNavigate }) => {
               className="relative p-2 rounded-full text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white bg-transparent hover:bg-stone-200/60 dark:hover:bg-stone-800/60 border border-stone-200/80 dark:border-stone-700/80 hover:border-stone-300 dark:hover:border-stone-600 active:border-amber-700 active:ring-2 active:ring-amber-700/20 active:scale-95 transition-all cursor-pointer"
               id="my-orders-btn"
             >
-              <PackageCheck className="w-4 h-4" />
+              <PackageCheck className="w-3.5 h-3.5" />
               {savedOrdersCount > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center bg-amber-700 text-white text-[10px] font-bold rounded-full shadow-2xs tabular-nums border border-white dark:border-stone-900">
                   {savedOrdersCount}
@@ -283,18 +292,18 @@ export const Navbar = ({ onNavigate }) => {
               }}
               aria-label="Toggle theme appearance"
               title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              className="flex items-center gap-1.5 p-2 sm:px-2.5 sm:py-1.5 rounded-full text-xs font-medium text-stone-700 dark:text-stone-200 bg-stone-100/90 hover:bg-stone-200/90 dark:bg-stone-800/90 dark:hover:bg-stone-700/90 transition-all cursor-pointer border border-stone-200/80 dark:border-stone-700/80 hover:border-stone-300 dark:hover:border-stone-600 active:border-amber-700 active:ring-2 active:ring-amber-700/20 active:scale-95"
+              className="flex items-center gap-1.5 p-1.5 sm:p-2 sm:px-2.5 sm:py-1.5 rounded-full text-xs font-medium text-stone-700 dark:text-stone-200 bg-stone-100/90 hover:bg-stone-200/90 dark:bg-stone-800/90 dark:hover:bg-stone-700/90 transition-all cursor-pointer border border-stone-200/80 dark:border-stone-700/80 hover:border-stone-300 dark:hover:border-stone-600 active:border-amber-700 active:ring-2 active:ring-amber-700/20 active:scale-95"
               id="theme-toggle-btn"
             >
               {isDarkMode ? (
                 <>
                   <Sun className="w-3.5 h-3.5 text-amber-400" />
-                  <span className="hidden xl:inline text-[11px] font-semibold text-stone-300">Light</span>
+                  <span className="hidden 2xl:inline text-[11px] font-semibold text-stone-300">Light</span>
                 </>
               ) : (
                 <>
                   <Moon className="w-3.5 h-3.5 text-stone-700" />
-                  <span className="hidden xl:inline text-[11px] font-semibold text-stone-700">Dark</span>
+                  <span className="hidden 2xl:inline text-[11px] font-semibold text-stone-700">Dark</span>
                 </>
               )}
             </button>
@@ -311,8 +320,8 @@ export const Navbar = ({ onNavigate }) => {
               <span>@FurnitureOnlineSellingbot</span>
             </button>
 
-            {/* PWA Install Button */}
-            <div className="flex items-center">
+            {/* PWA Install Button - Hidden on mobile header, available in menu */}
+            <div className="hidden sm:flex items-center">
               <PWAInstallButton />
             </div>
             
@@ -322,7 +331,7 @@ export const Navbar = ({ onNavigate }) => {
               className="relative p-2 sm:px-3 sm:py-1.5 rounded-full text-white bg-stone-900 dark:bg-stone-100 dark:text-stone-950 hover:bg-stone-800 dark:hover:bg-white border border-stone-900 dark:border-stone-100 active:border-amber-700 active:ring-2 active:ring-amber-700/30 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
               id="cart-toggle-btn"
             >
-              <ShoppingBag className="w-4 h-4 text-amber-400 dark:text-amber-600" />
+              <ShoppingBag className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
               <span className="hidden sm:inline text-xs font-bold tabular-nums">
                 {totalItemsCount}
               </span>
@@ -338,26 +347,26 @@ export const Navbar = ({ onNavigate }) => {
               )}
             </button>
 
-            {/* Mobile Menu Button - Shown exclusively on mobile screens */}
+            {/* Mobile Menu Button - Shown on screens smaller than large desktop breakpoint */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-full text-stone-700 dark:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 border border-stone-200/80 dark:border-stone-700/80 hover:border-stone-300 dark:hover:border-stone-600 active:border-amber-700 active:ring-2 active:ring-amber-700/20 active:scale-95 transition-all cursor-pointer"
+              className="lg:hidden p-2 rounded-full text-stone-700 dark:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 border border-stone-200/80 dark:border-stone-700/80 hover:border-stone-300 dark:hover:border-stone-600 active:border-amber-700 active:ring-2 active:ring-amber-700/20 active:scale-95 transition-all cursor-pointer"
               id="mobile-menu-toggle-btn"
               aria-label="Toggle navigation menu"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Drawer Menu */}
+        {/* Mobile & Tablet Drawer Menu */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-[#FAF8F5] dark:bg-[#141211] border-b border-stone-200 dark:border-stone-800 px-6 py-5 shadow-lg"
+              className="lg:hidden bg-[#FAF8F5] dark:bg-[#141211] border-b border-stone-200 dark:border-stone-800 px-6 py-5 shadow-lg"
             >
               <div className="flex flex-col space-y-2">
                 {navLinks.map((link) => {

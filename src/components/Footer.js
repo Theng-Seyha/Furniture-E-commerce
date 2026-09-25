@@ -20,7 +20,7 @@ export const Footer = ({ onNavigate, onOpenVanillaModal }) => {
   }
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-1.5 text-2xl font-serif font-bold text-white tracking-tight">
-              <span>Anti</span>
+              <span>Fur</span>
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mb-0.5" />
             </div>
             
@@ -171,7 +171,7 @@ export const Footer = ({ onNavigate, onOpenVanillaModal }) => {
             <ul className="space-y-2.5 text-xs text-stone-400">
               <li>
                 <button
-    onClick={() => onNavigate("why-anti")}
+    onClick={() => onNavigate("why-fur")}
     className="hover:text-white transition-colors cursor-pointer"
   >
                   About Us
@@ -179,7 +179,7 @@ export const Footer = ({ onNavigate, onOpenVanillaModal }) => {
               </li>
               <li>
                 <button
-    onClick={() => onNavigate("why-anti")}
+    onClick={() => onNavigate("why-fur")}
     className="hover:text-white transition-colors cursor-pointer"
   >
                   Our Story
@@ -195,7 +195,7 @@ export const Footer = ({ onNavigate, onOpenVanillaModal }) => {
               </li>
               <li>
                 <button
-    onClick={() => onNavigate("why-anti")}
+    onClick={() => onNavigate("why-fur")}
     className="hover:text-white transition-colors cursor-pointer"
   >
                   Sustainability
@@ -279,7 +279,7 @@ export const Footer = ({ onNavigate, onOpenVanillaModal }) => {
   }
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-stone-500">
           <div className="flex items-center gap-4">
-            <p>© {new Date().getFullYear()} Anti Furniture Studio. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} Fur Furniture Studio. All rights reserved.</p>
             <button
               onClick={toggleDarkMode}
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-800/80 hover:bg-stone-700 text-stone-300 text-[11px] transition-colors cursor-pointer border border-stone-700/50"

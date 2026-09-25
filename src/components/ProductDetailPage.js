@@ -324,7 +324,7 @@ export const ProductDetailPage = ({ product }) => {
             <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/50 flex items-start gap-3.5">
               <ShieldCheck className="w-5 h-5 text-amber-800 dark:text-amber-400 shrink-0 mt-0.5" />
               <div className="text-xs text-amber-950 dark:text-amber-200 leading-relaxed">
-                <p className="font-semibold text-sm mb-0.5">The Anti Studio Standard</p>
+                <p className="font-semibold text-sm mb-0.5">The Fur Studio Standard</p>
                 <p className="text-amber-900/80 dark:text-amber-300/80">
                   Every piece is built in small batches using sustainably harvested kiln-dried timber, mortise-and-tenon joinery, and non-toxic food-safe hardwax oils. Covered by our 10-year solid frame structural guarantee.
                 </p>

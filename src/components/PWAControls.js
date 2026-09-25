@@ -53,13 +53,12 @@ export const PWAInstallButton = () => {
         onClick={handleClick}
         type="button"
         id="navbar-pwa-install-btn"
-        aria-label="Install Anti Web App"
-        title="Install Anti App to your device"
-        className="group relative flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-full bg-amber-800 hover:bg-amber-900 text-white text-[11px] sm:text-xs font-semibold shadow-xs hover:shadow-sm active:scale-95 transition-all cursor-pointer border border-amber-700/80"
+        aria-label="Install Fur Web App"
+        title="Install Fur App to your device"
+        className="group relative flex items-center p-2 sm:px-3 sm:py-1.5 rounded-full bg-amber-800 hover:bg-amber-900 text-white text-[11px] sm:text-xs font-semibold shadow-xs hover:shadow-sm active:scale-95 transition-all cursor-pointer border border-amber-700/80"
       >
         <Download className="w-3.5 h-3.5 text-amber-200 transition-transform group-hover:translate-y-0.5" />
-        <span className="hidden xs:inline sm:inline whitespace-nowrap tracking-tight">Install App</span>
-        <span className="xs:hidden whitespace-nowrap tracking-tight">Install</span>
+        <span className="hidden xl:inline ml-1.5 whitespace-nowrap tracking-tight text-[10px] uppercase font-bold">Install App</span>
       </button>
 
       <PWAInstallModal
@@ -101,7 +100,7 @@ export const MobilePWAInstallItem = () => {
       >
         <span className="flex items-center gap-2">
           <Download className="w-4 h-4 text-amber-200" />
-          <span>Install Anti App (PWA)</span>
+          <span>Install Fur App (PWA)</span>
         </span>
         <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-900/60 text-amber-200 font-bold uppercase tracking-wider">
           Add
@@ -176,13 +175,13 @@ export const PWAInstallModal = ({ isOpen, onClose, platform, isInstallable, onDi
             <div className="w-16 h-16 rounded-2xl bg-amber-800 text-white flex items-center justify-center shadow-lg overflow-hidden border-2 border-white dark:border-stone-800 mb-4">
               <img 
                 src="/pwa-192x192.png" 
-                alt="Anti Logo" 
+                alt="Fur Logo" 
                 className="w-full h-full object-cover"
               />
             </div>
             
             <h3 className="text-lg font-serif font-bold text-stone-900 dark:text-stone-100">
-              Install Anti Studio App
+              Install Fur Studio App
             </h3>
             <p className="text-[10px] text-stone-500 dark:text-stone-400 mt-1 font-bold uppercase tracking-widest">
               Premier Workshop Access
@@ -312,7 +311,7 @@ export const SmartInstallBanner = () => {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <h4 className="text-sm font-bold text-stone-900 dark:text-stone-100 truncate">Anti Studio Mobile</h4>
+                  <h4 className="text-sm font-bold text-stone-900 dark:text-stone-100 truncate">Fur Studio Mobile</h4>
                   <span className="px-1.5 py-0.5 rounded-md bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-400 text-[8px] font-black uppercase tracking-tighter">Official</span>
                 </div>
                 <p className="text-[11px] text-stone-500 dark:text-stone-400 leading-tight">Install the official workshop app for faster browsing and offline access to our catalog.</p>

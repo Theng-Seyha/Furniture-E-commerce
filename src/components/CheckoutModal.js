@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { X, Send, CheckCircle2, Loader2, ExternalLink, Wrench, Printer, FileText, Clock, AlertCircle, PackageCheck } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { sendOrderToTelegram, TELEGRAM_CONFIG } from "../services/telegramService";
@@ -60,7 +60,7 @@ export const CheckoutModal = () => {
     };
     const result = await sendOrderToTelegram(orderData);
     setIsSubmitting(false);
-    const assignedOrderId = result.orderId || `ANTI-${Math.floor(1e5 + Math.random() * 9e5)}`;
+    const assignedOrderId = result.orderId || `FUR-${Math.floor(1e5 + Math.random() * 9e5)}`;
     const completedResult = {
       success: true,
       orderId: assignedOrderId,
@@ -71,7 +71,7 @@ export const CheckoutModal = () => {
     
     // Save to localStorage for the Order Status Tracking section and My Orders history
     try {
-      localStorage.setItem('anti_recent_order', JSON.stringify(completedResult));
+      localStorage.setItem('fur_recent_order', JSON.stringify(completedResult));
     } catch (err) {
       console.warn("Storage warning:", err);
     }
@@ -94,14 +94,16 @@ export const CheckoutModal = () => {
     setValidationError("");
   };
 
-  if (!isCheckoutOpen) return null;
-  return <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/60 backdrop-blur-xs overflow-y-auto">
-      <motion.div
-    initial={{ opacity: 0, scale: 0.95 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.95 }}
-    className="bg-white dark:bg-stone-900 max-w-xl w-full max-h-[92vh] overflow-y-auto rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 dark:border-stone-800 relative text-stone-900 dark:text-stone-100"
-  >
+  return (
+    <AnimatePresence>
+      {isCheckoutOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/60 backdrop-blur-xs overflow-y-auto">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="bg-white dark:bg-stone-900 max-w-xl w-full max-h-[92vh] overflow-y-auto rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 dark:border-stone-800 relative text-stone-900 dark:text-stone-100"
+          >
         <button
     onClick={handleClose}
     className="absolute top-5 right-5 p-2 rounded-full text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 cursor-pointer"
@@ -131,7 +133,7 @@ export const CheckoutModal = () => {
             <div className="my-6 p-6 rounded-2xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200 dark:border-stone-700 text-left space-y-4 print:border-0 print:bg-white print:p-0 print:text-black">
               <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-700 pb-4 print:border-stone-300">
                 <div>
-                  <h4 className="text-lg font-serif font-bold tracking-tight">THE ANTI STUDIO</h4>
+                  <h4 className="text-lg font-serif font-bold tracking-tight">THE FUR STUDIO</h4>
                   <p className="text-[10px] uppercase tracking-widest text-stone-400 font-bold">Official Order Ticket</p>
                 </div>
                 <div className="text-right">
@@ -203,7 +205,7 @@ export const CheckoutModal = () => {
 
               <div className="pt-6 text-center print:block hidden">
                 <p className="text-[10px] text-stone-400">
-                  Thank you for choosing Anti Studio. Please keep this ticket for delivery verification.
+                  Thank you for choosing Fur Studio. Please keep this ticket for delivery verification.
                   Managed by Theng Seyha • Workshop ID: @{TELEGRAM_CONFIG.BOT_USERNAME}
                 </p>
               </div>
@@ -451,5 +453,8 @@ export const CheckoutModal = () => {
           </div>
   )}
       </motion.div>
-    </div>;
+    </div>
+  )}
+  </AnimatePresence>
+  );
 };

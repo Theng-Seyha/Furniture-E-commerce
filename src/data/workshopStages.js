@@ -1,6 +1,6 @@
 /**
  * Workshop Order Tracking Data & Handcrafted Stages
- * The Anti Studio - Phnom Penh, Cambodia
+ * The Fur Studio - Phnom Penh, Cambodia
  */
 import {
   ClipboardCheck,
@@ -129,8 +129,8 @@ export const HANDCRAFTED_STAGES = [
 ];
 
 export const SAMPLE_ORDERS = {
-  'ANTI-849201': {
-    orderId: 'ANTI-849201',
+  'FUR-849201': {
+    orderId: 'FUR-849201',
     customerName: 'Sophea Kem',
     productName: 'Torii Solid Oak Dining Table (220cm)',
     material: 'Appalachian White Oak & Natural Matte Hardwax',
@@ -148,8 +148,8 @@ export const SAMPLE_ORDERS = {
       { time: 'Sep 18, 11:00 AM', note: 'Planks moisture tested at 8.6%. Book-matched slab grain continuity verified.' }
     ]
   },
-  'ANTI-392104': {
-    orderId: 'ANTI-392104',
+  'FUR-392104': {
+    orderId: 'FUR-392104',
     customerName: 'Jean-Marc Dupont',
     productName: 'Kanso Modular Three-Seater (Oatmeal Bouclé)',
     material: 'Solid White Oak Plinth & Belgian Bouclé Fabric',
@@ -166,8 +166,8 @@ export const SAMPLE_ORDERS = {
       { time: 'Sep 19, 01:15 PM', note: 'Bouclé fabric bolt inspected for color batch consistency.' }
     ]
   },
-  'ANTI-712048': {
-    orderId: 'ANTI-712048',
+  'FUR-712048': {
+    orderId: 'FUR-712048',
     customerName: 'Elena Rostova',
     productName: 'Kyoto Curved Bench & Stool (Natural Oak)',
     material: 'Solid White Oak with Saddle Dish Carve',
@@ -184,8 +184,8 @@ export const SAMPLE_ORDERS = {
       { time: 'Sep 19, 10:30 AM', note: 'Natural beeswax buffed to satin sheen. Felt floor gliders fitted.' }
     ]
   },
-  'ANTI-502931': {
-    orderId: 'ANTI-502931',
+  'FUR-502931': {
+    orderId: 'FUR-502931',
     customerName: 'Rathana Seng',
     productName: 'Atelier Solid Oak Writing Desk (Brass Channel)',
     material: 'Quarter-Sawn Oak & Anodized Gunmetal Steel',

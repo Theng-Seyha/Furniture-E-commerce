@@ -6,7 +6,7 @@ import { ScrollReveal } from "./ScrollReveal";
 const CRAFT_FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80";
 
-export const WhyChooseAnti = () => {
+export const WhyChooseFur = () => {
   const [showStoryModal, setShowStoryModal] = useState(false);
   const points = [
     {
@@ -27,7 +27,7 @@ export const WhyChooseAnti = () => {
     }
   ];
   return (
-    <section id="why-anti" className="py-14 sm:py-24 overflow-hidden">
+    <section id="why-fur" className="py-14 sm:py-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
@@ -97,7 +97,7 @@ export const WhyChooseAnti = () => {
             <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-xl bg-stone-200 dark:bg-stone-800 aspect-4/3 sm:aspect-5/4">
               <img
                 src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80"
-                alt="Anti furniture craftsmanship and design detail"
+                alt="Fur furniture craftsmanship and design detail"
                 onError={(e) => {
                   e.currentTarget.src = CRAFT_FALLBACK_IMAGE;
                 }}
@@ -136,7 +136,7 @@ export const WhyChooseAnti = () => {
                 Notes from the Workshop Desk
               </h3>
               <p className="text-sm text-stone-600 dark:text-stone-300 mt-4 leading-relaxed">
-                Hi, I'm Theng Seyha. I study architecture in Phnom Penh and spend my weekends in our small woodshop. I started Anti because I wanted to create furniture that actually lasts—pieces made from real wood, not the cheap substitutes that fall apart after a few months.
+                Hi, I'm Theng Seyha. I study architecture in Phnom Penh and spend my weekends in our small woodshop. I started Fur because I wanted to create furniture that actually lasts—pieces made from real wood, not the cheap substitutes that fall apart after a few months.
               </p>
               <p className="text-sm text-stone-600 dark:text-stone-300 mt-3 leading-relaxed">
                 Every piece is handcrafted with care using solid kiln-dried timber and traditional joinery. I personally oversee each commission to ensure it meets our quality standards. If you have any questions or want to discuss a custom project, feel free to reach out to me directly on Telegram.

@@ -1,6 +1,6 @@
 /**
  * Telegram Bot Integration Service
- * The Anti Studio - Handcrafted by Theng Seyha
+ * The Fur Studio - Handcrafted by Theng Seyha
  * Bot: @FurnitureOnlineSellingbot
  */
 
@@ -36,7 +36,7 @@ export async function sendOrderToTelegram(orderData) {
     promoCode
   } = orderData;
 
-  const orderRef = `ANTI-${Math.floor(100000 + Math.random() * 900000)}`;
+  const orderRef = `FUR-${Math.floor(100000 + Math.random() * 900000)}`;
 
   const itemsText = (items || []).map((item, idx) => {
     const itemName = item.name || item.product?.name || 'Furniture Piece';
@@ -65,7 +65,7 @@ ${itemsText}
 ${assemblyFee > 0 ? `<b>White-Glove Assembly:</b> +$${assemblyFee.toLocaleString()}\n` : ''}${discount > 0 ? `<b>Discount${promoCode ? ` (${promoCode})` : ''}:</b> -$${discount.toLocaleString()}\n` : ''}<b>Shipping:</b> ${shipping === 0 ? 'FREE (White-Glove)' : `$${shipping}`}
 <b>💰 GRAND TOTAL:</b> $${(total || 0).toLocaleString()}
 ━━━━━━━━━━━━━━━━━━━━━
-<i>Dispatched from The Anti Studio Web Platform</i>
+<i>Dispatched from The Fur Studio Web Platform</i>
 `.trim();
 
   let sent = false;
@@ -116,7 +116,7 @@ export async function sendInquiryToTelegram(inquiryData) {
 <b>Message:</b>
 ${message}
 ━━━━━━━━━━━━━━━━━━━━━
-<i>Sent via The Anti Studio Contact Portal</i>
+<i>Sent via The Fur Studio Contact Portal</i>
 `.trim();
 
   let sent = false;
@@ -157,7 +157,7 @@ export async function getOrderStatusFromShop(orderIdInput, options = {}) {
   if (!cleanId) {
     return {
       found: false,
-      message: 'Please enter a valid Order ID (e.g. ANTI-849201).'
+      message: 'Please enter a valid Order ID (e.g. FUR-849201).'
     };
   }
 
@@ -167,7 +167,7 @@ export async function getOrderStatusFromShop(orderIdInput, options = {}) {
   // 2. Check saved orders from browser storage if available
   if (!matched && typeof window !== 'undefined') {
     try {
-      const savedStr = localStorage.getItem('anti_furniture_orders_v1');
+      const savedStr = localStorage.getItem('fur_furniture_orders_v1');
       if (savedStr) {
         const savedList = JSON.parse(savedStr);
         const item = savedList.find(o => o.orderId === cleanId);
@@ -193,7 +193,7 @@ export async function getOrderStatusFromShop(orderIdInput, options = {}) {
 
       // Check recent order
       if (!matched) {
-        const recentStr = localStorage.getItem('anti_recent_order');
+        const recentStr = localStorage.getItem('fur_recent_order');
         if (recentStr) {
           const recentItem = JSON.parse(recentStr);
           if (recentItem.orderId === cleanId) {
@@ -221,8 +221,8 @@ export async function getOrderStatusFromShop(orderIdInput, options = {}) {
     }
   }
 
-  // 3. Fallback dynamically generated order if user enters any valid ANTI-XXXXXX format
-  if (!matched && cleanId.startsWith('ANTI-')) {
+  // 3. Fallback dynamically generated order if user enters any valid FUR-XXXXXX format
+  if (!matched && (cleanId.startsWith('FUR-') || cleanId.startsWith('FUR-'))) {
     matched = {
       orderId: cleanId,
       customerName: 'Studio Client',

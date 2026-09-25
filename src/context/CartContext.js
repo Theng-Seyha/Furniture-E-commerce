@@ -3,12 +3,12 @@ import { ALL_PRODUCTS } from '../data/furnitureData';
 
 const CartContext = createContext(undefined);
 
-const CART_STORAGE_KEY = 'anti_furniture_cart_v2';
-const WISHLIST_STORAGE_KEY = 'anti_furniture_wishlist_v1';
-const THEME_STORAGE_KEY = 'anti_furniture_theme';
-const ORDERS_STORAGE_KEY = 'anti_furniture_orders_v1';
-const RECENT_ORDER_KEY = 'anti_recent_order';
-const RECENTLY_VIEWED_KEY = 'anti_recently_viewed_v1';
+const CART_STORAGE_KEY = 'fur_furniture_cart_v2';
+const WISHLIST_STORAGE_KEY = 'fur_furniture_wishlist_v1';
+const THEME_STORAGE_KEY = 'fur_furniture_theme';
+const ORDERS_STORAGE_KEY = 'fur_furniture_orders_v1';
+const RECENT_ORDER_KEY = 'fur_recent_order';
+const RECENTLY_VIEWED_KEY = 'fur_recently_viewed_v1';
 const ASSEMBLY_FEE_PER_ITEM = 40;
 const FREE_SHIPPING_THRESHOLD = 500;
 
@@ -18,6 +18,9 @@ export const CartProvider = ({ children }) => {
     try {
       const saved = localStorage.getItem(CART_STORAGE_KEY);
       if (saved) return JSON.parse(saved);
+      // Fallback for transition
+      const oldSaved = localStorage.getItem('anti_furniture_cart_v2');
+      if (oldSaved) return JSON.parse(oldSaved);
     } catch (e) {
       console.error('Failed to load cart from localStorage:', e);
     }
@@ -37,6 +40,8 @@ export const CartProvider = ({ children }) => {
     try {
       const saved = localStorage.getItem(WISHLIST_STORAGE_KEY);
       if (saved) return JSON.parse(saved);
+      const oldSaved = localStorage.getItem('anti_furniture_wishlist_v1');
+      if (oldSaved) return JSON.parse(oldSaved);
     } catch (e) {
       console.error('Failed to load wishlist from localStorage:', e);
     }
@@ -58,8 +63,11 @@ export const CartProvider = ({ children }) => {
       if (saved) {
         return JSON.parse(saved);
       }
+      const oldSaved = localStorage.getItem('anti_furniture_orders_v1');
+      if (oldSaved) return JSON.parse(oldSaved);
+
       // Check if there was an order saved in single recent key
-      const singleRecent = localStorage.getItem(RECENT_ORDER_KEY);
+      const singleRecent = localStorage.getItem(RECENT_ORDER_KEY) || localStorage.getItem('anti_recent_order');
       if (singleRecent) {
         return [JSON.parse(singleRecent)];
       }
@@ -374,7 +382,7 @@ export const CartProvider = ({ children }) => {
   // Promo Codes
   const applyPromoCode = (code) => {
     const clean = code.trim().toUpperCase();
-    if (clean === 'ANTI25' || clean === 'SUMMER25') {
+    if (clean === 'FUR25' || clean === 'SUMMER25' || clean === 'ANTI25') {
       setPromoCode(clean);
       setDiscountPercent(0.25);
       return { success: true, message: '🎉 Summer Special Deal applied! 25% discount activated.' };

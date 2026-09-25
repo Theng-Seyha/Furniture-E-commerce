@@ -18,8 +18,6 @@ export const WishlistDrawer = () => {
     showToast,
   } = useCart();
 
-  if (!isWishlistOpen) return null;
-
   const handleShareWishlist = () => {
     try {
       const url = window.location.origin + window.location.pathname + '#shop';
@@ -32,24 +30,25 @@ export const WishlistDrawer = () => {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 overflow-hidden">
-        {/* Backdrop */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={() => setIsWishlistOpen(false)}
-          className="fixed inset-0 bg-stone-950/40 backdrop-blur-xs transition-opacity"
-        />
-
-        <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+      {isWishlistOpen && (
+        <div className="fixed inset-0 z-50 overflow-hidden">
+          {/* Backdrop */}
           <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 28, stiffness: 280 }}
-            className="w-screen max-w-md bg-white dark:bg-[#181614] shadow-2xl flex flex-col border-l border-stone-200 dark:border-stone-800"
-          >
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsWishlistOpen(false)}
+            className="fixed inset-0 bg-stone-950/40 backdrop-blur-xs transition-opacity"
+          />
+
+          <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 28, stiffness: 280 }}
+              className="w-screen max-w-md bg-white dark:bg-[#181614] shadow-2xl flex flex-col border-l border-stone-200 dark:border-stone-800"
+            >
             {/* Header */}
             <div className="px-6 py-5 border-b border-stone-100 dark:border-stone-800/80 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -186,6 +185,7 @@ export const WishlistDrawer = () => {
           </motion.div>
         </div>
       </div>
+    )}
     </AnimatePresence>
   );
 };

@@ -6,7 +6,7 @@ import { Hero } from './components/Hero';
 import { ValueProps } from './components/ValueProps';
 import { CategoryBrowser } from './components/CategoryBrowser';
 import { SignatureCollection } from './components/SignatureCollection';
-import { WhyChooseAnti } from './components/WhyChooseAnti';
+import { WhyChooseFur } from './components/WhyChooseFur';
 import { StudioSpecimenCard } from './components/StudioSpecimenCard';
 import { SocialProofBanner } from './components/SocialProofBanner';
 import { SummerDealBanner } from './components/SummerDealBanner';
@@ -209,7 +209,7 @@ const MainLayout = () => {
               <SignatureCollection onViewAll={() => navigateTo('shop')} />
 
               {/* Merged Craftsmanship & Standards */}
-              <WhyChooseAnti />
+              <WhyChooseFur />
               <StudioSpecimenCard />
 
               <SocialProofBanner onReadStories={() => handleNavigate('customer-reviews')} />
@@ -254,7 +254,7 @@ const MainLayout = () => {
       <button
         onClick={() => setIsTelegramModalOpen(true)}
         aria-label="Telegram Bot Support"
-        title="Chat with Anti Support Bot on Telegram"
+        title="Chat with Fur Support Bot on Telegram"
         className="fixed bottom-6 right-6 z-30 p-3.5 rounded-full bg-sky-600 hover:bg-sky-500 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2 cursor-pointer"
         id="floating-telegram-btn"
       >

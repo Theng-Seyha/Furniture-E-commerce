@@ -33,24 +33,24 @@ export const MyOrdersModal = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showConfirmClear, setShowConfirmClear] = useState(false);
 
-  if (!isOrdersModalOpen) return null;
-
   const handleTrackInPipeline = (orderId) => {
     setIsOrdersModalOpen(false);
     navigateTo('tracking');
     // Pre-populate or trigger lookup
     // We will ensure OrderStatusTracking picks this up via its internal sync logic or props
-    localStorage.setItem('anti_last_lookup_id', orderId);
+    localStorage.setItem('fur_last_lookup_id', orderId);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-stone-950/65 backdrop-blur-xs overflow-y-auto">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-[#FAF8F5] dark:bg-[#161412] text-stone-900 dark:text-stone-100 max-w-2xl w-full max-h-[90vh] overflow-hidden rounded-3xl shadow-2xl border border-stone-200 dark:border-stone-800 flex flex-col relative"
-      >
+    <AnimatePresence>
+      {isOrdersModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-stone-950/65 backdrop-blur-xs overflow-y-auto">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="bg-[#FAF8F5] dark:bg-[#161412] text-stone-900 dark:text-stone-100 max-w-2xl w-full max-h-[90vh] overflow-hidden rounded-3xl shadow-2xl border border-stone-200 dark:border-stone-800 flex flex-col relative"
+          >
         {/* Modal Header */}
         <div className="p-5 sm:p-6 border-b border-stone-200/80 dark:border-stone-800/80 flex items-center justify-between bg-white dark:bg-stone-900 shrink-0">
           <div className="flex items-center gap-2.5">
@@ -294,5 +294,7 @@ export const MyOrdersModal = () => {
         </div>
       </motion.div>
     </div>
+  )}
+  </AnimatePresence>
   );
 };

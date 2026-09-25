@@ -76,7 +76,7 @@ export const Hero = ({ onShopNow, onViewCollections }) => {
             <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-xl bg-stone-200 dark:bg-stone-800 aspect-4/3 sm:aspect-16/11">
               <img
     src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1400&q=85"
-    alt="Anti modern furniture living room collection"
+    alt="Fur modern furniture living room collection"
     className="w-full h-full object-cover object-center transform hover:scale-102 transition-transform duration-700"
     loading="eager"
   />

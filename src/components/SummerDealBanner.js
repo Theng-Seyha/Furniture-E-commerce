@@ -69,7 +69,7 @@ export const SummerDealBanner = ({ onGrabDeal }) => {
             >
               <img
                 src="https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=1200&q=80"
-                alt="Anti Summer Dining Table & Chairs Special"
+                alt="Fur Summer Dining Table & Chairs Special"
                 onError={(e) => {
                   e.currentTarget.src = DEAL_FALLBACK_IMAGE;
                 }}

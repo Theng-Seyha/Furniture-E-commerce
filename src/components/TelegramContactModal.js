@@ -43,12 +43,10 @@ export const TelegramContactModal = () => {
   const [isSending, setIsSending] = useState(false);
   const [sentSuccess, setSentSuccess] = useState(false);
 
-  if (!isTelegramModalOpen) return null;
-
   const handleStatusSearch = async (e) => {
     if (e) e.preventDefault();
     if (!statusOrderId.trim()) {
-      setStatusError("Please enter an Order ID (e.g. ANTI-849201).");
+      setStatusError("Please enter an Order ID (e.g. FUR-849201).");
       return;
     }
 
@@ -103,13 +101,15 @@ export const TelegramContactModal = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-stone-950/65 backdrop-blur-xs overflow-y-auto">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-white dark:bg-stone-900 max-w-xl w-full rounded-3xl p-6 sm:p-7 shadow-2xl border border-stone-200 dark:border-stone-800 relative text-stone-900 dark:text-stone-100 max-h-[92vh] overflow-y-auto"
-      >
+    <AnimatePresence>
+      {isTelegramModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-stone-950/65 backdrop-blur-xs overflow-y-auto">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="bg-white dark:bg-stone-900 max-w-xl w-full rounded-3xl p-6 sm:p-7 shadow-2xl border border-stone-200 dark:border-stone-800 relative text-stone-900 dark:text-stone-100 max-h-[92vh] overflow-y-auto"
+          >
         {/* Close Button */}
         <button
           onClick={handleClose}
@@ -126,7 +126,7 @@ export const TelegramContactModal = () => {
             <span>Telegram Bot Integration • @{TELEGRAM_CONFIG.BOT_USERNAME}</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-serif font-bold text-stone-900 dark:text-stone-100">
-            Anti Workshop Terminal
+            Fur Workshop Terminal
           </h3>
           <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
             Direct integration with founder <b>{TELEGRAM_CONFIG.OWNER_NAME}</b> and Phnom Penh bench queue.
@@ -187,7 +187,7 @@ export const TelegramContactModal = () => {
                       setStatusOrderId(e.target.value.toUpperCase());
                       setStatusError("");
                     }}
-                    placeholder="eg. ANTI-849201"
+                    placeholder="eg. FUR-849201"
                     className="w-full pl-9 pr-3.5 py-2.5 text-xs font-mono font-medium rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-1 focus:ring-amber-700 uppercase"
                   />
                 </div>
@@ -217,7 +217,7 @@ export const TelegramContactModal = () => {
                 Quick Test Sample Orders:
               </span>
               <div className="flex flex-wrap gap-1.5">
-                {["ANTI-849201", "ANTI-392104", "ANTI-712048", "ANTI-502931"].map((sId) => (
+                {["FUR-849201", "FUR-392104", "FUR-712048", "FUR-502931"].map((sId) => (
                   <button
                     key={sId}
                     type="button"
@@ -333,7 +333,7 @@ export const TelegramContactModal = () => {
                     type="button"
                     onClick={() => {
                       handleClose();
-                      localStorage.setItem("anti_last_lookup_id", statusResult.orderId);
+                      localStorage.setItem("fur_last_lookup_id", statusResult.orderId);
                       navigateTo("tracking");
                     }}
                     className="py-2.5 px-4 rounded-full bg-stone-200 hover:bg-stone-300 dark:bg-stone-700 dark:hover:bg-stone-600 text-stone-900 dark:text-stone-100 font-semibold text-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5"
@@ -480,5 +480,7 @@ export const TelegramContactModal = () => {
         )}
       </motion.div>
     </div>
+  )}
+  </AnimatePresence>
   );
 };

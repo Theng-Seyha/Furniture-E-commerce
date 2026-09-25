@@ -33,7 +33,7 @@ export const OrderStatusTracking = ({ initialOrderId }) => {
 
   // Search input state
   const [searchInput, setSearchInput] = useState('');
-  const [activeOrder, setActiveOrder] = useState(SAMPLE_ORDERS['ANTI-849201']);
+  const [activeOrder, setActiveOrder] = useState(SAMPLE_ORDERS['FUR-849201']);
   const [selectedStageIndex, setSelectedStageIndex] = useState(3); // 0-indexed (Stage 4)
   const [copied, setCopied] = useState(false);
   const [recentStoredOrder, setRecentStoredOrder] = useState(null);
@@ -41,12 +41,12 @@ export const OrderStatusTracking = ({ initialOrderId }) => {
   // Check localStorage for recently placed session orders or requested lookups
   useEffect(() => {
     try {
-      const lastLookup = localStorage.getItem('anti_last_lookup_id');
-      const recent = localStorage.getItem('anti_recent_order');
+      const lastLookup = localStorage.getItem('fur_last_lookup_id');
+      const recent = localStorage.getItem('fur_recent_order');
       
       if (lastLookup) {
         handleLookup(lastLookup);
-        localStorage.removeItem('anti_last_lookup_id'); // Clear after use
+        localStorage.removeItem('fur_last_lookup_id'); // Clear after use
       } else if (initialOrderId) {
         handleLookup(initialOrderId);
       } else if (recent) {
@@ -97,7 +97,7 @@ export const OrderStatusTracking = ({ initialOrderId }) => {
 
     // If order was stored in session localStorage
     try {
-      const recent = localStorage.getItem('anti_recent_order');
+      const recent = localStorage.getItem('fur_recent_order');
       if (recent) {
         const parsed = JSON.parse(recent);
         if (parsed.orderId === cleanId) {
@@ -197,7 +197,7 @@ export const OrderStatusTracking = ({ initialOrderId }) => {
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleLookup(searchInput)}
-                placeholder="Enter Order ID (eg. ANTI-849201)"
+                placeholder="Enter Order ID (eg. FUR-849201)"
                 className="w-full pl-10 pr-3 py-2.5 rounded-full text-xs bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-hidden focus:ring-2 focus:ring-amber-700 dark:focus:ring-amber-500 transition-all font-mono"
                 id="order-tracking-input"
               />

@@ -1,5 +1,5 @@
 /**
- * The Anti Studio - Curated Furniture & Workshop Data
+ * The Fur Studio - Curated Furniture & Workshop Data
  * Handcrafted by Theng Seyha
  */
 
@@ -50,7 +50,7 @@ export const CATEGORIES = [
 
 export const ALL_PRODUCTS = [
   {
-    "id": "anti-kanso-sofa",
+    "id": "fur-kanso-sofa",
     "name": "Kanso Modular Three-Seater",
     "category": "Living Room",
     "itemType": "sofa",
@@ -95,7 +95,7 @@ export const ALL_PRODUCTS = [
     ]
   },
   {
-    "id": "anti-nordic-armchair",
+    "id": "fur-nordic-armchair",
     "name": "Soren Low Armchair",
     "category": "Living Room",
     "itemType": "chair",
@@ -139,7 +139,7 @@ export const ALL_PRODUCTS = [
     ]
   },
   {
-    "id": "anti-dining-table",
+    "id": "fur-dining-table",
     "name": "Torii 8-Seater Dining Table",
     "category": "Dining Room",
     "itemType": "table",
@@ -178,7 +178,7 @@ export const ALL_PRODUCTS = [
     ]
   },
   {
-    "id": "anti-tambour-credenza",
+    "id": "fur-tambour-credenza",
     "name": "Mori Tambour Credenza",
     "category": "Storage",
     "itemType": "storage",
@@ -217,7 +217,7 @@ export const ALL_PRODUCTS = [
     ]
   },
   {
-    "id": "anti-zenith-bed",
+    "id": "fur-zenith-bed",
     "name": "Nami Low Platform Bed Frame",
     "category": "Bedroom",
     "itemType": "bed",
@@ -256,7 +256,7 @@ export const ALL_PRODUCTS = [
     ]
   },
   {
-    "id": "anti-studio-desk",
+    "id": "fur-studio-desk",
     "name": "Atelier Solid Oak Writing Desk",
     "category": "Office",
     "itemType": "desk",
@@ -295,7 +295,7 @@ export const ALL_PRODUCTS = [
     ]
   },
   {
-    "id": "anti-lunar-lamp",
+    "id": "fur-lunar-lamp",
     "name": "Wabi Lunar Paper Floor Lamp",
     "category": "Lighting",
     "itemType": "lighting",
@@ -329,7 +329,7 @@ export const ALL_PRODUCTS = [
     ]
   },
   {
-    "id": "anti-kyoto-stool",
+    "id": "fur-kyoto-stool",
     "name": "Kyoto Curved Bench & Stool",
     "category": "Dining Room",
     "itemType": "chair",
@@ -371,7 +371,7 @@ export const ALL_PRODUCTS = [
 
 export const SIGNATURE_PRODUCTS = [
   {
-    "id": "anti-kanso-sofa",
+    "id": "fur-kanso-sofa",
     "name": "Kanso Modular Three-Seater",
     "category": "Living Room",
     "itemType": "sofa",
@@ -416,7 +416,7 @@ export const SIGNATURE_PRODUCTS = [
     ]
   },
   {
-    "id": "anti-nordic-armchair",
+    "id": "fur-nordic-armchair",
     "name": "Soren Low Armchair",
     "category": "Living Room",
     "itemType": "chair",
@@ -460,7 +460,7 @@ export const SIGNATURE_PRODUCTS = [
     ]
   },
   {
-    "id": "anti-dining-table",
+    "id": "fur-dining-table",
     "name": "Torii 8-Seater Dining Table",
     "category": "Dining Room",
     "itemType": "table",
@@ -499,7 +499,7 @@ export const SIGNATURE_PRODUCTS = [
     ]
   },
   {
-    "id": "anti-tambour-credenza",
+    "id": "fur-tambour-credenza",
     "name": "Mori Tambour Credenza",
     "category": "Storage",
     "itemType": "storage",
@@ -541,7 +541,7 @@ export const SIGNATURE_PRODUCTS = [
 
 export const FEATURED_PRODUCTS = [
   {
-    "id": "anti-kanso-sofa",
+    "id": "fur-kanso-sofa",
     "name": "Kanso Modular Three-Seater",
     "category": "Living Room",
     "itemType": "sofa",
@@ -586,7 +586,7 @@ export const FEATURED_PRODUCTS = [
     ]
   },
   {
-    "id": "anti-nordic-armchair",
+    "id": "fur-nordic-armchair",
     "name": "Soren Low Armchair",
     "category": "Living Room",
     "itemType": "chair",
@@ -630,7 +630,7 @@ export const FEATURED_PRODUCTS = [
     ]
   },
   {
-    "id": "anti-dining-table",
+    "id": "fur-dining-table",
     "name": "Torii 8-Seater Dining Table",
     "category": "Dining Room",
     "itemType": "table",
@@ -669,7 +669,7 @@ export const FEATURED_PRODUCTS = [
     ]
   },
   {
-    "id": "anti-tambour-credenza",
+    "id": "fur-tambour-credenza",
     "name": "Mori Tambour Credenza",
     "category": "Storage",
     "itemType": "storage",
@@ -726,7 +726,7 @@ export const TESTIMONIALS = [
   },
   {
     "id": 3,
-    "quote": "Anti proves that you don't have to import flat-pack veneer junk to have timeless Scandinavian-Japanese aesthetics in Cambodia. The solid walnut credenza is a true heirloom piece.",
+    "quote": "Fur proves that you don't have to import flat-pack veneer junk to have timeless Scandinavian-Japanese aesthetics in Cambodia. The solid walnut credenza is a true heirloom piece.",
     "author": "Elena Rostova",
     "role": "Interior Stylist",
     "rating": 5
@@ -743,7 +743,7 @@ export const BLOG_POSTS = [
     "image": "https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?auto=format&fit=crop&w=800&q=80",
     "content": [
       "Modern furniture has become overwhelmingly disposable. Engineered particle boards off-gas volatile formaldehyde and degrade at the first hint of tropical humidity.",
-      "At Anti, every timber plank is kiln-dried to an exact 8–10% equilibrium moisture content before being dimensioned by hand. White oak naturally contains high levels of tannic acid, rendering it resilient against pests and fungal decay without artificial synthetic chemical coatings.",
+      "At Fur, every timber plank is kiln-dried to an exact 8–10% equilibrium moisture content before being dimensioned by hand. White oak naturally contains high levels of tannic acid, rendering it resilient against pests and fungal decay without artificial synthetic chemical coatings.",
       "When you touch our furniture, you feel the authentic warmth and grain pores of real living timber—a material that gains character, warmth, and depth as it ages with your household."
     ]
   },

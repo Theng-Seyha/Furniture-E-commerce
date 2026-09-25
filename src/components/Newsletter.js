@@ -45,7 +45,7 @@ export const Newsletter = () => {
                   className="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-semibold"
                 >
                   <Check className="w-4 h-4" />
-                  <span>You are subscribed! Welcome to the Anti design circle.</span>
+                  <span>You are subscribed! Welcome to the Fur design circle.</span>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubscribe} className="mt-6 flex flex-col sm:flex-row gap-3 max-w-md">
