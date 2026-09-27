@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Master Deny-All
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Global Helpers
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() { return isSignedIn() && request.auth.token.email == "seyhatheng1@gmail.com" && request.auth.token.email_verified == true; }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+
+    // Internship Application Validation
+    function isValidApplication(data) {
+      return data.keys().hasAll(['fullname', 'email', 'status', 'ref', 'createdAt', 'updatedAt']) &&
+             data.keys().hasOnly(['fullname', 'email', 'phone', 'university', 'github', 'skills', 'motivation', 'status', 'ref', 'createdAt', 'updatedAt']) &&
+             data.fullname is string && data.fullname.size() <= 100 &&
+             data.email is string && data.email.size() <= 150 &&
+             data.status in ['Received', 'Under Review', 'Scheduled for Interview', 'Rejected', 'Accepted'] &&
+             data.ref is string && data.ref.matches('^INT-\\d{6}$') &&
+             data.createdAt == request.time &&
+             data.updatedAt == request.time;
+    }
+
+    match /internship_applications/{applicationId} {
+      allow create: if isValidId(applicationId) && isValidApplication(incoming());
+      
+      // Admin can manage applications
+      allow read, list: if isAdmin();
+      allow update: if isAdmin() && 
+                    isValidApplication(incoming()) && 
+                    incoming().createdAt == existing().createdAt &&
+                    incoming().updatedAt == request.time;
+      allow delete: if isAdmin();
+    }
+
+    // Monitoring Rules
+    match /runtime_errors/{errorId} {
+      allow create: if isValidId(errorId) && 
+                    incoming().keys().hasAll(['message', 'timestamp', 'severity']) &&
+                    incoming().timestamp == request.time;
+      allow read, list, delete: if isAdmin();
+    }
+  }
+}

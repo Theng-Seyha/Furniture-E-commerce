@@ -23,7 +23,13 @@ import {
 } from "../services/telegramService";
 
 export const TelegramContactModal = () => {
-  const { isTelegramModalOpen, setIsTelegramModalOpen, showToast, navigateTo } = useCart();
+  const { 
+    isTelegramModalOpen, 
+    setIsTelegramModalOpen, 
+    showToast, 
+    navigateTo,
+    notifyTelegramResult 
+  } = useCart();
 
   // Active Tab: 'inquiry' or 'status'
   const [activeTab, setActiveTab] = useState("status");
@@ -60,7 +66,7 @@ export const TelegramContactModal = () => {
 
     if (res.found) {
       setStatusResult(res);
-      if (showToast) showToast(`Order ${res.orderId} verified with workshop.`);
+      notifyTelegramResult(true, 'Status verified');
     } else {
       setStatusError(res.message || "Order ID not found.");
     }
@@ -70,7 +76,7 @@ export const TelegramContactModal = () => {
     e.preventDefault();
     if (!name || !contact || !message) return;
     setIsSending(true);
-    await sendInquiryToTelegram({
+    const result = await sendInquiryToTelegram({
       name,
       emailOrPhone: contact,
       subject,
@@ -78,6 +84,7 @@ export const TelegramContactModal = () => {
     });
     setIsSending(false);
     setSentSuccess(true);
+    notifyTelegramResult(result.sent, 'Inquiry');
   };
 
   const handleClose = () => {

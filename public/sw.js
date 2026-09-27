@@ -1,4 +1,4 @@
-const CACHE_NAME = 'anti-studio-v1';
+const CACHE_NAME = 'fur-studio-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

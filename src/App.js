@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CartProvider, useCart } from './context/CartContext';
+import MonitoringService from './services/MonitoringService';
+import './services/firebase'; // Initialize Firebase
+
+// Initialize Monitoring
+MonitoringService.initGlobalListeners();
+
+import ErrorBoundary from './components/ErrorBoundary';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ValueProps } from './components/ValueProps';
@@ -27,6 +34,7 @@ import { ProductDetailPage } from './components/ProductDetailPage';
 import { ContactSection } from './components/ContactSection';
 import { VanillaCodeModal } from './components/VanillaCodeModal';
 import { OrderStatusTracking } from './components/OrderStatusTracking';
+import { TrackOrderModal } from './components/TrackOrderModal';
 import { MyOrdersModal } from './components/MyOrdersModal';
 import { Send, ArrowLeft } from 'lucide-react';
 import { OfflineIndicator, SmartInstallBanner } from './components/PWAControls';
@@ -242,6 +250,7 @@ const MainLayout = () => {
       <SearchModal />
       <CheckoutModal />
       <MyOrdersModal />
+      <TrackOrderModal />
       <ProductDetailModal />
       <TelegramContactModal />
       <VanillaCodeModal
@@ -269,8 +278,10 @@ const MainLayout = () => {
 
 export default function App() {
   return (
-    <CartProvider>
-      <MainLayout />
-    </CartProvider>
+    <ErrorBoundary>
+      <CartProvider>
+        <MainLayout />
+      </CartProvider>
+    </ErrorBoundary>
   );
 }

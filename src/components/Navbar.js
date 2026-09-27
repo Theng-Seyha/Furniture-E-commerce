@@ -13,6 +13,7 @@ import {
   Home,
   Grid,
   PackageCheck,
+  Clock,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { TELEGRAM_CONFIG } from '../services/telegramService';
@@ -33,6 +34,8 @@ export const Navbar = ({ onNavigate }) => {
     setIsWishlistOpen,
     savedOrdersCount,
     setIsOrdersModalOpen,
+    isTrackOrderModalOpen,
+    setIsTrackOrderModalOpen,
     setIsSearchOpen,
     isDarkMode,
     toggleDarkMode,
@@ -249,6 +252,20 @@ export const Navbar = ({ onNavigate }) => {
                 ⌘K
               </kbd>
             </button>
+            
+            {/* Quick Track Order Modal Trigger */}
+            <button
+              onClick={() => setIsTrackOrderModalOpen(true)}
+              aria-label="Quick Track Order"
+              title="Quick Track Order"
+              className="hidden sm:flex items-center gap-1.5 p-1.5 sm:p-2 xl:px-3 xl:py-1.5 rounded-full text-stone-600 dark:text-stone-300 bg-transparent hover:text-stone-900 dark:hover:text-stone-100 transition-all cursor-pointer border border-stone-200/60 dark:border-stone-800/60 hover:border-stone-400 dark:hover:border-stone-500 active:scale-95"
+              id="quick-track-btn"
+            >
+              <Clock className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400" />
+              <span className="hidden xl:inline text-xs text-stone-600 dark:text-stone-300 font-medium">
+                Track
+              </span>
+            </button>
 
             {/* Wishlist / Saved Items Button */}
             <button
@@ -396,6 +413,19 @@ export const Navbar = ({ onNavigate }) => {
                 <div className="pt-3 border-t border-stone-200 dark:border-stone-800 flex flex-col gap-2.5">
                   {/* PWA Install Button for Mobile Drawer */}
                   <MobilePWAInstallItem />
+
+                  {/* Track Order (Mobile & Tablet) */}
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setIsTrackOrderModalOpen(true);
+                    }}
+                    className="flex items-center gap-2 w-full py-2.5 px-4 rounded-xl bg-amber-50 dark:bg-amber-950/20 text-amber-900 dark:text-amber-200 text-xs font-bold transition-all cursor-pointer hover:bg-amber-100 dark:hover:bg-amber-900/40 shadow-xs active:scale-95"
+                    id="mobile-track-order-btn"
+                  >
+                    <Clock className="w-4 h-4 text-amber-700 dark:text-amber-400" />
+                    <span>Quick Track Workshop Status</span>
+                  </button>
 
                   {/* View My Orders (Mobile & Tablet) */}
                   <button

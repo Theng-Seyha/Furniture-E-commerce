@@ -2,7 +2,14 @@ import { Send, Instagram, Facebook, Twitter, Sun, Moon } from "lucide-react";
 import { TELEGRAM_CONFIG } from "../services/telegramService";
 import { useCart } from "../context/CartContext";
 export const Footer = ({ onNavigate, onOpenVanillaModal }) => {
-  const { setSelectedCategory, setIsTelegramModalOpen, setIsOrdersModalOpen, isDarkMode, toggleDarkMode } = useCart();
+  const { 
+    setSelectedCategory, 
+    setIsTelegramModalOpen, 
+    setIsOrdersModalOpen, 
+    setIsTrackOrderModalOpen,
+    isDarkMode, 
+    toggleDarkMode 
+  } = useCart();
   const handleShopCategory = (cat) => {
     setSelectedCategory(cat);
     onNavigate("featured-products");
@@ -41,11 +48,11 @@ export const Footer = ({ onNavigate, onOpenVanillaModal }) => {
               </p>
               <div className="flex flex-wrap items-center gap-2">
                 <button
-                  onClick={() => setIsTelegramModalOpen(true)}
+                  onClick={() => setIsTrackOrderModalOpen(true)}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-700/90 hover:bg-amber-700 text-white text-xs font-semibold transition-colors cursor-pointer"
-                  id="footer-get-order-status-btn"
+                  id="footer-track-order-btn"
                 >
-                  <span>Get Order Status</span>
+                  <span>Track Order Status</span>
                 </button>
                 <a
                   href={TELEGRAM_CONFIG.BOT_URL}

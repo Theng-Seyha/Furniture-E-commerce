@@ -18,7 +18,8 @@ export const CheckoutModal = () => {
     navigateTo,
     showToast,
     recordNewOrder,
-    setIsOrdersModalOpen
+    setIsOrdersModalOpen,
+    notifyTelegramResult
   } = useCart();
   const [customerName, setCustomerName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -69,19 +70,12 @@ export const CheckoutModal = () => {
       ...orderData
     };
     
-    // Save to localStorage for the Order Status Tracking section and My Orders history
-    try {
-      localStorage.setItem('fur_recent_order', JSON.stringify(completedResult));
-    } catch (err) {
-      console.warn("Storage warning:", err);
-    }
-
     if (recordNewOrder) {
       recordNewOrder(completedResult);
     }
 
     setOrderResult(completedResult);
-    if (showToast) showToast(`Order ${assignedOrderId} transmitted to workshop!`);
+    notifyTelegramResult(result.sent, 'Order');
     clearCart();
   };
   const handlePrintTicket = () => {
@@ -130,7 +124,7 @@ export const CheckoutModal = () => {
             </div>
 
             {/* THE TICKET - This is optimized for both screen and PRINT */}
-            <div className="my-6 p-6 rounded-2xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200 dark:border-stone-700 text-left space-y-4 print:border-0 print:bg-white print:p-0 print:text-black">
+            <div id="printable-order-ticket" className="my-6 p-6 rounded-2xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200 dark:border-stone-700 text-left space-y-4 print:border-0 print:bg-white print:p-0 print:text-black">
               <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-700 pb-4 print:border-stone-300">
                 <div>
                   <h4 className="text-lg font-serif font-bold tracking-tight">THE FUR STUDIO</h4>

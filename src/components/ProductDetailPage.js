@@ -976,53 +976,7 @@ export const ProductDetailPage = ({ product }) => {
 
       </div>
 
-      {/* Sticky Mobile Purchase Bar */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#181614]/95 backdrop-blur-md border-t border-stone-200/80 dark:border-stone-800/80 px-4 py-2.5 shadow-2xl flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5 min-w-0">
-          <img
-            src={product.image}
-            alt={product.name}
-            onError={(e) => {
-              e.currentTarget.src = PRODUCT_DETAIL_FALLBACK;
-            }}
-            className="w-10 h-10 rounded-lg object-cover bg-stone-100 dark:bg-stone-800 shrink-0"
-          />
-          <div className="truncate">
-            <h4 className="text-xs font-bold text-stone-900 dark:text-stone-100 truncate">
-              {product.name}
-            </h4>
-            <p className="text-[11px] font-bold text-amber-800 dark:text-amber-400">
-              ${calculatedGrandTotal.toLocaleString()}
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 shrink-0">
-          <button
-            onClick={() => toggleWishlist(product)}
-            className={`p-2 rounded-full border border-stone-200 dark:border-stone-700 transition-colors cursor-pointer ${
-              wishlisted
-                ? "bg-rose-50 text-rose-600 dark:bg-rose-950 dark:text-rose-400"
-                : "text-stone-600 dark:text-stone-300"
-            }`}
-            aria-label="Save piece to wishlist"
-          >
-            <Heart className={`w-4 h-4 ${wishlisted ? "fill-current" : ""}`} />
-          </button>
-
-          <button
-            onClick={handleAddToCart}
-            className="py-2 px-4 rounded-full bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 text-xs font-semibold shadow-md flex items-center gap-1.5 cursor-pointer"
-          >
-            <ShoppingBag className="w-3.5 h-3.5" />
-            <span>Add to Cart</span>
-          </button>
-        </div>
-      </div>
-
-      {
-    /* 6. Fullscreen Image Lightbox Modal */
-  }
+      {/* 6. Fullscreen Image Lightbox Modal */}
       <AnimatePresence>
         {isLightboxOpen && <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/90 backdrop-blur-md">
             <button

@@ -262,6 +262,7 @@ export const CartProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false);
+  const [isTrackOrderModalOpen, setIsTrackOrderModalOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
@@ -283,6 +284,17 @@ export const CartProvider = ({ children }) => {
     setTimeout(() => {
       setToastMessage((current) => (current === msg ? null : current));
     }, 3200);
+  };
+
+  /**
+   * Global helper for Telegram API feedback
+   */
+  const notifyTelegramResult = (success, actionLabel = 'Order') => {
+    if (success) {
+      showToast(`🎉 ${actionLabel} transmitted successfully to workshop bot.`);
+    } else {
+      showToast(`⚠️ ${actionLabel} relay failed. Please message @FurnitureOnlineSellingbot directly.`);
+    }
   };
 
   // Cart Operations
@@ -379,6 +391,11 @@ export const CartProvider = ({ children }) => {
     setWishlist((prev) => prev.filter((item) => item.id !== productId));
   };
 
+  const clearWishlist = () => {
+    setWishlist([]);
+    showToast('Wishlist cleared');
+  };
+
   // Promo Codes
   const applyPromoCode = (code) => {
     const clean = code.trim().toUpperCase();
@@ -438,11 +455,14 @@ export const CartProvider = ({ children }) => {
         isWishlisted,
         toggleWishlist,
         removeFromWishlist,
+        clearWishlist,
         // Saved Orders & History
         savedOrders,
         savedOrdersCount: savedOrders.length,
         isOrdersModalOpen,
         setIsOrdersModalOpen,
+        isTrackOrderModalOpen,
+        setIsTrackOrderModalOpen,
         recordNewOrder,
         deleteOrder,
         clearAllOrders,
@@ -463,6 +483,7 @@ export const CartProvider = ({ children }) => {
         toggleDarkMode,
         toastMessage,
         showToast,
+        notifyTelegramResult,
         currentView,
         selectedProductId,
         currentProduct,

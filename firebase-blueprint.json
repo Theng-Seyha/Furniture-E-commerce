@@ -1,0 +1,105 @@
+{
+  "entities": {
+    "internship_applications": {
+      "title": "Internship Application",
+      "description": "Stores details of internship applicants and their review status.",
+      "type": "object",
+      "properties": {
+        "fullname": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Full name of the applicant"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Email address for contact and status lookup"
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Phone number"
+        },
+        "university": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "University name"
+        },
+        "github": {
+          "type": "string",
+          "pattern": "^https?://github\\.com/.*$",
+          "description": "GitHub profile link"
+        },
+        "skills": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Comma-separated list of skills"
+        },
+        "motivation": {
+          "type": "string",
+          "maxLength": 2000,
+          "description": "Vision and motivation text"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Received",
+            "Under Review",
+            "Scheduled for Interview",
+            "Rejected",
+            "Accepted"
+          ],
+          "description": "Current status of the application"
+        },
+        "ref": {
+          "type": "string",
+          "pattern": "^INT-\\d{6}$",
+          "description": "Unique reference ID"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        }
+      },
+      "required": [
+        "fullname",
+        "email",
+        "status",
+        "ref",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "runtime_errors": {
+      "title": "Runtime Error Log",
+      "description": "Captured errors from the production frontend for debugging.",
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" },
+        "stack": { "type": "string" },
+        "url": { "type": "string" },
+        "userAgent": { "type": "string" },
+        "component": { "type": "string", "description": "React component or module name" },
+        "severity": { "type": "string", "enum": ["error", "warning", "fatal"] },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["message", "timestamp", "severity"]
+    }
+  },
+  "firestore": {
+    "/internship_applications/{applicationId}": {
+      "schema": "internship_applications",
+      "description": "Root collection for internship applications"
+    },
+    "/runtime_errors/{errorId}": {
+      "schema": "runtime_errors",
+      "description": "Global error logs for proactive monitoring"
+    }
+  }
+}
