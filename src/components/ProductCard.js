@@ -242,7 +242,7 @@ export const ProductCard = ({
             <div className="flex items-center -space-x-1">
               {product.colors?.slice(0, 3).map((c) => (
                 <button
-                  key={c.name}
+                  key={`${product.id}-${c.name}`}
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
