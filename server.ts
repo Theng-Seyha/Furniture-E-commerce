@@ -3,32 +3,44 @@ import path from 'path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
-import admin from 'firebase-admin';
 import { getApps, initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Load Firebase Config safely
-const firebaseConfig = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, 'firebase-applet-config.json'), 'utf-8')
-);
-
-// Initialize Firebase Admin (uses application default credentials)
+// Safe Firebase Admin Initialization
+let db: any = null;
 try {
+  let firebaseConfig: any = {};
+  const configPath = path.resolve(__dirname, 'firebase-applet-config.json');
+  if (fs.existsSync(configPath)) {
+    firebaseConfig = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+  }
+
   if (getApps().length === 0) {
-    initializeApp();
+    initializeApp({
+      projectId: firebaseConfig.projectId || process.env.GCP_PROJECT || process.env.GOOGLE_CLOUD_PROJECT,
+    });
+  }
+
+  if (firebaseConfig.firestoreDatabaseId) {
+    db = getFirestore(firebaseConfig.firestoreDatabaseId);
+  } else {
+    db = getFirestore();
   }
 } catch (e) {
-  // Silent fail if already initialized
+  console.warn('Firebase Admin initialization notice:', e);
 }
-
-const db = getFirestore(firebaseConfig.firestoreDatabaseId);
 
 async function createServer() {
   const app = express();
   app.use(express.json()); // Essential for bot webhooks
-  const port = process.env.PORT || 3000;
+  const port = Number(process.env.PORT) || 3000;
+
+  // Health check endpoint for Cloud Run container health probes
+  app.get(['/healthz', '/api/health', '/_health'], (_req: Request, res: Response) => {
+    res.status(200).send('OK');
+  });
 
   // 1. Telegram Bot Webhook Handler for /status command
   app.post('/api/telegram-webhook', async (req: Request, res: Response) => {
@@ -52,6 +64,11 @@ async function createServer() {
       const email = parts[1].toLowerCase().trim();
       
       try {
+        if (!db) {
+          await sendBotMessage(chatId, "⚠️ Database service currently initializing. Please try again in a moment.");
+          return res.sendStatus(200);
+        }
+
         // Query by email without orderBy to avoid index requirement
         const snapshot = await db.collection('internship_applications')
           .where('email', '==', email)
@@ -61,7 +78,7 @@ async function createServer() {
           await sendBotMessage(chatId, `🔍 No application found for <b>${email}</b>. Please check the spelling or apply via the portal.`);
         } else {
           // Sort in memory to get the latest application
-          const docs = snapshot.docs.sort((a, b) => {
+          const docs = snapshot.docs.sort((a: any, b: any) => {
             const timeA = a.data().createdAt?.toMillis() || 0;
             const timeB = b.data().createdAt?.toMillis() || 0;
             return timeB - timeA;
@@ -117,13 +134,21 @@ async function createServer() {
   }
 
   if (process.env.NODE_ENV === 'production') {
-    // Production: Serve static files from dist
-    app.use(express.static(path.resolve(__dirname, 'dist')));
-    
-    // Fallback to index.html for SPA routing
-    app.get('*', (req, res) => {
-      res.sendFile(path.resolve(__dirname, 'dist/index.html'));
-    });
+    const distPath = path.resolve(__dirname, 'dist');
+    if (fs.existsSync(distPath)) {
+      // Production: Serve static files from dist
+      app.use(express.static(distPath));
+      
+      // Fallback to index.html for SPA routing
+      app.get('*', (_req, res) => {
+        res.sendFile(path.resolve(distPath, 'index.html'));
+      });
+    } else {
+      console.warn('Production dist directory not found, serving root fallback.');
+      app.get('*', (_req, res) => {
+        res.sendFile(path.resolve(__dirname, 'index.html'));
+      });
+    }
   } else {
     // Development: Use Vite middleware
     const vite = await createViteServer({
@@ -152,9 +177,12 @@ async function createServer() {
     });
   }
 
-  app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`Server listening on 0.0.0.0:${port}`);
   });
 }
 
-createServer();
+createServer().catch((err) => {
+  console.error('Fatal server startup error:', err);
+  process.exit(1);
+});

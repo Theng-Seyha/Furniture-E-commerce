@@ -54,6 +54,10 @@ const MainLayout = () => {
   const [isVanillaModalOpen, setIsVanillaModalOpen] = useState(false);
 
   const handleNavigate = (sectionId) => {
+    if (sectionId === 'home' || !sectionId) {
+      navigateTo('home');
+      return;
+    }
     if (sectionId === 'featured-products' || sectionId === 'shop') {
       navigateTo('shop');
       return;
@@ -68,7 +72,7 @@ const MainLayout = () => {
     }
     
     // Centralize all home section navigation through navigateTo
-    // this ensures hash updates and robust scroll-into-view behavior
+    // this ensures clean section scrolling without creating separate dummy pages
     navigateTo('home', sectionId);
   };
 
@@ -95,13 +99,13 @@ const MainLayout = () => {
         <AnimatePresence mode="wait">
           {currentView === 'product-detail' && currentProduct ? (
             <motion.div
-              key="product-detail"
+              key={`product-detail-${currentProduct.id}`}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
-              <ProductDetailPage product={currentProduct} />
+              <ProductDetailPage key={currentProduct.id} product={currentProduct} />
             </motion.div>
           ) : currentView === 'contact' ? (
             <motion.div
@@ -206,7 +210,13 @@ const MainLayout = () => {
             >
               <Hero
                 onShopNow={() => navigateTo('shop')}
-                onViewCollections={() => handleNavigate('signature-collection')}
+                onViewCollections={(e) => {
+                  e?.preventDefault?.();
+                  const el = document.getElementById('signature-collection');
+                  if (el) {
+                    el.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
               />
 
               {/* Consolidated Value Props */}
@@ -229,7 +239,7 @@ const MainLayout = () => {
                 <WhyShopPillars />
               </div>
 
-              <div id="customer-reviews">
+              <div id="customer-reviews" className="scroll-mt-20 sm:scroll-mt-24">
                 <CustomerReviews />
               </div>
 

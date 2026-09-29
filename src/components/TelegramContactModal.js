@@ -74,13 +74,22 @@ export const TelegramContactModal = () => {
 
   const handleInquirySubmit = async (e) => {
     e.preventDefault();
-    if (!name || !contact || !message) return;
+    const trimmedName = name.trim();
+    if (!trimmedName || trimmedName.length < 2) {
+      if (showToast) showToast('Please enter your full name (letters only)');
+      return;
+    }
+    if (/\d/.test(trimmedName)) {
+      if (showToast) showToast('Full name must contain only text without numbers');
+      return;
+    }
+    if (!contact.trim() || !message.trim()) return;
     setIsSending(true);
     const result = await sendInquiryToTelegram({
-      name,
-      emailOrPhone: contact,
+      name: trimmedName,
+      emailOrPhone: contact.trim(),
       subject,
-      message
+      message: message.trim()
     });
     setIsSending(false);
     setSentSuccess(true);
@@ -414,7 +423,7 @@ export const TelegramContactModal = () => {
                     type="text"
                     required
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => setName(e.target.value.replace(/[^a-zA-Z\s\u1780-\u17FF'.-]/g, ''))}
                     placeholder="eg. Theng Seyha"
                     className="w-full px-3.5 py-2 text-xs rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 focus:outline-hidden focus:ring-1 focus:ring-amber-700 text-stone-900 dark:text-stone-100"
                   />
@@ -428,8 +437,15 @@ export const TelegramContactModal = () => {
                     type="text"
                     required
                     value={contact}
-                    onChange={(e) => setContact(e.target.value)}
-                    placeholder="eg. +855 714 607 603 or @username"
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (/^[\d+]/.test(val)) {
+                        setContact(val.replace(/[^\d+ -]/g, ''));
+                      } else {
+                        setContact(val.replace(/[^a-zA-Z0-9_@.-]/g, ''));
+                      }
+                    }}
+                    placeholder="eg. 0714607603 or @username"
                     className="w-full px-3.5 py-2 text-xs rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 focus:outline-hidden focus:ring-1 focus:ring-amber-700 text-stone-900 dark:text-stone-100"
                   />
                 </div>

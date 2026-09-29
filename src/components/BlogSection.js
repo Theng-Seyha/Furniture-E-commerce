@@ -10,7 +10,7 @@ const BLOG_FALLBACK_IMAGE =
 export const BlogSection = () => {
   const [activePost, setActivePost] = useState(null);
   return (
-    <section id="blog" className="py-14 sm:py-24 bg-stone-100/40 dark:bg-stone-900/20">
+    <section id="blog" className="py-14 sm:py-24 bg-stone-100/40 dark:bg-stone-900/20 scroll-mt-20 sm:scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header with scroll reveal */}
         <ScrollReveal

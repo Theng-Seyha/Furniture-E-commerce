@@ -52,14 +52,14 @@ export const CartDrawer = () => {
     className="absolute inset-0 bg-stone-950/50 backdrop-blur-xs transition-opacity"
   />
 
-          <div className="fixed inset-y-0 right-0 max-w-full flex pl-6 sm:pl-10">
+          <div className="fixed inset-y-0 right-0 max-w-full flex w-full sm:w-auto">
             <motion.div
-    initial={{ x: "100%" }}
-    animate={{ x: 0 }}
-    exit={{ x: "100%" }}
-    transition={{ type: "spring", damping: 28, stiffness: 280 }}
-    className="w-screen max-w-md bg-[#FAF8F5] dark:bg-[#161412] text-stone-900 dark:text-stone-100 shadow-2xl flex flex-col"
-  >
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 28, stiffness: 280 }}
+              className="w-full sm:w-[440px] md:w-[480px] bg-[#FAF8F5] dark:bg-[#161412] text-stone-900 dark:text-stone-100 shadow-2xl flex flex-col h-full overflow-x-hidden"
+            >
               
               {
     /* Header */
@@ -116,7 +116,7 @@ export const CartDrawer = () => {
               {
     /* Items List */
   }
-              <div className="grow overflow-y-auto p-5 sm:p-6 space-y-4">
+              <div className="grow overflow-y-auto overflow-x-hidden p-5 sm:p-6 space-y-4">
                 {cart.length === 0 ? <div className="h-full flex flex-col items-center justify-center text-center py-12">
                     <div className="w-16 h-16 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center text-stone-400 mb-4">
                       <ShoppingBag className="w-8 h-8" />
@@ -158,17 +158,17 @@ export const CartDrawer = () => {
     /* Image */
   }
                         <div
-    onClick={() => {
-      setIsCartOpen(false);
-      navigateToProduct(item.product.id);
-    }}
-    className="w-20 h-20 rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-800 shrink-0 cursor-pointer"
-  >
+                          onClick={() => {
+                            setIsCartOpen(false);
+                            navigateToProduct(item.product.id);
+                          }}
+                          className="w-20 h-20 rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-800 shrink-0 cursor-pointer"
+                        >
                           <img
-    src={item.product.image}
-    alt={item.product.name}
-    className="w-full h-full object-cover hover:scale-105 transition-transform"
-  />
+                            src={item.selectedImage || item.product.image}
+                            alt={item.product.name}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform"
+                          />
                         </div>
 
                         {

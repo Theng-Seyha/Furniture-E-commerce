@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   ArrowLeft,
@@ -57,9 +57,26 @@ export const ProductDetailPage = ({ product }) => {
   const [deliveryLocation, setDeliveryLocation] = useState("Phnom Penh Central");
   const [bundleAdded, setBundleAdded] = useState(false);
 
+  // Sync state cleanly whenever selected product changes
+  useEffect(() => {
+    setActiveImageIndex(0);
+    setSelectedColor(
+      product.colors && product.colors[0] ? product.colors[0].name : "Standard"
+    );
+    setQuantity(1);
+    setIncludeAssembly(false);
+  }, [product.id]);
+
   const wishlisted = isWishlisted(product.id);
   const galleryImages = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image];
   const activeImage = galleryImages[activeImageIndex] || product.image;
+
+  const handleColorSelect = (colorName, colorIndex) => {
+    setSelectedColor(colorName);
+    if (galleryImages && galleryImages[colorIndex]) {
+      setActiveImageIndex(colorIndex);
+    }
+  };
   const assemblyPricePerUnit = 40;
   const unitPrice = product.price;
   const itemsSubtotal = unitPrice * quantity;
@@ -114,14 +131,14 @@ export const ProductDetailPage = ({ product }) => {
     };
 
   const handleAddToCart = () => {
-    addToCart(product, quantity, selectedColor, includeAssembly);
+    addToCart(product, quantity, selectedColor, includeAssembly, activeImage);
     setIsCartOpen(true);
   };
 
   const handleAddBundleToCart = () => {
     if (!bundleCompanion) return;
-    addToCart(product, 1, selectedColor, false);
-    addToCart(bundleCompanion, 1, bundleCompanion.colors?.[0]?.name || "Standard", false);
+    addToCart(product, 1, selectedColor, false, activeImage);
+    addToCart(bundleCompanion, 1, bundleCompanion.colors?.[0]?.name || "Standard", false, bundleCompanion.image);
     setBundleAdded(true);
     if (showToast) {
       showToast(`Studio Pair added! 10% bundle applied on both items.`);
@@ -133,7 +150,7 @@ export const ProductDetailPage = ({ product }) => {
   };
 
   const handleDirectTelegramOrder = () => {
-    addToCart(product, quantity, selectedColor, includeAssembly);
+    addToCart(product, quantity, selectedColor, includeAssembly, activeImage);
     const text = encodeURIComponent(
       `Hello Theng Seyha! I'd like to order: ${product.name} (${selectedColor}) x${quantity} with ${includeAssembly ? "White Glove Assembly" : "Standard Delivery"} to ${deliveryLocation}. Total: $${calculatedGrandTotal.toLocaleString()}.`
     );
@@ -414,10 +431,10 @@ export const ProductDetailPage = ({ product }) => {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  {product.colors.map((c) => (
+                  {product.colors.map((c, idx) => (
                     <button
                       key={c.name}
-                      onClick={() => setSelectedColor(c.name)}
+                      onClick={() => handleColorSelect(c.name, idx)}
                       className={`group relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all cursor-pointer ${
                         selectedColor === c.name
                           ? "border-amber-800 dark:border-amber-500 ring-2 ring-amber-300 dark:ring-amber-900 scale-110 shadow-sm"

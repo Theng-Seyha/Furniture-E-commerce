@@ -221,14 +221,14 @@ export const CartProvider = ({ children }) => {
       if (!isHomeSection) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        // For home sections, scroll to the ID with a delay to ensure mounting
-        // We wait 450ms to allow AnimatePresence exit transitions (300ms) to complete
+        // If already on home view, scroll smoothly right away; if transitioning from another view, wait for mounting
+        const scrollDelay = currentView === 'home' ? 50 : 350;
         setTimeout(() => {
           const el = document.getElementById(hash);
           if (el) {
             el.scrollIntoView({ behavior: 'smooth' });
           }
-        }, 450);
+        }, scrollDelay);
       }
     };
 
@@ -244,13 +244,48 @@ export const CartProvider = ({ children }) => {
     // scrollTo(0) is handled by handleHashChange
   };
 
-  const navigateTo = (view, sectionId) => {
+  const navigateTo = (view, sectionId = null) => {
     if (view === 'home') {
-      window.location.hash = sectionId ? `${sectionId}` : '';
-      // If we are already on home and just changing hash, handleHashChange will fire.
-      // If we are NOT on home, setting hash will trigger handleHashChange which switches view.
+      const isAlreadyHome = currentView === 'home';
+      if (!isAlreadyHome) {
+        setCurrentView('home');
+        setSelectedProductId(null);
+      }
+      
+      window.history.replaceState(null, '', window.location.pathname);
+
+      if (sectionId) {
+        const scrollToTarget = () => {
+          const el = document.getElementById(sectionId);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+            return true;
+          }
+          return false;
+        };
+
+        if (isAlreadyHome) {
+          // Immediately scroll if already on home
+          scrollToTarget();
+        } else {
+          // When switching from other views, AnimatePresence takes ~200-300ms to mount home.
+          // Polling every 30ms ensures it scrolls on the very FIRST click the millisecond DOM mounts!
+          let attempts = 0;
+          const intervalId = setInterval(() => {
+            attempts++;
+            if (scrollToTarget() || attempts >= 25) {
+              clearInterval(intervalId);
+            }
+          }, 30);
+        }
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     } else {
+      setCurrentView(view);
+      setSelectedProductId(null);
       window.location.hash = view;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -298,13 +333,17 @@ export const CartProvider = ({ children }) => {
   };
 
   // Cart Operations
-  const addToCart = (product, quantity = 1, selectedColor, includeAssembly = false) => {
+  const addToCart = (product, quantity = 1, selectedColor, includeAssembly = false, selectedImage = null) => {
     const color =
       selectedColor || (product.colors && product.colors[0]?.name) || 'Standard';
+    const chosenImage = selectedImage || product.image;
 
     setCart((prevCart) => {
       const existingIndex = prevCart.findIndex(
-        (item) => item.product.id === product.id && item.selectedColor === color
+        (item) =>
+          item.product.id === product.id &&
+          item.selectedColor === color &&
+          (item.selectedImage || item.product.image) === chosenImage
       );
 
       if (existingIndex > -1) {
@@ -316,7 +355,16 @@ export const CartProvider = ({ children }) => {
         };
         return newCart;
       } else {
-        return [...prevCart, { product, quantity, selectedColor: color, includeAssembly }];
+        return [
+          ...prevCart,
+          {
+            product,
+            quantity,
+            selectedColor: color,
+            includeAssembly,
+            selectedImage: chosenImage,
+          },
+        ];
       }
     });
 

@@ -13,16 +13,25 @@ export const ContactSection = () => {
   const [submittedResult, setSubmittedResult] = useState(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name || !emailOrPhone || !message) {
-      showToast("Please provide your name, contact info, and inquiry message.");
+    const trimmedName = name.trim();
+    if (!trimmedName || trimmedName.length < 2) {
+      showToast("Please provide your full name (letters only).");
+      return;
+    }
+    if (/\d/.test(trimmedName)) {
+      showToast("Full name must contain only text and cannot include numbers.");
+      return;
+    }
+    if (!emailOrPhone.trim() || !message.trim()) {
+      showToast("Please provide your contact info and inquiry message.");
       return;
     }
     setIsSubmitting(true);
     const res = await sendInquiryToTelegram({
-      name,
-      emailOrPhone,
+      name: trimmedName,
+      emailOrPhone: emailOrPhone.trim(),
       subject,
-      message
+      message: message.trim()
     });
     setIsSubmitting(false);
     setSubmittedResult(res);
@@ -197,13 +206,13 @@ export const ContactSection = () => {
                       Your Full Name *
                     </label>
                     <input
-    type="text"
-    required
-    value={name}
-    onChange={(e) => setName(e.target.value)}
-    placeholder="eg. Theng Seyha"
-    className="w-full px-3.5 py-2 text-xs rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-hidden focus:ring-1 focus:ring-amber-700"
-  />
+                      type="text"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value.replace(/[^a-zA-Z\s\u1780-\u17FF'.-]/g, ''))}
+                      placeholder="eg. Theng Seyha"
+                      className="w-full px-3.5 py-2 text-xs rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-hidden focus:ring-1 focus:ring-amber-700"
+                    />
                   </div>
 
                   <div>
@@ -211,13 +220,20 @@ export const ContactSection = () => {
                       Phone Number or Telegram *
                     </label>
                     <input
-    type="text"
-    required
-    value={emailOrPhone}
-    onChange={(e) => setEmailOrPhone(e.target.value)}
-    placeholder="eg. +855 714 607 603 or @username"
-    className="w-full px-3.5 py-2 text-xs rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-hidden focus:ring-1 focus:ring-amber-700"
-  />
+                      type="text"
+                      required
+                      value={emailOrPhone}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (/^[\d+]/.test(val)) {
+                          setEmailOrPhone(val.replace(/[^\d+ -]/g, ''));
+                        } else {
+                          setEmailOrPhone(val.replace(/[^a-zA-Z0-9_@.-]/g, ''));
+                        }
+                      }}
+                      placeholder="eg. 0714607603 or @username"
+                      className="w-full px-3.5 py-2 text-xs rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-hidden focus:ring-1 focus:ring-amber-700"
+                    />
                   </div>
                 </div>
 

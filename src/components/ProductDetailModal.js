@@ -35,7 +35,7 @@ export const ProductDetailModal = () => {
         const currentImage = galleryImages[selectedImageIndex] || quickViewProduct.image;
         
         const handleAddToCart = () => {
-          addToCart(quickViewProduct, quantity, activeColor);
+          addToCart(quickViewProduct, quantity, activeColor, false, currentImage);
           setQuickViewProduct(null);
         };
 
@@ -46,20 +46,33 @@ export const ProductDetailModal = () => {
         };
 
         return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/65 backdrop-blur-xs overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-stone-950/65 backdrop-blur-xs overflow-y-auto overflow-x-hidden">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="bg-white dark:bg-[#181614] max-w-3xl w-full max-h-[92vh] overflow-y-auto rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 dark:border-stone-800 relative text-stone-900 dark:text-stone-100"
+              className="bg-white dark:bg-[#181614] max-w-3xl w-full max-h-[92vh] overflow-y-auto overflow-x-hidden rounded-3xl p-5 sm:p-7 shadow-2xl border border-stone-200 dark:border-stone-800 relative text-stone-900 dark:text-stone-100 flex flex-col"
             >
-              <button
-                onClick={() => setQuickViewProduct(null)}
-                className="absolute top-5 right-5 p-2 rounded-full text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 cursor-pointer z-10"
-                aria-label="Close modal"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              {/* Dedicated Top Modal Header - Keeps Cross Button (X) completely clean and separated out of the text */}
+              <div className="flex items-center justify-between pb-3.5 mb-4 sm:mb-5 border-b border-stone-100 dark:border-stone-800/80 shrink-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400">
+                    {quickViewProduct.category}
+                  </span>
+                  <span className="text-stone-300 dark:text-stone-700">•</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-400 font-medium">
+                    Quick Specification View
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setQuickViewProduct(null)}
+                  className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 flex items-center justify-center text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 transition-all cursor-pointer shadow-2xs border border-stone-200/60 dark:border-stone-700/60 active:scale-95 shrink-0"
+                  aria-label="Close detail modal"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-start">
                 {/* Left: Product Image & Gallery */}

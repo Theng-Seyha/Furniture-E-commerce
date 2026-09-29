@@ -20,10 +20,11 @@ import { TELEGRAM_CONFIG } from '../services/telegramService';
 import { PWAInstallButton, MobilePWAInstallItem } from './PWAControls';
 
 /**
- * Main Application Header & Ergonomic Navigation
- * - Floating glassmorphic island with subtle border and blur
- * - Micro announcement ticker with workshop status & free delivery progress
- * - Dedicated mobile bottom thumb dock for instant one-handed catalog, search, wishlist & cart access
+ * Senior Software Engineering Navigation Architecture
+ * - Full-screen computer and laptop responsive grid (zero horizontal overflow across 1024px, 1280px, 1440px, 1920px+)
+ * - Logical visual clustering with subtle dividers: [Search, Theme] | [Wishlist, Orders, Telegram] | [Cart, Mobile Toggle]
+ * - Progressive disclosure: concise controls on standard laptops, expanded pills on ultra-wide displays
+ * - Ergonomic mobile bottom thumb dock for one-handed reachability
  */
 export const Navbar = ({ onNavigate }) => {
   const {
@@ -49,7 +50,7 @@ export const Navbar = ({ onNavigate }) => {
   const [activeNavId, setActiveNavId] = useState('');
   const [isManualNav, setIsManualNav] = useState(false);
 
-  // Track window scroll for elevation styling
+  // Track window scroll for subtle elevation styling
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -69,11 +70,13 @@ export const Navbar = ({ onNavigate }) => {
         setActiveNavId('contact');
       } else if (currentView === 'tracking') {
         setActiveNavId('order-tracking');
+      } else if (currentView === 'product-detail') {
+        setActiveNavId('');
       } else if (currentView === 'home') {
-        if (hash && ['signature-collection', 'why-fur', 'order-tracking', 'customer-reviews', 'blog'].includes(hash)) {
+        if (hash && ['signature-collection', 'why-fur', 'customer-reviews', 'blog'].includes(hash)) {
           setActiveNavId(hash);
-        } else if (!hash || hash === 'home') {
-          setActiveNavId('signature-collection');
+        } else {
+          setActiveNavId('');
         }
       }
     };
@@ -90,23 +93,27 @@ export const Navbar = ({ onNavigate }) => {
     const sectionIds = [
       'signature-collection',
       'why-fur',
-      'order-tracking',
       'customer-reviews',
       'blog',
     ];
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveNavId(entry.target.id);
-          }
-        });
+        const visibleEntries = entries.filter((entry) => entry.isIntersecting);
+        if (visibleEntries.length > 0) {
+          // Sort by distance to top of viewport to find dominant visible section
+          visibleEntries.sort(
+            (a, b) =>
+              Math.abs(a.boundingClientRect.top) -
+              Math.abs(b.boundingClientRect.top)
+          );
+          setActiveNavId(visibleEntries[0].target.id);
+        }
       },
       {
         root: null,
-        rootMargin: '-20% 0px -60% 0px',
-        threshold: 0,
+        rootMargin: '-10% 0px -40% 0px',
+        threshold: [0.1, 0.25, 0.5],
       }
     );
 
@@ -116,30 +123,48 @@ export const Navbar = ({ onNavigate }) => {
     });
 
     return () => observer.disconnect();
-  }, [currentView]);
+  }, [currentView, isManualNav]);
 
   const navLinks = [
-    { id: 'featured-products', label: 'Shop All', view: 'shop' },
-    { id: 'signature-collection', label: 'Signature', view: 'home' },
-    { id: 'why-fur', label: 'Craftsmanship', view: 'home' },
-    { id: 'order-tracking', label: 'Tracking', view: 'tracking' },
-    { id: 'customer-reviews', label: 'Reviews', view: 'home' },
-    { id: 'blog', label: 'Journal', view: 'home' },
-    { id: 'contact', label: 'Contact', view: 'contact' },
+    { id: 'featured-products', label: 'Shop All', view: 'shop', primary: true },
+    { id: 'signature-collection', label: 'Signature', view: 'home', primary: true },
+    { id: 'why-fur', label: 'Craftsmanship', view: 'home', primary: true },
+    { id: 'customer-reviews', label: 'Reviews', view: 'home', primary: true },
+    { id: 'order-tracking', label: 'Tracking', view: 'tracking', primary: true },
+    { id: 'blog', label: 'Journal', view: 'home', primary: false },
+    { id: 'contact', label: 'Contact', view: 'contact', primary: true },
   ];
 
   const handleLinkClick = (id) => {
-    // 1. Close menu immediately to improve perceived speed
     setMobileMenuOpen(false);
-    
-    // 2. Set manual nav flag to prevent observer interference
     setIsManualNav(true);
+
+    if (id === 'home') {
+      setActiveNavId('');
+      if (currentView === 'home') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => setIsManualNav(false), 800);
+      } else {
+        onNavigate('home');
+      }
+      return;
+    }
+
     setActiveNavId(id);
-    
-    // 3. Perform navigation logic
+
+    const targetLink = navLinks.find((l) => l.id === id);
+
+    // If currently on home and navigating to an in-page section, scroll immediately and smoothly
+    if (currentView === 'home' && targetLink && targetLink.view === 'home') {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+      setTimeout(() => setIsManualNav(false), 1200);
+      return;
+    }
+
     onNavigate(id);
-    
-    // 4. Reset manual nav flag after scroll should have completed
     setTimeout(() => setIsManualNav(false), 1200);
   };
 
@@ -147,6 +172,7 @@ export const Navbar = ({ onNavigate }) => {
     if (currentView === 'shop') return link.id === 'featured-products';
     if (currentView === 'contact') return link.id === 'contact';
     if (currentView === 'tracking') return link.id === 'order-tracking';
+    if (currentView === 'product-detail') return false;
     return activeNavId === link.id;
   };
 
@@ -155,19 +181,19 @@ export const Navbar = ({ onNavigate }) => {
       {/* 1. Micro Announcement Ticker */}
       {showTicker && (
         <div className="bg-[#24211E] text-[#EDE8E1] text-[11px] font-medium py-1.5 px-4 border-b border-stone-800/80 transition-colors duration-300">
-          <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+          <div className="w-full max-w-[1440px] 2xl:max-w-[1600px] mx-auto flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 truncate">
-              <span className="inline-flex items-center gap-1.5 text-amber-400 font-semibold uppercase tracking-wider text-[10px] shrink-0">
-                <Sparkles className="w-3 h-3 text-amber-400" />
-                Workshop Live
+              <span className="inline-flex items-center gap-1.5 text-amber-300 font-medium text-[11px] shrink-0">
+                <Sparkles className="w-3 h-3 text-amber-300" />
+                Handcrafted in Phnom Penh
               </span>
               <span className="text-stone-500 shrink-0">•</span>
-              <span className="text-stone-300 truncate">
-                Phnom Penh Studio queue: <b className="text-white">24–48h courier dispatch</b>
+              <span className="text-stone-200 truncate">
+                Direct courier dispatch within <b className="text-white font-semibold">24–48 hours</b>
               </span>
               <span className="hidden lg:inline text-stone-500 shrink-0">•</span>
               <span className="hidden lg:inline text-stone-300 truncate">
-                Free White-Glove In-Home Assembly on orders over $500
+                Complimentary white-glove assembly on orders over $500
               </span>
             </div>
 
@@ -182,51 +208,51 @@ export const Navbar = ({ onNavigate }) => {
         </div>
       )}
 
-      {/* 2. Floating Island Header */}
+      {/* 2. Floating Island Header - Fully responsive across laptops and desktop monitors */}
       <header
         className={`sticky top-0 z-40 w-full transition-all duration-300 ${
           isScrolled
-            ? 'bg-[#FAF8F5]/90 dark:bg-[#121110]/90 backdrop-blur-md shadow-xs border-b border-stone-200/60 dark:border-stone-800/60 py-2.5'
-            : 'bg-[#FAF8F5] dark:bg-[#121110] py-3.5'
+            ? 'bg-[#FAF8F5]/90 dark:bg-[#121110]/90 backdrop-blur-md shadow-xs border-b border-stone-200/60 dark:border-stone-800/60 py-2 sm:py-2.5'
+            : 'bg-[#FAF8F5] dark:bg-[#121110] py-2.5 sm:py-3.5'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-2 lg:gap-4">
-          {/* Brand Logo */}
-          <div
-            onClick={() => handleLinkClick('signature-collection')}
-            className="flex items-center gap-2 cursor-pointer group select-none shrink-0"
+        <div className="w-full max-w-[1440px] 2xl:max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-2 lg:gap-4 xl:gap-6">
+          
+          {/* Left: Brand Logo */}
+          <button
+            type="button"
+            onClick={() => handleLinkClick('home')}
+            className="flex items-center gap-2 cursor-pointer group select-none shrink-0 p-1.5 -ml-1.5 rounded-2xl hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-all duration-300 ease-out"
+            title="Fur Home"
           >
             <div className="flex items-center shrink-0">
-              <span className="text-xl sm:text-2xl md:text-3xl font-serif font-bold tracking-tight text-stone-900 dark:text-stone-100">
+              <span className="text-xl sm:text-2xl md:text-3xl font-serif font-bold tracking-tight text-stone-900 dark:text-stone-100 group-hover:text-amber-800 dark:group-hover:text-amber-400 transition-colors">
                 Fur
               </span>
-              <div className="flex items-center ml-1 md:ml-1.5 gap-1 md:gap-2">
-                <span className="block w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-amber-700 dark:bg-amber-500 group-hover:scale-125 transition-transform" />
+              <div className="flex items-center ml-1 md:ml-1.5 gap-1 md:gap-1.5">
+                <span className="block w-1.5 h-1.5 rounded-full bg-amber-700 dark:bg-amber-500 group-hover:scale-125 transition-transform" />
                 <img 
                   src="/cambodia.jpg" 
                   alt="Cambodia" 
-                  className="w-4.5 h-3 md:w-5.5 md:h-4 rounded-sm object-cover select-none shadow-xs border border-stone-200/40 dark:border-stone-800/40"
+                  className="w-4.5 h-3 md:w-5 md:h-3.5 rounded-xs object-cover select-none shadow-2xs border border-stone-200/40 dark:border-stone-800/40"
                 />
               </div>
             </div>
-            <span className="hidden xl:inline text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-stone-200/70 dark:bg-stone-800 text-stone-600 dark:text-stone-300 border border-stone-300/40 dark:border-stone-700">
-              Studio
-            </span>
-          </div>
+          </button>
 
-          {/* Desktop & Tablet Navigation Capsule - Optimized for tablet width */}
-          <nav className="hidden lg:flex items-center space-x-0.5 lg:space-x-1 bg-stone-100/90 dark:bg-stone-900/80 p-1 rounded-full border border-stone-200/80 dark:border-stone-800/80 shrink-0">
+          {/* Center: Desktop Navigation Capsule (Adaptive for 1024px laptops up to 4K monitors) */}
+          <nav className="hidden lg:flex items-center bg-stone-100/90 dark:bg-stone-900/80 p-1 rounded-full border border-stone-200/80 dark:border-stone-800/80 shrink-0 shadow-2xs transition-all duration-300">
             {navLinks.map((link) => {
               const isActive = getIsActive(link);
               return (
                 <button
                   key={link.id}
-                  onClick={() => handleLinkClick(link.id)}
-                  className={`relative px-2 xl:px-3 py-1 md:py-1.5 rounded-full text-[10px] xl:text-xs font-semibold tracking-wide uppercase transition-all duration-200 cursor-pointer whitespace-nowrap select-none shrink-0 ${
-                    isActive
-                      ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 shadow-xs font-bold'
-                      : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
-                  } active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-700`}
+                  type="button"
+                  data-active={isActive}
+                  onClick={(e) => { handleLinkClick(link.id); e.currentTarget.blur(); }}
+                  className={`relative px-3 xl:px-4 py-1.5 rounded-full text-[11px] xl:text-xs font-semibold tracking-wide uppercase transition-all duration-300 ease-out cursor-pointer whitespace-nowrap select-none shrink-0 inline-flex items-center justify-center ${
+                    !link.primary ? 'hidden 2xl:inline-flex' : 'inline-flex'
+                  } text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 data-[active=true]:bg-stone-900 data-[active=true]:text-white data-[active=true]:dark:bg-stone-100 data-[active=true]:dark:text-stone-900 data-[active=true]:shadow-sm data-[active=true]:font-bold data-[active=true]:transform data-[active=true]:scale-[1.03] active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-700/50`}
                 >
                   <span>{link.label}</span>
                 </button>
@@ -234,145 +260,141 @@ export const Navbar = ({ onNavigate }) => {
             })}
           </nav>
 
-          {/* Right Action Icons & Controls */}
-          <div className="flex items-center space-x-1 sm:space-x-1.5 lg:space-x-2 shrink-0">
-            {/* Quick Search Spotlight Button */}
-            <button
-              onClick={() => setIsSearchOpen(true)}
-              aria-label="Search catalog (Cmd+K)"
-              title="Search catalog (Cmd+K)"
-              className="flex items-center gap-1.5 p-1.5 sm:p-2 xl:px-3 xl:py-1.5 rounded-full text-stone-600 dark:text-stone-300 bg-transparent hover:text-stone-900 dark:hover:text-stone-100 transition-all cursor-pointer border border-stone-200/60 dark:border-stone-800/60 hover:border-stone-400 dark:hover:border-stone-500 active:scale-95"
-              id="search-spotlight-btn"
-            >
-              <Search className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400" />
-              <span className="hidden 2xl:inline text-xs text-stone-600 dark:text-stone-300 font-medium">
-                Search pieces...
-              </span>
-              <kbd className="hidden 2xl:inline px-1.5 py-0.5 text-[9px] font-mono text-stone-500 bg-white dark:bg-stone-900 rounded border border-stone-200 dark:border-stone-700">
-                ⌘K
-              </kbd>
-            </button>
+          {/* Right: Clean, Well-Organized Action Controls */}
+          <div className="flex items-center space-x-1 sm:space-x-1.5 md:space-x-2 shrink-0">
             
-            {/* Quick Track Order Modal Trigger */}
-            <button
-              onClick={() => setIsTrackOrderModalOpen(true)}
-              aria-label="Quick Track Order"
-              title="Quick Track Order"
-              className="hidden sm:flex items-center gap-1.5 p-1.5 sm:p-2 xl:px-3 xl:py-1.5 rounded-full text-stone-600 dark:text-stone-300 bg-transparent hover:text-stone-900 dark:hover:text-stone-100 transition-all cursor-pointer border border-stone-200/60 dark:border-stone-800/60 hover:border-stone-400 dark:hover:border-stone-500 active:scale-95"
-              id="quick-track-btn"
-            >
-              <Clock className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400" />
-              <span className="hidden xl:inline text-xs text-stone-600 dark:text-stone-300 font-medium">
-                Track
-              </span>
-            </button>
-
-            {/* Wishlist / Saved Items Button */}
-            <button
-              onClick={() => setIsWishlistOpen(true)}
-              aria-label="Open saved wishlist"
-              title="Saved pieces"
-              className="relative p-2 rounded-full text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white bg-transparent hover:bg-stone-200/60 dark:hover:bg-stone-800/60 border border-stone-200/80 dark:border-stone-700/80 hover:border-stone-300 dark:hover:border-stone-600 active:border-amber-700 active:ring-2 active:ring-amber-700/20 active:scale-95 transition-all cursor-pointer"
-              id="wishlist-toggle-btn"
-            >
-              <Heart className="w-3.5 h-3.5" />
-              {wishlistCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center bg-rose-600 text-white text-[10px] font-bold rounded-full shadow-2xs tabular-nums border border-white dark:border-stone-900">
-                  {wishlistCount}
+            {/* Cluster 1: Discovery & Aesthetics */}
+            <div className="flex items-center space-x-1 sm:space-x-1.5">
+              {/* Search Spotlight Trigger */}
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                aria-label="Search catalog (Cmd+K)"
+                title="Search catalog (Cmd+K)"
+                className="flex items-center gap-1.5 p-2 xl:px-3 xl:py-1.5 rounded-full text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 bg-stone-100/80 dark:bg-stone-900/70 border border-stone-200/80 dark:border-stone-800/80 hover:border-stone-300 dark:hover:border-stone-700 transition-all cursor-pointer active:scale-95"
+                id="search-spotlight-btn"
+              >
+                <Search className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400" />
+                <span className="hidden xl:inline text-xs font-medium text-stone-600 dark:text-stone-300">
+                  Search
                 </span>
-              )}
-            </button>
+                <kbd className="hidden 2xl:inline px-1 py-0.5 text-[9px] font-mono text-stone-400 dark:text-stone-500 bg-white dark:bg-stone-800 rounded border border-stone-200 dark:border-stone-700">
+                  ⌘K
+                </kbd>
+              </button>
 
-            {/* My Orders Button */}
-            <button
-              onClick={() => setIsOrdersModalOpen(true)}
-              aria-label="View My Orders"
-              title="View previously submitted orders"
-              className="relative p-2 rounded-full text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white bg-transparent hover:bg-stone-200/60 dark:hover:bg-stone-800/60 border border-stone-200/80 dark:border-stone-700/80 hover:border-stone-300 dark:hover:border-stone-600 active:border-amber-700 active:ring-2 active:ring-amber-700/20 active:scale-95 transition-all cursor-pointer"
-              id="my-orders-btn"
-            >
-              <PackageCheck className="w-3.5 h-3.5" />
-              {savedOrdersCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center bg-amber-700 text-white text-[10px] font-bold rounded-full shadow-2xs tabular-nums border border-white dark:border-stone-900">
-                  {savedOrdersCount}
-                </span>
-              )}
-            </button>
-
-            {/* Dark / Light Mode Toggle */}
-            <button
-              onClick={() => {
-                toggleDarkMode();
-                if (showToast) {
-                  showToast(!isDarkMode ? 'Dark theme enabled' : 'Light theme enabled');
-                }
-              }}
-              aria-label="Toggle theme appearance"
-              title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              className="flex items-center gap-1.5 p-1.5 sm:p-2 sm:px-2.5 sm:py-1.5 rounded-full text-xs font-medium text-stone-700 dark:text-stone-200 bg-stone-100/90 hover:bg-stone-200/90 dark:bg-stone-800/90 dark:hover:bg-stone-700/90 transition-all cursor-pointer border border-stone-200/80 dark:border-stone-700/80 hover:border-stone-300 dark:hover:border-stone-600 active:border-amber-700 active:ring-2 active:ring-amber-700/20 active:scale-95"
-              id="theme-toggle-btn"
-            >
-              {isDarkMode ? (
-                <>
-                  <Sun className="w-3.5 h-3.5 text-amber-400" />
-                  <span className="hidden 2xl:inline text-[11px] font-semibold text-stone-300">Light</span>
-                </>
-              ) : (
-                <>
-                  <Moon className="w-3.5 h-3.5 text-stone-700" />
-                  <span className="hidden 2xl:inline text-[11px] font-semibold text-stone-700">Dark</span>
-                </>
-              )}
-            </button>
-
-            {/* Telegram Direct Bot Header Pill - Responsive widths */}
-            <button
-              onClick={() => setIsTelegramModalOpen(true)}
-              aria-label="Connect via Telegram Bot"
-              title="Chat directly with our Telegram Bot"
-              className="hidden xl:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full bg-sky-50 dark:bg-sky-950/50 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800/60 hover:bg-sky-100 dark:hover:bg-sky-900/60 hover:border-sky-400 active:border-sky-600 active:ring-2 active:ring-sky-500/20 active:scale-95 transition-all cursor-pointer"
-              id="telegram-header-btn"
-            >
-              <Send className="w-3.5 h-3.5" />
-              <span>@FurnitureOnlineSellingbot</span>
-            </button>
-
-            {/* PWA Install Button - Hidden on mobile header, available in menu */}
-            <div className="hidden sm:flex items-center">
-              <PWAInstallButton />
-            </div>
-            
-            <button
-              onClick={() => setIsCartOpen(true)}
-              aria-label="Open Cart"
-              className="relative p-2 sm:px-3 sm:py-1.5 rounded-full text-white bg-stone-900 dark:bg-stone-100 dark:text-stone-950 hover:bg-stone-800 dark:hover:bg-white border border-stone-900 dark:border-stone-100 active:border-amber-700 active:ring-2 active:ring-amber-700/30 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
-              id="cart-toggle-btn"
-            >
-              <ShoppingBag className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
-              <span className="hidden sm:inline text-xs font-bold tabular-nums">
-                {totalItemsCount}
-              </span>
-              {totalItemsCount > 0 && (
-                <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  key={totalItemsCount}
-                  className="sm:hidden absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center bg-amber-700 text-white text-[10px] font-bold rounded-full shadow-xs tabular-nums border border-white dark:border-stone-900"
+              {/* Theme Toggle Button */}
+              <button
+                onClick={() => {
+                  toggleDarkMode();
+                  if (showToast) {
+                    showToast(!isDarkMode ? 'Dark theme enabled' : 'Light theme enabled');
+                  }
+                }}
+                aria-label="Toggle theme appearance"
+                title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                className="p-2 rounded-full text-stone-700 dark:text-stone-200 bg-stone-100/80 hover:bg-stone-200/80 dark:bg-stone-900/70 dark:hover:bg-stone-800/80 border border-stone-200/80 dark:border-stone-800/80 transition-all cursor-pointer active:scale-95"
+                id="theme-toggle-btn"
+              >
+                <motion.div
+                  key={isDarkMode ? 'dark' : 'light'}
+                  initial={{ rotate: -90, opacity: 0, scale: 0.85 }}
+                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.35, ease: 'easeOut' }}
                 >
-                  {totalItemsCount}
-                </motion.span>
-              )}
-            </button>
+                  {isDarkMode ? (
+                    <Sun className="w-3.5 h-3.5 text-amber-400" />
+                  ) : (
+                    <Moon className="w-3.5 h-3.5 text-stone-700" />
+                  )}
+                </motion.div>
+              </button>
+            </div>
 
-            {/* Mobile Menu Button - Shown on screens smaller than large desktop breakpoint */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-full text-stone-700 dark:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 border border-stone-200/80 dark:border-stone-700/80 hover:border-stone-300 dark:hover:border-stone-600 active:border-amber-700 active:ring-2 active:ring-amber-700/20 active:scale-95 transition-all cursor-pointer"
-              id="mobile-menu-toggle-btn"
-              aria-label="Toggle navigation menu"
-            >
-              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-            </button>
+            {/* Subtle Divider */}
+            <div className="h-4 w-px bg-stone-200/80 dark:bg-stone-800 hidden sm:block shrink-0" />
+
+            {/* Cluster 2: Customer Shortlist & Orders */}
+            <div className="flex items-center space-x-1 sm:space-x-1.5">
+              {/* Wishlist / Saved Items Button */}
+              <button
+                onClick={() => setIsWishlistOpen(true)}
+                aria-label="Open saved wishlist"
+                title="Saved pieces"
+                className="relative p-2 rounded-full text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white bg-transparent hover:bg-stone-200/60 dark:hover:bg-stone-800/60 border border-stone-200/80 dark:border-stone-800/80 active:scale-95 transition-all cursor-pointer"
+                id="wishlist-toggle-btn"
+              >
+                <Heart className="w-3.5 h-3.5" />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center bg-rose-600 text-white text-[10px] font-bold rounded-full shadow-2xs tabular-nums border border-white dark:border-stone-900">
+                    {wishlistCount}
+                  </span>
+                )}
+              </button>
+
+              {/* My Orders Button */}
+              <button
+                onClick={() => setIsOrdersModalOpen(true)}
+                aria-label="View My Orders"
+                title="View previously submitted orders"
+                className="relative p-2 rounded-full text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white bg-transparent hover:bg-stone-200/60 dark:hover:bg-stone-800/60 border border-stone-200/80 dark:border-stone-800/80 active:scale-95 transition-all cursor-pointer"
+                id="my-orders-btn"
+              >
+                <PackageCheck className="w-3.5 h-3.5" />
+                {savedOrdersCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center bg-amber-700 text-white text-[10px] font-bold rounded-full shadow-2xs tabular-nums border border-white dark:border-stone-900">
+                    {savedOrdersCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Telegram Support Button - Adaptively collapsed on laptops, expanded on wide 2XL screens */}
+              <button
+                type="button"
+                onClick={() => setIsTelegramModalOpen(true)}
+                aria-label="Connect via Telegram Bot"
+                title="Direct Workshop Telegram Bot (@FurnitureOnlineSellingbot)"
+                className="hidden xl:inline-flex items-center gap-1.5 p-2 2xl:px-3 2xl:py-1.5 text-xs font-semibold rounded-full bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 border border-sky-200/80 dark:border-sky-800/60 hover:bg-sky-100 dark:hover:bg-sky-900/50 active:scale-95 transition-all cursor-pointer"
+                id="telegram-header-btn"
+              >
+                <Send className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+                <span className="hidden 2xl:inline">Telegram Bot</span>
+              </button>
+
+              {/* PWA Install Button - Visible on wide desktop screens */}
+              <div className="hidden 2xl:flex items-center">
+                <PWAInstallButton />
+              </div>
+            </div>
+
+            {/* Subtle Divider */}
+            <div className="h-4 w-px bg-stone-200/80 dark:bg-stone-800 hidden sm:block shrink-0" />
+
+            {/* Cluster 3: Primary Cart Action & Mobile Menu */}
+            <div className="flex items-center space-x-1 sm:space-x-1.5">
+              {/* Shopping Bag / Cart Pill */}
+              <button
+                onClick={() => setIsCartOpen(true)}
+                aria-label="Open Cart"
+                className="relative px-3 py-1.5 rounded-full text-white bg-stone-900 dark:bg-stone-100 dark:text-stone-950 hover:bg-stone-800 dark:hover:bg-white border border-stone-900 dark:border-stone-100 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
+                id="cart-toggle-btn"
+              >
+                <ShoppingBag className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600 shrink-0" />
+                <span className="text-xs font-bold tabular-nums">
+                  {totalItemsCount}
+                </span>
+              </button>
+
+              {/* Mobile / Tablet Menu Button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="lg:hidden p-2 rounded-full text-stone-700 dark:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 border border-stone-200/80 dark:border-stone-700/80 active:scale-95 transition-all cursor-pointer"
+                id="mobile-menu-toggle-btn"
+                aria-label="Toggle navigation menu"
+              >
+                {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              </button>
+            </div>
+
           </div>
         </div>
 
@@ -383,7 +405,7 @@ export const Navbar = ({ onNavigate }) => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-[#FAF8F5] dark:bg-[#141211] border-b border-stone-200 dark:border-stone-800 px-6 py-5 shadow-lg"
+              className="lg:hidden bg-[#FAF8F5] dark:bg-[#141211] border-b border-stone-200 dark:border-stone-800 px-6 py-5 shadow-lg max-h-[calc(100vh-80px)] overflow-y-auto"
             >
               <div className="flex flex-col space-y-2">
                 {navLinks.map((link) => {
@@ -396,15 +418,15 @@ export const Navbar = ({ onNavigate }) => {
                         e.preventDefault();
                         handleLinkClick(link.id);
                       }}
-                      className={`text-left text-sm font-medium px-4 py-3 rounded-xl transition-all cursor-pointer flex items-center justify-between ${
+                      className={`text-left text-sm font-medium px-4 py-2.5 rounded-full transition-all duration-300 cursor-pointer flex items-center justify-between ${
                         isActive
-                          ? 'border-2 border-amber-800 dark:border-amber-400 bg-amber-50/80 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 font-bold shadow-xs'
-                          : 'border-2 border-transparent text-stone-700 dark:text-stone-200 hover:text-amber-800 dark:hover:text-amber-400 hover:bg-stone-100/80 dark:hover:bg-stone-800/60'
+                          ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-bold shadow-xs'
+                          : 'text-stone-700 dark:text-stone-200 hover:text-stone-950 dark:hover:text-white hover:bg-stone-200/60 dark:hover:bg-stone-800/60'
                       } active:scale-[0.98]`}
                     >
                       <span>{link.label}</span>
                       {isActive && (
-                        <span className="w-2 h-2 rounded-full bg-amber-700 dark:bg-amber-400" />
+                        <span className="w-2 h-2 rounded-full bg-amber-400 dark:bg-amber-600" />
                       )}
                     </a>
                   );
@@ -489,12 +511,12 @@ export const Navbar = ({ onNavigate }) => {
           href="/"
           onClick={(e) => {
             e.preventDefault();
-            handleLinkClick('signature-collection');
+            handleLinkClick('home');
           }}
-          className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+          className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all duration-300 ease-out cursor-pointer ${
             currentView === 'home'
               ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-bold shadow-2xs'
-              : 'text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200'
+              : 'text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-800/50'
           } active:scale-95`}
           aria-label="Go to Home"
         >

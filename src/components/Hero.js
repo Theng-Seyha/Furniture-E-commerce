@@ -38,7 +38,16 @@ export const Hero = ({ onShopNow, onViewCollections }) => {
               </motion.button>
 
               <button
-                onClick={onViewCollections}
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (onViewCollections) {
+                    onViewCollections(e);
+                  } else {
+                    const el = document.getElementById('signature-collection');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
                 className="group inline-flex items-center gap-2 text-sm font-semibold text-stone-800 dark:text-stone-200 hover:text-amber-800 dark:hover:text-amber-400 transition-colors cursor-pointer"
                 id="hero-view-collections-btn"
               >
