@@ -250,9 +250,9 @@ export const Navbar = ({ onNavigate }) => {
                   type="button"
                   data-active={isActive}
                   onClick={(e) => { handleLinkClick(link.id); e.currentTarget.blur(); }}
-                  className={`relative px-3 xl:px-4 py-1.5 rounded-full text-[11px] xl:text-xs font-semibold tracking-wide uppercase transition-all duration-300 ease-out cursor-pointer whitespace-nowrap select-none shrink-0 inline-flex items-center justify-center ${
-                    !link.primary ? 'hidden 2xl:inline-flex' : 'inline-flex'
-                  } text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 data-[active=true]:bg-stone-900 data-[active=true]:text-white data-[active=true]:dark:bg-stone-100 data-[active=true]:dark:text-stone-900 data-[active=true]:shadow-sm data-[active=true]:font-bold data-[active=true]:transform data-[active=true]:scale-[1.03] active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-700/50`}
+                  className={`relative px-4 py-2 rounded-md text-[11px] xl:text-xs font-semibold tracking-wide uppercase transition-all duration-300 ease-out cursor-pointer whitespace-nowrap select-none shrink-0 inline-block ${
+                    !link.primary ? 'hidden 2xl:inline-block' : 'inline-block'
+                  } text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 data-[active=true]:bg-stone-900 data-[active=true]:text-white data-[active=true]:dark:bg-stone-100 data-[active=true]:dark:text-stone-900 data-[active=true]:shadow-sm data-[active=true]:font-bold data-[active=true]:transform data-[active=true]:scale-[1.03] data-[active=true]:rounded-md active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-700/50`}
                 >
                   <span>{link.label}</span>
                 </button>
