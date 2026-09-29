@@ -49,16 +49,14 @@
         window.dispatchEvent(new CustomEvent('pwa-installed'));
       });
 
-      // Register service worker immediately (Disabled for troubleshooting)
-      /*
+      // Register service worker immediately
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/sw.js').catch(function(err) {
+          navigator.serviceWorker.register('./sw.js').catch(function(err) {
             console.log('SW registration error:', err);
           });
         });
       }
-      */
     </script>
 
     <!-- Structured Data -->
@@ -83,7 +81,7 @@
   </head>
   <body class="bg-[#FAF8F5] text-[#292524] transition-colors duration-300 dark:bg-[#121110] dark:text-[#F5F2EB] antialiased">
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="/src/main.js"></script>
   </body>
 </html>
 

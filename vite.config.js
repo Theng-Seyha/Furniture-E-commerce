@@ -57,7 +57,7 @@ const serveServiceWorkerPlugin = {
 
 export default defineConfig(() => {
   return {
-    base: '/',
+    base: './',
     plugins: [
       jsxInJsPlugin, 
       serveServiceWorkerPlugin,
